@@ -4,4 +4,6 @@ Hello
 
 내가 다시 변경함
 
+resolve 완료
+mine1에서 변경함
 mine2 라고 합니다
