@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="kr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+        background-color: black;
+      }
+
+      .sparkle {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: radial-gradient(circle, #ffffff, rgba(255, 255, 255, 0));
+        border-radius: 50%;
+        animation: fadeOut 2s forwards;
+      }
+
+      @keyframes fadeOut {
+        0% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: scale(0.5);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sparkle">
+      <script>
+        document.addEventListener('mousemove', (e) => {
+          const sparkle = document.createElement('div');
+          sparkle.className = 'sparkle';
+
+          sparkle.style.left = `${e.pageX}px`;
+          sparkle.style.top = `${e.pageY}px`;
+
+          const size = Math.random() * 20 + 5;
+          sparkle.style.width = `${size}px`;
+          sparkle.style.height = `${size}px`;
+          sparkle.style.background = `radial-gradient(circle, hsl(${
+            Math.random() * 360
+          }, 100%, 75%), rgba(255,255,255,0))`;
+
+          document.body.appendChild(sparkle);
+
+          setTimeout(() => {
+            sparkle.remove();
+          }, 2000);
+        });
+      </script>
+    </div>
+  </body>
+</html>
