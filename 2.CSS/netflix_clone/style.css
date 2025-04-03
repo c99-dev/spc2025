@@ -1,28 +1,71 @@
 body {
   word-break: keep-all;
+  background-color: #141414;
+  color: #fff;
 }
 
-#logo {
-  width: 150px;
+.logo {
+  width: 160px;
 }
 
 header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
   display: flex;
   justify-content: space-between;
-  padding: 20px;
+  align-items: center;
+  padding: 20px 60px;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.7) 10%,
+    rgba(0, 0, 0, 0)
+  );
+  box-sizing: border-box;
 }
 
 .header-controls {
   display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
 .language-selector {
+  position: relative;
   display: flex;
-  width: 64px;
-  height: 32px;
+  align-items: center;
 }
 
-.login-button {
-  width: 74px;
-  height: 32px;
+.language-selector img {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+  z-index: 1;
+  filter: invert(1);
+}
+
+.language-selector select {
+  appearance: none;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 15px;
+  padding: 6px 30px 6px 35px;
+  font-size: 14px;
+  cursor: pointer;
+  background-image: url(./image/down_arrow.svg);
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 10px 10px;
+  transition: background-color 0.2s ease;
+}
+
+.language-selector select:hover {
+  background-color: rgba(0, 0, 0, 0.8);
 }
