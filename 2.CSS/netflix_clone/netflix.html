@@ -9,16 +9,74 @@
   <body>
     <header>
       <img id="logo" src="image/logo.png" alt="로고" />
-      <div>
-        <section>
+      <div class="right-header">
+        <section class="language-container">
           <img src="image/language_icon.svg" alt="language_icon" />
           <select name="language" id="language">
             <option value="한국어">한국어</option>
             <option value="English">English</option>
           </select>
         </section>
-        <button>로그인</button>
+        <button class="login">로그인</button>
       </div>
     </header>
+    <main>
+      <div class="banner">
+        <section class="description">
+          <h1 class="title">영화, 시리즈 등을 무제한으로</h1>
+          <p class="content">
+            5,500원으로 시작하세요. 멤버십은 언제든지 해지 가능합니다.
+          </p>
+        </section>
+        <section class="landing">
+          <p class="ment">
+            시청할 준비가 되셨나요? 멤버십을 등록하거나 재시작하려면 이메일
+            주소를 입력하세요.
+          </p>
+          <section class="start-netflix">
+            <input class="email-form" type="text" />
+            <button class="send-email">시작하기</button>
+          </section>
+        </section>
+      </div>
+      <div class="advertisement">
+        <section class="description">
+          <p class="title">5,500원이면 만날 수 있는 넷플릭스.</p>
+          <p class="content">
+            몇 개의 중간 광고와 함께 요금도 절약하고 넷플릭스도 즐겨보세요.
+          </p>
+        </section>
+        <button class="view-detail">자세히 알아보기</button>
+      </div>
+      <div movie-contents-container>
+        <h2 class="title">지금 뜨는 콘텐츠</h2>
+        <ul class="movie-ranking">
+          <ol class="movie-item">
+            <span class="ranking"></span>
+            <img class="thumnail" src="" />
+          </ol>
+          <ol class="movie-item">
+            <span class="ranking"></span>
+            <img class="thumnail" src="" />
+          </ol>
+          <ol class="movie-item">
+            <span class="ranking"></span>
+            <img class="thumnail" src="" />
+          </ol>
+          <ol class="movie-item">
+            <span class="ranking"></span>
+            <img class="thumnail" src="" />
+          </ol>
+          <ol class="movie-item">
+            <span class="ranking"></span>
+            <img class="thumnail" src="" />
+          </ol>
+          <ol class="movie-item">
+            <span class="ranking"></span>
+            <img class="thumnail" src="" />
+          </ol>
+        </ul>
+      </div>
+    </main>
   </body>
 </html>
