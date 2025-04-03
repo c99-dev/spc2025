@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="kr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style>
+      .square {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        transition-property: width, height;
+        transition-duration: 1s;
+      }
+      .square:hover {
+        width: 150px;
+        height: 150px;
+      }
+      .button {
+        color: black;
+        transition-property: color;
+        transition-duration: 2s;
+        transition-timing-function: ease;
+      }
+      .button:hover {
+        color: red;
+      }
+      .image {
+        width: 300px;
+        transition-property: transform;
+        transition-duration: 2s;
+        transition-timing-function: ease;
+      }
+      .image:hover {
+        transform: rotate(180deg);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="square"></div>
+    <hr />
+    <button class="button">hover me</button>
+    <hr />
+    <img class="image" src="ahri.jpg" alt="ahri" />
+  </body>
+</html>
