@@ -5,7 +5,7 @@ body {
 }
 
 .logo {
-  width: 160px;
+  width: 10rem;
 }
 
 header {
@@ -17,7 +17,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 60px;
+  padding: 1.15rem 2.75rem;
   background: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0.7) 10%,
@@ -29,7 +29,7 @@ header {
 .header-controls {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 1rem;
 }
 
 .language-selector {
@@ -40,11 +40,11 @@ header {
 
 .language-selector img {
   position: absolute;
-  left: 10px;
+  left: 0.75rem;
   top: 50%;
   transform: translateY(-50%);
-  width: 16px;
-  height: 16px;
+  width: 1rem;
+  height: 1rem;
   pointer-events: none;
   z-index: 1;
   filter: invert(1);
@@ -55,14 +55,14 @@ header {
   background-color: rgba(0, 0, 0, 0.6);
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 20px;
-  padding: 6px 30px 6px 35px;
-  font-size: 14px;
+  border-radius: 1.25rem;
+  padding: 0.4rem 1.75rem 0.4rem 2.5rem;
+  font-size: 1rem;
   cursor: pointer;
   background-image: url(./image/down_arrow.svg);
   background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 10px 10px;
+  background-position: right 0.6rem center;
+  background-size: 0.6rem 0.6rem;
   transition: background-color 0.2s ease;
 }
 
@@ -74,9 +74,9 @@ header {
   background-color: white;
   color: black;
   border: none;
-  border-radius: 20px;
-  padding: 6px 17px;
-  font-size: 14px;
+  border-radius: 1.25rem;
+  padding: 0.4rem 1rem;
+  font-size: 0.88rem;
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s ease;
@@ -86,17 +86,71 @@ header {
   background-color: rgba(255, 255, 255, 0.7);
 }
 
+main {
+  padding: 5rem 2.5rem;
+}
+
+.main-banner {
+  background-image: linear-gradient(
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.6),
+      rgba(0, 0, 0, 0.7),
+      rgba(0, 0, 0, 0.9),
+      rgba(50, 50, 50, 0.9)
+    ),
+    url(./image/banner.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 1.5rem;
+  position: relative;
+  height: 35rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.main-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60%;
+  height: 0.15rem;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 25%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  pointer-events: none;
+}
+
+.main-banner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0.15rem;
+  height: 60%;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  pointer-events: none;
+}
+
 .visually-hidden {
   position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
+  width: 0.06rem;
+  height: 0.06rem;
+  margin: -0.06rem;
   padding: 0;
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   border: 0;
-}
-
-main {
-  padding-top: 80px;
 }
