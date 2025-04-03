@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="kr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style>
+      header,
+      footer {
+        background-color: green;
+        text-align: center;
+        color: white;
+        padding: 20px;
+      }
+
+      .flex-container {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      nav,
+      article {
+        padding: 20px;
+        background-color: lightgray;
+      }
+
+      nav {
+        flex: 1;
+      }
+
+      article {
+        flex: 3;
+      }
+
+      main {
+        flex-grow: 1;
+        background-color: lightpink;
+        padding: 20px;
+      }
+
+      .content {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      @media (min-width: 600px) {
+        .content {
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="flex-container">
+      <header>
+        <h1>반응형 플렉스 박스 레이아웃</h1>
+      </header>
+      <main>
+        <div class="content">
+          <nav>
+            <h2>검색바</h2>
+            <ul>
+              <li>Home</li>
+              <li>About</li>
+              <li>Contact</li>
+            </ul>
+          </nav>
+          <article>
+            <h2>메인 컨텐츠</h2>
+            <p>여기는 메인 컨텐츠를 작성하는 곳입니다. Lorem, ipsum dolor.</p>
+            <ul>
+              <li>
+                디스플레이(display): flex와 디렉션(diretion)을 통해서 레이아웃을
+                수직으로 쌓을 수 있습니다.
+              </li>
+              <li>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Id
+                excepturi quos consectetur magni.
+              </li>
+              <li>
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iusto
+                dicta nemo repellendus ab voluptates asperiores, qui id?
+              </li>
+              <li>
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                Dolorum, aspernatur! Dolor at corrupti, odit ipsum ipsam quae ex
+                perspiciatis possimus.
+              </li>
+              <li>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Asperiores, est atque praesentium dignissimos sit pariatur.
+              </li>
+            </ul>
+          </article>
+        </div>
+      </main>
+      <footer>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis,
+          eius!
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>
