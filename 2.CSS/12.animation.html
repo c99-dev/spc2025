@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="kr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style>
+      .box {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        animation-name: moveLeft;
+        animation-duration: 2s;
+        animation-timing-function: cubic-bezier(0.77, 0, 0.175, 1);
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+        animation-delay: 1s;
+        position: relative;
+      }
+      @keyframes moveLeft {
+        0% {
+          left: 0;
+        }
+        100% {
+          left: 600px;
+        }
+      }
+      .text {
+        color: black;
+        animation-name: fadeOut;
+        animation-duration: 2s;
+        animation-iteration-count: infinite;
+      }
+      @keyframes fadeOut {
+        0% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+      .circle {
+        width: 100px;
+        height: 100px;
+        background-color: aquamarine;
+        border-radius: 25%;
+        animation-name: rotateAndScale;
+        animation-duration: 2s;
+        animation-iteration-count: infinite;
+      }
+      @keyframes rotateAndScale {
+        0% {
+          transform: rotate(0deg) scale(1);
+        }
+        50% {
+          transform: translateX(500px) rotate(180deg) scale(1.5);
+        }
+        100% {
+          transform: rotate(360deg) scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box"></div>
+    <hr />
+    <p class="text">Lorem, ipsum dolor.</p>
+    <hr />
+    <div class="circle"></div>
+  </body>
+</html>
