@@ -93,8 +93,8 @@ main {
 .main-banner {
   background-image: linear-gradient(
       rgba(0, 0, 0, 0.5),
-      rgba(0, 0, 0, 0.6),
       rgba(0, 0, 0, 0.7),
+      rgba(0, 0, 0, 0.8),
       rgba(0, 0, 0, 0.9),
       rgba(50, 50, 50, 0.9)
     ),
@@ -104,12 +104,27 @@ main {
   background-repeat: no-repeat;
   border-radius: 1.5rem;
   position: relative;
-  height: 35rem;
+  height: 45rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 100%,
+    90% 98%,
+    80% 97%,
+    70% 96.5%,
+    60% 96.2%,
+    50% 96%,
+    40% 96.2%,
+    30% 96.5%,
+    20% 97%,
+    10% 98%,
+    0 100%
+  );
 }
 
 .main-banner::before {
@@ -144,6 +159,94 @@ main {
   pointer-events: none;
 }
 
+.banner-description {
+  width: 30rem;
+  text-align: center;
+}
+
+.banner-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 4rem;
+}
+
+.banner-subtitle {
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 2rem;
+  line-height: 2rem;
+}
+
+.signup-section {
+  max-width: 950px;
+  padding-top: 0.85rem;
+}
+
+.signup-text {
+  margin-bottom: 20px;
+  max-width: none;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.email-input {
+  padding: 15px 20px;
+  font-size: 16px;
+  background-color: rgb(75, 75, 75);
+  border: 1px solid #8c8c8c;
+  border-radius: 50px;
+  min-width: 3000px;
+  height: 56px;
+  box-sizing: border-box;
+}
+
+.email-input::placeholder {
+  color: #999999;
+  font-weight: 600;
+}
+
+.signup-button {
+  background-color: #e50914;
+  color: white;
+  border: none;
+  padding: 12px 26px;
+  font-size: 1.625rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 50px;
+  height: 56px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  min-width: 150px;
+}
+
+@media (min-width: 960px) {
+  .signup-form {
+    flex-direction: row;
+    align-items: stretch;
+    max-width: 650px;
+    margin: 0 auto;
+    gap: 0;
+  }
+  .email-input {
+    min-width: 400px;
+  }
+  .signup-button {
+    font-size: 1.625rem;
+    padding: 12px 1em;
+    min-width: auto;
+  }
+}
+
 .visually-hidden {
   position: absolute;
   width: 0.06rem;
@@ -153,4 +256,137 @@ main {
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   border: 0;
+}
+
+.promo-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 45px;
+  background-color: rgba(60, 60, 60, 0.7);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  margin: 15px auto;
+  max-width: 960px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  gap: 15px;
+}
+
+.promo-description {
+  text-align: center;
+}
+
+.promo-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.promo-text {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.promo-button {
+  background-color: rgba(0, 0, 0);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.promo-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+@media (min-width: 960px) {
+  .promo-section {
+    flex-direction: row;
+    padding: 16px 48px;
+    gap: 20px;
+  }
+  .promo-description {
+    text-align: left;
+  }
+}
+
+.trending-content {
+  padding: 10px 0 30px 45px;
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.trending-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.trending-list {
+  display: flex;
+  justify-content: space-evenly;
+  padding-bottom: 20px;
+  gap: 8px;
+  scrollbar-width: none;
+}
+.trending-list::-webkit-scrollbar {
+  display: none;
+}
+
+.trending-item {
+  position: relative;
+  flex-shrink: 0;
+  width: 104px;
+  height: 208px;
+  list-style: none;
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.trending-item:hover {
+  transform: scale(1.05);
+  z-index: 2;
+}
+
+.trending-rank {
+  position: absolute;
+  top: 30px;
+  left: -15px;
+  font-size: 3rem;
+  font-weight: 900;
+  color: rgba(0, 0, 0, 0.8);
+  -webkit-text-stroke: 1px white;
+  z-index: 1;
+}
+
+.trending-thumbnail {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  background-color: #333;
+  border: 1px solid #444;
+}
+
+@media (min-width: 960px) {
+  .trending-item {
+    width: 128px;
+    height: 256px;
+  }
+}
+@media (min-width: 1280px) {
+  .trending-content {
+    padding-left: 60px;
+  }
+  .trending-item {
+    width: 131px;
+    height: 262px;
+  }
 }
