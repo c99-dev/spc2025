@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="kr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style>
+      div {
+        width: 100px;
+        height: 100px;
+        background-color: orange;
+        color: white;
+        margin: 5px;
+      }
+      .rel {
+        background-color: orangered;
+        position: relative;
+        top: 50px;
+        left: 50px;
+      }
+      .container {
+        width: 300px;
+        height: 200px;
+        background-image: url(ahri.jpg);
+        background-size: cover;
+      }
+      p {
+        position: relative;
+        top: 50px;
+        left: 50px;
+        color: tomato;
+      }
+    </style>
+  </head>
+  <body>
+    <div>1</div>
+    <div class="rel">2</div>
+    <div>3</div>
+    <div class="container">
+      <p id="inline">귀여운 고양이</p>
+    </div>
+  </body>
+</html>
