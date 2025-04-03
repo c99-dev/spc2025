@@ -9,74 +9,81 @@
   <body>
     <header>
       <img id="logo" src="image/logo.png" alt="로고" />
-      <div class="header-right">
-        <div class="language-container">
+      <div class="header-controls">
+        <div class="language-selector">
           <img src="image/language_icon.svg" alt="language_icon" />
           <select name="language" id="language">
             <option value="한국어">한국어</option>
             <option value="English">English</option>
           </select>
         </div>
-        <button class="login">로그인</button>
+        <button class="login-button">로그인</button>
       </div>
     </header>
     <main>
-      <div class="banner">
-        <section class="description">
-          <h1 class="title">영화, 시리즈 등을 무제한으로</h1>
-          <h2 class="content">
+      <div class="main-banner">
+        <section class="banner-description">
+          <h1 class="banner-title">영화, 시리즈 등을 무제한으로</h1>
+          <h2 class="banner-subtitle">
             5,500원으로 시작하세요. 멤버십은 언제든지 해지 가능합니다.
           </h2>
         </section>
-        <section class="landing">
-          <p class="ment">
+        <section class="signup-section">
+          <p class="signup-text">
             시청할 준비가 되셨나요? 멤버십을 등록하거나 재시작하려면 이메일
             주소를 입력하세요.
           </p>
-          <form class="start-netflix">
-            <input class="email-form" type="email" />
-            <button class="send-email">시작하기</button>
+          <form class="signup-form">
+            <label for="email" class="visually-hidden">이메일 주소</label>
+            <input
+              class="email-input"
+              type="email"
+              id="email"
+              placeholder="이메일 주소"
+              required
+            />
+            <button class="signup-button" type="submit">시작하기</button>
           </form>
         </section>
       </div>
-      <div class="advertisement">
-        <section class="description">
-          <p class="title">5,500원이면 만날 수 있는 넷플릭스.</p>
-          <p class="content">
+      <section class="promo-section">
+        <div class="promo-description">
+          <p class="promo-title">5,500원이면 만날 수 있는 넷플릭스.</p>
+          <p class="promo-text">
             몇 개의 중간 광고와 함께 요금도 절약하고 넷플릭스도 즐겨보세요.
           </p>
-        </section>
-        <button class="view-detail">자세히 알아보기</button>
-      </div>
-      <div class="movie-contents-container">
-        <h2 class="title">지금 뜨는 콘텐츠</h2>
-        <ol class="movie-ranking">
-          <li class="movie-item">
-            <span class="ranking"></span>
-            <img class="thumbnail" src="" />
+        </div>
+        <button class="promo-button">자세히 알아보기</button>
+      </section>
+      <section class="trending-content">
+        <h2 class="trending-title">지금 뜨는 콘텐츠</h2>
+        <ol class="trending-list">
+          <li class="trending-item">
+            <span class="trending-rank">1</span>
+            <img class="trending-thumbnail" src="" alt="" />
           </li>
-          <li class="movie-item">
-            <span class="ranking"></span>
-            <img class="thumbnail" src="" />
+          <li class="trending-item">
+            <span class="trending-rank">2</span>
+            <img class="trending-thumbnail" src="" />
           </li>
-          <li class="movie-item">
-            <span class="ranking"></span>
-            <img class="thumbnail" src="" />
+          <li class="trending-item">
+            <span class="trending-rank">3</span>
+            <img class="trending-thumbnail" src="" />
           </li>
-          <li class="movie-item">
-            <span class="ranking"></span>
-            <img class="thumbnail" src="" />
+          <li class="trending-item">
+            <span class="trending-rank">4</span>
+            <img class="trending-thumbnail" src="" />
           </li>
-          <li class="movie-item">
-            <span class="ranking"></span>
-            <img class="thumbnail" src="" />
+          <li class="trending-item">
+            <span class="trending-rank">5</span>
+            <img class="trending-thumbnail" src="" />
           </li>
-          <li class="movie-item">
-            <span class="ranking"></span>
-            <img class="thumbnail" src="" />
+          <li class="trending-item">
+            <span class="trending-rank">6</span>
+            <img class="trending-thumbnail" src="" />
           </li>
         </ol>
-      </div>
+      </section>
     </main>
   </body>
 </html>

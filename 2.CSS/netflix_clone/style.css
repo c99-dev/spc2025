@@ -12,17 +12,17 @@ header {
   padding: 20px;
 }
 
-.header-right {
+.header-controls {
   display: flex;
 }
 
-.language-container {
+.language-selector {
   display: flex;
   width: 64px;
   height: 32px;
 }
 
-.login {
+.login-button {
   width: 74px;
   height: 32px;
 }
