@@ -1,0 +1,17 @@
+body {
+  word-break: keep-all;
+}
+
+#logo {
+  width: 150px;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px;
+}
+
+.right-nav {
+  display: flex;
+}
