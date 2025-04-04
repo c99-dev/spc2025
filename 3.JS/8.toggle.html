@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>색상 변경(토글)</h1>
+    <p>이 텍스트의 색상을 변경(토글) 해보세요</p>
+    <button onclick="toggleColor()">색상변경</button>
+    <script>
+      let flag = true;
+      function toggleColor() {
+        document.getElementsByTagName('p')[0].style.color = flag
+          ? 'red'
+          : 'blue';
+        flag = !flag;
+      }
+    </script>
+  </body>
+</html>

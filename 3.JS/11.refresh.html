@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>화면 리프래쉬 예제</h1>
+    <p>이 페이지는 3초 후에 리프레쉬 됩니다.</p>
+    <script>
+      window.onload = function () {
+        setTimeout(() => {
+          console.log('1초 지났음');
+        }, 1000);
+        setTimeout(() => {
+          location.reload();
+        }, 3000);
+      };
+    </script>
+  </body>
+</html>

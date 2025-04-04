@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style>
+      #progressBar {
+        margin-top: 20px;
+        width: 50%;
+        min-width: 300px;
+        background-color: gray;
+      }
+      #progress {
+        width: 0%;
+        height: 30px;
+        background-color: greenyellow;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>프로그레스바(타이머)</h1>
+    <input type="number" id="timeInput" placeholder="초 입력" min="1" />
+    <button id="startButton" onclick="startProgress()">시작</button>
+    <button id="resetButton" onclick="resetProgress()">리셋</button>
+
+    <div id="progressBar">
+      <div id="progress"></div>
+    </div>
+    <script>
+      const progressElem = document.getElementById('progress');
+      const timeInput = document.getElementById('timeInput');
+
+      let interval;
+      let duration = 0;
+      function startProgress() {
+        duration = Number(timeInput.value);
+
+        let timePassed = 0;
+        interval = setInterval(() => {
+          timePassed++;
+          let progress = (timePassed / duration) * 100;
+          progressElem.style.width = `${progress}%`;
+          if (timePassed >= duration) {
+            clearInterval(interval);
+          }
+        }, 1000);
+      }
+      function resetProgress() {
+        progressElem.style.width = '0%';
+        clearInterval(interval);
+      }
+    </script>
+  </body>
+</html>
