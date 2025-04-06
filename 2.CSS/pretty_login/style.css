@@ -58,7 +58,6 @@ input {
 }
 
 button {
-  flex: 1;
   background-color: #3498db;
   color: white;
   border: none;
@@ -73,21 +72,6 @@ button {
 
 button:hover {
   background-color: #2980b9;
-}
-
-.game {
-  background-color: crimson;
-}
-
-.game:hover {
-  background-color: red;
-}
-
-.game:active {
-  background-color: #c0392b;
-}
-
-.game:visited {
 }
 
 footer {
