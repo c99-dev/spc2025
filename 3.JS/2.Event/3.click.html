@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="myButton">클릭하시오</button>
+    <script>
+      // document
+      //   .getElementById('myButton')
+      //   .addEventListener('click', function () {
+      //     console.log('버튼이 클릭되었습니다!');
+      //   });
+      document
+        .getElementById('myButton')
+        .addEventListener('mousedown', function (e) {
+          switch (e.button) {
+            case 0:
+              console.log('왼쪽 버튼 클릭됨!');
+              break;
+            case 1:
+              console.log('가운데 버튼 클릭됨!');
+              break;
+            case 2:
+              console.log('오른쪽 버튼 클릭됨!');
+              break;
+            default:
+              console.log('그 외 버튼 클릭됨!');
+              break;
+          }
+        });
+    </script>
+  </body>
+</html>
