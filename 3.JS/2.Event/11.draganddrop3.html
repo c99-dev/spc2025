@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style>
+      #dragItem1 {
+        margin: 10px;
+        width: 100px;
+        height: 100px;
+        background-color: red;
+      }
+      #dragItem2 {
+        margin: 10px;
+        width: 100px;
+        height: 100px;
+        background-color: green;
+      }
+      #dragItem3 {
+        margin: 10px;
+        width: 100px;
+        height: 100px;
+        background-color: yellow;
+      }
+      #dropZone {
+        width: 400px;
+        height: 400px;
+        border: 2px dashed black;
+        background-color: blue;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="dragItem1" draggable="true">Drag Me</div>
+    <div id="dragItem2" draggable="true">Drag Me</div>
+    <div id="dragItem3" draggable="true">Drag Me</div>
+    <div id="dropZone">Drop here</div>
+    <script>
+      let draggedItem = null;
+      const dragItem1 = document.getElementById('dragItem1');
+      const dragItem2 = document.getElementById('dragItem2');
+      const dragItem3 = document.getElementById('dragItem3');
+      const dropZone = document.getElementById('dropZone');
+
+      [dragItem1, dragItem2, dragItem3].forEach((item) => {
+        item.addEventListener('dragstart', (e) => {
+          draggedItem = e.target;
+        });
+      });
+
+      dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+      });
+
+      dropZone.addEventListener('drop', (e) => {
+        dropZone.appendChild(draggedItem);
+        e.preventDefault();
+      });
+    </script>
+  </body>
+</html>
