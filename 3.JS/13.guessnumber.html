@@ -9,7 +9,7 @@
     <h2>1~100까지의 숫자 맞추기...</h2>
     <input type="number" id="guessNumber" placeholder="숫자를 입력하시오" />
     <button id="guessButton" onclick="guessNumber()">Guess</button>
-    <p id="result"></p>
+    <ul id="result"></ul>
 
     <script>
       let randomNumber;
@@ -21,13 +21,15 @@
       const resultElem = document.getElementById('result');
       const inputElem = document.getElementById('guessNumber');
       function guessNumber() {
+        const liElem = document.createElement('li');
         const userNumber = parseInt(inputElem.value);
+        let resultChild = resultElem.appendChild(liElem);
         if (userNumber === randomNumber) {
-          resultElem.innerText = '정답입니다!';
+          resultChild.innerText = `${inputElem.value}: 정답입니다!`;
         } else if (userNumber < randomNumber) {
-          resultElem.innerText = '숫자가 너무 작아요.';
+          resultChild.innerText = `${inputElem.value}: 입력 숫자가 더 작아요.`;
         } else {
-          resultElem.innerText = '숫자가 너무 높아요.';
+          resultChild.innerText = `${inputElem.value}: 입력 숫자가 더 높아요.`;
         }
       }
     </script>
