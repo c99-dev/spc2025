@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+  </head>
+  <body>
+    <textarea id="myTextArea">여기 있는 파일을 복사해 보시오</textarea>
+    <script>
+      document
+        .getElementById('myTextArea')
+        .addEventListener('copy', function (e) {
+          e.preventDefault();
+          alert('불펌 금지');
+        });
+
+      document
+        .getElementById('myTextArea')
+        .addEventListener('paste', function (e) {
+          e.preventDefault();
+          alert('복붙하지 말고 직접 구현하시오');
+        });
+    </script>
+  </body>
+</html>
