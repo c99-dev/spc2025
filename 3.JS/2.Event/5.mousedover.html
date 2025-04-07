@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style>
+      #myElem {
+        width: 100px;
+        height: 100px;
+        background-color: aqua;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="myElem"></div>
+  </body>
+  <script>
+    myElem.addEventListener('mouseover', function () {
+      console.log('마우스가 올라갔습니다!');
+      this.style.backgroundColor = 'red';
+    });
+
+    myElem.addEventListener('mouseout', function () {
+      console.log('마우스가 내려갔습니다!');
+      this.style.backgroundColor = 'aqua';
+    });
+  </script>
+</html>
