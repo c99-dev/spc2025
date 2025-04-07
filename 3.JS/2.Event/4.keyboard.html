@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+  </head>
+  <style>
+    #displayKey {
+      font-size: 30px;
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+  <body>
+    <input type="text" id="myInput" />
+    <div id="displayKey"></div>
+
+    <script>
+      const myInput = document.getElementById('myInput');
+      const MyDisplay = document.getElementById('displayKey');
+      document.addEventListener('keydown', (e) => {
+        console.log('키보드가 눌렸습니다!', e.key);
+        myInput.value += e.key;
+      });
+      document.addEventListener('keyup', (e) => {
+        console.log('키보드가 들렸습니다!', e.key);
+        MyDisplay.textContent = e.key;
+      });
+    </script>
+  </body>
+</html>
