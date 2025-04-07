@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style>
+      .container {
+        padding: 40px;
+        background-color: lightgray;
+      }
+      .inner {
+        padding: 20px;
+        background-color: lightblue;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="inner">클릭하시오</div>
+    </div>
+
+    <script>
+      const container = document.querySelector('.container');
+      const inner = document.querySelector('.inner');
+
+      container.addEventListener('click', function (e) {
+        console.log('container clicked');
+      });
+
+      inner.addEventListener('click', function (e) {
+        console.log('inner clicked');
+        e.stopPropagation();
+      });
+    </script>
+  </body>
+</html>
