@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style>
+      #dragItem {
+        width: 100px;
+        height: 100px;
+        cursor: pointer;
+        background-color: red;
+      }
+      #dropZone {
+        width: 200px;
+        height: 200px;
+        border: 2px dashed black;
+        background-color: blue;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="dragItem" draggable="true">Drag Me</div>
+    <div id="dropZone">Drop here</div>
+    <script>
+      const dragItem = document.getElementById('dragItem');
+      const dropZone = document.getElementById('dropZone');
+
+      dragItem.addEventListener('dragstart', (e) => {
+        console.log('Drag started');
+      });
+
+      dropZone.addEventListener('dragover', (e) => {
+        console.log('Drag over');
+        e.preventDefault();
+      });
+
+      dropZone.addEventListener('drop', (e) => {
+        console.log('Dropped');
+        dropZone.appendChild(dragItem);
+        e.preventDefault();
+      });
+    </script>
+  </body>
+</html>
