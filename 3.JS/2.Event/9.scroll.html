@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style>
+      #content {
+        height: 2000px;
+        background: linear-gradient(to bottom, #f06, transparent);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="content"></div>
+    <script>
+      window.addEventListener('scroll', () => {
+        const scrollPosition =
+          window.pageYOffset || document.documentElement.scrollTop;
+        console.log('스크롤 위치: ' + scrollPosition);
+      });
+    </script>
+  </body>
+</html>
