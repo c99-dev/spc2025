@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style>
+      div {
+        padding: 50px;
+      }
+      #child {
+        background-color: blue;
+      }
+      #parent {
+        background-color: green;
+      }
+      #grandparent {
+        background-color: yellow;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="grandparent">
+      조부모
+      <div id="parent">
+        부모
+        <div id="child">자식</div>
+      </div>
+    </div>
+    <script>
+      const grandparent = document.getElementById('grandparent');
+      const parent = document.getElementById('parent');
+      const child = document.getElementById('child');
+
+      grandparent.addEventListener('click', function (e) {
+        console.log('조부모 클릭됨');
+      });
+
+      parent.addEventListener('click', function (e) {
+        console.log('부모 클릭됨');
+        e.stopPropagation();
+      });
+
+      child.addEventListener('click', function (e) {
+        console.log('자식 클릭됨');
+        e.stopPropagation();
+      });
+    </script>
+  </body>
+</html>
