@@ -56,7 +56,7 @@
       const inputElem = document.getElementById('result');
       const errorMessageElem = document.getElementById('errorMessage');
 
-      // 최초 입력 여부
+      // 새로운 입력 여부
       let isNewInput = true;
 
       function errorHandler(errorMessage) {
@@ -82,7 +82,7 @@
 
         const number = buttonElem.textContent;
 
-        // 최초 입력 여부 확인
+        // 새로운 입력 여부 확인
         if (isNewInput || inputElem.value === '0') {
           inputElem.value = number;
           isNewInput = false;
