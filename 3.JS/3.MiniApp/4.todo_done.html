@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style>
+      #todoList li {
+        cursor: pointer;
+      }
+      .done {
+        text-decoration: line-through;
+      }
+      #todoList li button {
+        margin-left: 10px;
+        background-color: red;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>투두 리스트</h1>
+    <input id="todoInput" type="text" placeholder="항목을 입력하세요" />
+    <button id="add">추가</button>
+    <hr />
+    <ul id="todoList"></ul>
+    <script>
+      const addButton = document.getElementById('add');
+      const todoInput = document.getElementById('todoInput');
+      const todoList = document.getElementById('todoList');
+
+      addButton.addEventListener('click', () => addTodoList());
+      todoInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          addButton.click();
+        }
+      });
+
+      function addTodoList() {
+        // ul에 요소 추가
+        const liElem = document.createElement('li');
+        const deleteButton = document.createElement('button');
+
+        liElem.textContent = todoInput.value;
+
+        // Todo 항목 클릭 시 줄 긋기
+        liElem.addEventListener('click', () => {
+          liElem.classList.toggle('done');
+        });
+
+        // 삭제 버튼 클릭 시 li 삭제
+        deleteButton.textContent = '삭제';
+        deleteButton.addEventListener('click', (e) => {
+          e.stopPropagation();
+          todoList.removeChild(liElem);
+        });
+
+        todoList.appendChild(liElem);
+        liElem.appendChild(deleteButton);
+
+        todoInput.value = '';
+      }
+    </script>
+  </body>
+</html>
