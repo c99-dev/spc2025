@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style>
+      h1 {
+        text-align: center;
+      }
+      .slider img {
+        width: 500px;
+        display: none;
+        margin: auto;
+        align-items: center;
+      }
+      .slider img.active {
+        display: block;
+      }
+      .buttons {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        gap: 20px;
+      }
+      .filename {
+        text-align: center;
+        margin-top: 10px;
+        font-size: 16px;
+      }
+      button {
+        padding: 10px;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>이미지 슬라이더</h1>
+    <div class="slider">
+      <img id="img1" class="active" src="images/ahri.png" alt="ahri" />
+      <img id="img2" src="images/garen.png" alt="garen" />
+      <img id="img3" src="images/mell.png" alt="mell" />
+
+      <div class="filename" id="filename">(filepath/name)</div>
+
+      <div class="buttons">
+        <button id="prev">이전</button>
+        <button id="next">다음</button>
+      </div>
+    </div>
+    <script>
+      const images = document.querySelectorAll('.slider img');
+      const prevButton = document.getElementById('prev');
+      const nextButton = document.getElementById('next');
+      const filenameElem = document.getElementById('filename');
+
+      prevButton.addEventListener('click', () => changeImage('prev'));
+      nextButton.addEventListener('click', () => changeImage('next'));
+
+      updateFilenameDisplay(images[0]);
+
+      function changeImage(direction) {
+        const activeImage = document.querySelector('.slider img.active');
+        const newImage = findNewImage(activeImage, direction);
+
+        updateActiveImage(activeImage, newImage);
+        updateFilenameDisplay(newImage);
+      }
+
+      function findNewImage(activeImage, direction) {
+        if (direction === 'next') {
+          const nextElement = activeImage.nextElementSibling;
+          return nextElement && nextElement.tagName === 'IMG'
+            ? nextElement
+            : images[0];
+        } else {
+          return (
+            activeImage.previousElementSibling || images[images.length - 1]
+          );
+        }
+      }
+
+      function updateActiveImage(currentActive, newActive) {
+        currentActive.classList.remove('active');
+        newActive.classList.add('active');
+      }
+
+      function updateFilenameDisplay(image) {
+        filenameElem.textContent = image.getAttribute('src').split('/').pop();
+      }
+    </script>
+  </body>
+</html>
