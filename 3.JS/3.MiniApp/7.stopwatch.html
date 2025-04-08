@@ -30,11 +30,79 @@
     </style>
   </head>
   <body>
-    <div id="stopWatch">00:00.00</div>
+    <div id="stopWatch">00:00.000</div>
     <div id="controls">
       <button id="start">Start</button>
-      <button id="stop">Stop</button>
+      <button id="stop" disabled>Stop</button>
       <button id="reset">Reset</button>
     </div>
+    <script>
+      let startTime;
+      let running = false;
+      let elapsedTime = 0;
+      let animationFrameId;
+
+      const stopWatchElem = document.querySelector('#stopWatch');
+      const startButton = document.querySelector('#start');
+      const stopButton = document.querySelector('#stop');
+      const resetButton = document.querySelector('#reset');
+
+      // 시간을 00:00.00 형식으로 포맷팅하는 함수
+      function formatTime(timeInMs) {
+        const date = new Date(timeInMs);
+        const isoString = date.toISOString();
+        return isoString.substring(14, 23);
+      }
+
+      // 화면 업데이트 함수
+      function updateDisplay() {
+        if (running) {
+          const currentTime = Date.now();
+          elapsedTime = currentTime - startTime;
+          stopWatchElem.textContent = formatTime(elapsedTime);
+          console.log(startTime, elapsedTime, currentTime);
+          animationFrameId = requestAnimationFrame(updateDisplay);
+        }
+      }
+
+      // 시작 버튼 기능
+      function startTimer() {
+        if (!running) {
+          running = true;
+          startTime = Date.now() - elapsedTime;
+          animationFrameId = requestAnimationFrame(updateDisplay);
+          startButton.disabled = true;
+          stopButton.disabled = false;
+        }
+      }
+
+      // 정지 버튼 기능
+      function stopTimer() {
+        if (running) {
+          running = false;
+          cancelAnimationFrame(animationFrameId);
+          startButton.disabled = false;
+          stopButton.disabled = true;
+        }
+      }
+
+      // 리셋 버튼 기능
+      function resetTimer() {
+        running = false;
+        cancelAnimationFrame(animationFrameId);
+        elapsedTime = 0;
+        stopWatchElem.textContent = '00:00.000';
+        startButton.disabled = false;
+        stopButton.disabled = true;
+      }
+
+      // 이벤트 리스너 설정
+      startButton.addEventListener('click', startTimer);
+      stopButton.addEventListener('click', stopTimer);
+      resetButton.addEventListener('click', resetTimer);
+
+      // 초기 버튼 상태 설정
+      stopButton.disabled = true;
+    </script>
   </body>
 </html>
