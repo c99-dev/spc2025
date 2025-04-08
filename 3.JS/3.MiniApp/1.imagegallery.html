@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style>
+      .gallery > img {
+        width: 100px;
+        height: 56px;
+        margin: 5px;
+        cursor: pointer;
+      }
+      .frame {
+        width: 800px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>이미지 갤러리</h1>
+    <div class="gallery">
+      <img src="images/ahri.png" alt="ahri" />
+      <img src="images/garen.png" alt="garen" />
+      <img src="images/mell.png" alt="mell" />
+      <div class="frame"></div>
+    </div>
+
+    <script>
+      // 클릭한 이미지를 크게 보여주기
+      const images = document.querySelectorAll('.gallery > img');
+      images.forEach((image) => {
+        image.addEventListener('click', () => {
+          const src = image.getAttribute('src');
+          document
+            .querySelector('.frame')
+            .setAttribute(
+              'style',
+              `background-image: url(${src}); background-size: cover; height: 400px;`
+            );
+        });
+      });
+    </script>
+  </body>
+</html>
