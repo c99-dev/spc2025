@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style></style>
+  </head>
+  <body>
+    <h1>실시간 검색 기능</h1>
+    <input type="text" id="searchInput" placeholder="검색..." />
+    <ul id="ItemList">
+      <li>Apple</li>
+      <li>Banana</li>
+      <li>Cherry</li>
+      <li>Orange</li>
+      <li>Grapes</li>
+      <li>Pineapple</li>
+      <li>Strawberry</li>
+      <li>Blueberry</li>
+      <li>Watermelon</li>
+      <li>Kiwi</li>
+      <li>Mango</li>
+      <li>Peach</li>
+      <li>Pear</li>
+      <li>Plum</li>
+      <li>Lemon</li>
+      <li>Lime</li>
+      <li>Coconut</li>
+      <li>Papaya</li>
+      <li>Avocado</li>
+      <li>Pomegranate</li>
+      <li>Dragonfruit</li>
+      <li>Raspberry</li>
+      <li>Blackberry</li>
+      <li>Passion Fruit</li>
+    </ul>
+    <script>
+      const searchInput = document.querySelector('#searchInput');
+      const itemList = document.querySelector('#ItemList');
+      const items = itemList.querySelectorAll('li');
+
+      searchInput.addEventListener('input', function () {
+        const filter = searchInput.value.toLowerCase();
+        items.forEach((item) => {
+          if (item.textContent.toLowerCase().includes(filter)) {
+            item.style.display = '';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
