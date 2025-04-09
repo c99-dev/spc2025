@@ -47,7 +47,7 @@
       const stopButton = document.querySelector('#stop');
       const resetButton = document.querySelector('#reset');
 
-      // 시간을 00:00.00 형식으로 포맷팅하는 함수
+      // 시간을 00:00.000 형식으로 포맷팅하는 함수
       function formatTime(ms) {
         const isoString = Date.prototype.toISOString.call(new Date(ms));
         return isoString.substring(14, 23);
