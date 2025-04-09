@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style>
+      #myCanvas {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="500" height="500"></canvas>
+    <script>
+      const canvas = document.querySelector('#myCanvas');
+      const ctx = canvas.getContext('2d');
+
+      ctx.font = '30px Arial';
+      ctx.fillStyle = 'aqua';
+      ctx.fillText('Hello World', 50, 50);
+
+      ctx.font = 'italic 40px Times New Roman';
+      ctx.fillStyle = 'red';
+      ctx.fillText('Styled Text', 50, 100);
+
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+      gradient.addColorStop(0, 'blue');
+      gradient.addColorStop(0.5, 'green');
+      ctx.fillStyle = gradient;
+      ctx.fillText('Gradient Text', 50, 150);
+    </script>
+  </body>
+</html>
