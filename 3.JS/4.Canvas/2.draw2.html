@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style>
+      #myCanvas {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="500" height="500"></canvas>
+    <script>
+      const canvas = document.querySelector('#myCanvas');
+      const ctx = canvas.getContext('2d');
+
+      ctx.beginPath();
+      ctx.moveTo(300, 100);
+
+      const startAngle = 0.2 * Math.PI;
+      const endAngle = 1.8 * Math.PI;
+
+      ctx.arc(300, 100, 50, startAngle, endAngle, false);
+      ctx.fillStyle = 'yellow';
+      ctx.fill();
+      ctx.closePath();
+
+      // 얼굴 그리기
+      ctx.beginPath();
+
+      // 얼굴의 바깥 원
+      ctx.arc(75, 75, 50, 0, Math.PI * 2);
+
+      // 입
+      ctx.moveTo(105, 85);
+      ctx.lineTo(45, 85);
+      ctx.arc(75, 85, 30, 0, Math.PI);
+
+      // 왼쪽 눈
+      ctx.moveTo(65, 65);
+      ctx.arc(60, 65, 5, 0, Math.PI * 2);
+
+      // 오른쪽 눈
+      ctx.moveTo(95, 65);
+      ctx.arc(90, 65, 5, 0, Math.PI * 2);
+
+      ctx.stroke();
+      ctx.closePath();
+    </script>
+  </body>
+</html>
