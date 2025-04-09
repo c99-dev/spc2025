@@ -60,7 +60,6 @@
           const currentTime = Date.now();
           elapsedTime = currentTime - startTime;
           stopWatchElem.textContent = formatTime(elapsedTime);
-          console.log(startTime, elapsedTime, currentTime);
           animationFrameId = requestAnimationFrame(updateDisplay);
         }
       }
