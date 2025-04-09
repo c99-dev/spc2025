@@ -3,6 +3,7 @@ window.onload = initialize;
 const GAME_SPEED = 200;
 const BLOCK_SIZE = 20;
 
+let gameInterval;
 function initialize() {
   canvas = document.querySelector('#myCanvas');
   ctx = canvas.getContext('2d');
@@ -19,7 +20,7 @@ function initialize() {
 
   setupEventListeners();
 
-  setInterval(gameLoop, GAME_SPEED);
+  gameInterval = setInterval(gameLoop, GAME_SPEED);
 }
 
 function setupEventListeners() {
@@ -85,6 +86,20 @@ function moveSnake() {
       Math.floor(Math.random() * (canvas.height / BLOCK_SIZE)) * BLOCK_SIZE;
   } else {
     snake.body.pop();
+  }
+
+  if (
+    head.x < 0 ||
+    head.x >= canvas.width ||
+    head.y < 0 ||
+    head.y >= canvas.height ||
+    snake.body
+      .slice(1)
+      .some((segment) => segment.x === head.x && segment.y === head.y)
+  ) {
+    clearInterval(gameInterval);
+    alert('Game Over!');
+    initialize();
   }
 }
 
