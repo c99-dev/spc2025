@@ -47,12 +47,6 @@
       const stopButton = document.querySelector('#stop');
       const resetButton = document.querySelector('#reset');
 
-      // 버튼 상태를 토글하는 함수
-      function toogleButtonState() {
-        startButton.disabled = !startButton.disabled;
-        stopButton.disabled = !stopButton.disabled;
-      }
-
       // 시간을 00:00.00 형식으로 포맷팅하는 함수
       function formatTime(timeInMs) {
         const date = new Date(timeInMs);
@@ -76,7 +70,8 @@
           running = true;
           startTime = Date.now() - elapsedTime;
           animationFrameId = requestAnimationFrame(updateDisplay);
-          toogleButtonState();
+          startButton.disabled = true;
+          stopButton.disabled = false;
         }
       }
 
@@ -85,7 +80,8 @@
         if (running) {
           running = false;
           cancelAnimationFrame(animationFrameId);
-          toogleButtonState();
+          startButton.disabled = false;
+          stopButton.disabled = true;
         }
       }
 
@@ -95,7 +91,8 @@
         cancelAnimationFrame(animationFrameId);
         elapsedTime = 0;
         stopWatchElem.textContent = '00:00.000';
-        toogleButtonState();
+        startButton.disabled = false;
+        stopButton.disabled = true;
       }
 
       // 이벤트 리스너 설정
