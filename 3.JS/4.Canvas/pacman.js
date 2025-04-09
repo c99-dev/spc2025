@@ -142,4 +142,4 @@ function initGame() {
 }
 
 // 게임 시작
-initGame();
+window.onload = initGame;
