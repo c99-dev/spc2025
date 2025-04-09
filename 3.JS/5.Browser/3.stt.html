@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>STT 예제</h1>
+    <button onclick="startRecording()">음성을 인식하시오</button>
+    <p id="result">음성 처리가 완료되면 여기에 나올 예정...</p>
+    <script>
+      const resultElement = document.getElementById('result');
+
+      function startRecording() {
+        const recognition = new window.webkitSpeechRecognition();
+        recognition.lang = 'ko-KR';
+        recognition.onresult = function (e) {
+          const transcript = e.results[0][0].transcript;
+          resultElement.innerText = transcript;
+        };
+
+        recognition.onerror = function (e) {
+          console.error('처리하다가 에러남: ' + e.error);
+        };
+
+        recognition.start();
+      }
+    </script>
+  </body>
+</html>
