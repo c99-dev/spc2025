@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <title>Document</title>
@@ -48,9 +48,8 @@
       const resetButton = document.querySelector('#reset');
 
       // 시간을 00:00.00 형식으로 포맷팅하는 함수
-      function formatTime(timeInMs) {
-        const date = new Date(timeInMs);
-        const isoString = date.toISOString();
+      function formatTime(ms) {
+        const isoString = Date.prototype.toISOString.call(new Date(ms));
         return isoString.substring(14, 23);
       }
 
