@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>TTS 예제</h1>
+    <textarea id="textInput" rows="4" cols="50">
+Hello, this is a text-to-speech example.
+</textarea
+    >
+    <div id="controls">
+      <select name="" id="voiceSelector"></select>
+      <button id="speakButton">말하기</button>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const textInput = document.getElementById('textInput');
+        const voiceSelector = document.getElementById('voiceSelector');
+        const speakButton = document.getElementById('speakButton');
+
+        function updateVoices() {
+          const voices = speechSynthesis.getVoices();
+          voiceSelector.innerHTML = '';
+          voices.forEach((voice) => {
+            const option = document.createElement('option');
+            option.value = voice.name;
+            option.textContent = `${voice.name} (${voice.lang})`;
+            voiceSelector.appendChild(option);
+          });
+        }
+        if ('speechSynthesis' in window) {
+          updateVoices();
+
+          window.speechSynthesis.addEventListener(
+            'voiceschanged',
+            updateVoices
+          );
+
+          function speak() {
+            const selectedVoiceIndex = voiceSelector.value;
+            const selectedVoice =
+              window.speechSynthesis.getVoices()[selectedVoiceIndex];
+            const textToSpeak = textInput.value;
+            const uttarance = new SpeechSynthesisUtterance(textToSpeak);
+            uttarance.voice = selectedVoice;
+            speechSynthesis.speak(uttarance);
+          }
+
+          speakButton.addEventListener('click', speak);
+        } else {
+          console.log('지원 안함');
+        }
+      });
+    </script>
+  </body>
+</html>
