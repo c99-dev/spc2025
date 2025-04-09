@@ -64,14 +64,19 @@
         }
       }
 
+      // 버튼 상태 업데이트 함수
+      function updateButtonState() {
+        startButton.disabled = running ? true : false;
+        stopButton.disabled = running ? false : true;
+      }
+
       // 시작 버튼 기능
       function startTimer() {
         if (!running) {
           running = true;
           startTime = Date.now() - elapsedTime;
           animationFrameId = requestAnimationFrame(updateDisplay);
-          startButton.disabled = true;
-          stopButton.disabled = false;
+          updateButtonState();
         }
       }
 
@@ -80,8 +85,7 @@
         if (running) {
           running = false;
           cancelAnimationFrame(animationFrameId);
-          startButton.disabled = false;
-          stopButton.disabled = true;
+          updateButtonState();
         }
       }
 
@@ -91,8 +95,7 @@
         cancelAnimationFrame(animationFrameId);
         elapsedTime = 0;
         stopWatchElem.textContent = '00:00.000';
-        startButton.disabled = false;
-        stopButton.disabled = true;
+        updateButtonState();
       }
 
       // 이벤트 리스너 설정
