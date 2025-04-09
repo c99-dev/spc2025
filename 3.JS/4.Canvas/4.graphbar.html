@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style>
+      #myCanvas {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="500" height="500"></canvas>
+    <script>
+      const canvas = document.querySelector('#myCanvas');
+      const ctx = canvas.getContext('2d');
+
+      const graphData = {
+        A: 10,
+        B: 20,
+        C: 40,
+        D: 60,
+        E: 70,
+      };
+
+      function drawBargraph(data) {
+        const barWidth = 30;
+        const barHeight = 5;
+        let startX = 20;
+
+        for (const key in data) {
+          const value = data[key];
+          ctx.fillStyle = 'blue';
+          ctx.fillRect(
+            startX,
+            canvas.height - value * barHeight,
+            barWidth,
+            value * barHeight
+          );
+          startX += barWidth + 30;
+        }
+      }
+
+      drawBargraph(graphData);
+    </script>
+  </body>
+</html>
