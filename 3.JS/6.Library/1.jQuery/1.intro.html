@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  </head>
+  <body>
+    <h1 id="myHeading">헬로우 제이쿼리</h1>
+    <button id="myButton">글자 바꾸기</button>
+
+    <script>
+      $(document).ready(function () {
+        $('#myButton').click(function () {
+          $('#myHeading').text('안녕하세요 제이쿼리!');
+        });
+      });
+    </script>
+  </body>
+</html>
