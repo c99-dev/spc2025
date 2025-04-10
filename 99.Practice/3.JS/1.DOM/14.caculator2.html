@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>계산기</title>
+    <style>
+      .calculator {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 10px;
+        max-width: 300px;
+        font-size: 18px;
+        text-align: center;
+        margin: auto;
+      }
+      .calculator > input {
+        grid-column: span 4;
+        padding: 10px;
+      }
+      .calculator > button {
+        padding: 10px;
+      }
+      .calculator > p {
+        grid-column: span 4;
+        text-align: center;
+      }
+      #errorMessage {
+        color: red;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="calculator">
+      <input id="result" type="text" value="0" />
+      <button onclick="clickSymbol(this)">+</button>
+      <button onclick="clickSymbol(this)">-</button>
+      <button onclick="clickSymbol(this)">*</button>
+      <button onclick="clickSymbol(this)">/</button>
+
+      <button onclick="clickNumber(this)">7</button>
+      <button onclick="clickNumber(this)">8</button>
+      <button onclick="clickNumber(this)">9</button>
+      <button onclick="clickSymbol(this)">=</button>
+
+      <button onclick="clickNumber(this)">4</button>
+      <button onclick="clickNumber(this)">5</button>
+      <button onclick="clickNumber(this)">6</button>
+      <button onclick="clickSymbol(this)">C</button>
+
+      <button onclick="clickNumber(this)">1</button>
+      <button onclick="clickNumber(this)">2</button>
+      <button onclick="clickNumber(this)">3</button>
+      <button onclick="clickNumber(this)">0</button>
+      <p id="errorMessage"></p>
+    </div>
+    <script>
+      // DOM 요소
+      const buttonElems = document.getElementsByTagName('button');
+      const inputElem = document.getElementById('result');
+      const errorMessageElem = document.getElementById('errorMessage');
+
+      // 새로운 입력 여부
+      let isNewInput = true;
+
+      // 에러 표시 함수
+      function showError(message, duration = 3000) {
+        errorMessageElem.textContent = message;
+        setTimeout(() => {
+          errorMessageElem.textContent = '';
+        }, duration);
+      }
+
+      // 입력 길이 검증 함수
+      function validateInputLength() {
+        if (inputElem.value.length >= 36) {
+          showError('최대 36자리까지 입력 가능합니다.');
+          return false;
+        }
+        return true;
+      }
+
+      // 입력값 업데이트 함수
+      function updateInput(value) {
+        inputElem.value = value;
+      }
+
+      // 입력값 추가 함수
+      function appendToInput(value) {
+        inputElem.value += value;
+      }
+
+      // 새 입력 처리 함수
+      function handleNewInput(number) {
+        if (isNewInput || inputElem.value === '0') {
+          updateInput(number);
+          isNewInput = false;
+          return true;
+        }
+        return false;
+      }
+
+      // 초기화 기능 함수
+      function handleClear() {
+        updateInput('0');
+        errorMessageElem.textContent = '';
+        isNewInput = true;
+      }
+
+      // 연산자 처리 함수
+      function handleOperator(symbol) {
+        if (!validateInputLength()) {
+          return;
+        }
+
+        const lastChar = inputElem.value.slice(-1);
+
+        // 연산자 중복 입력 처리
+        if (['+', '-', '*', '/'].includes(lastChar)) {
+          updateInput(inputElem.value.slice(0, -1) + symbol);
+          return;
+        }
+
+        appendToInput(symbol);
+        isNewInput = false;
+      }
+
+      // 결과값 포맷팅 함수
+      function formatResult(result) {
+        // 15자리가 넘는 숫자는 지수 표기법으로 변환
+        if (result.toString().replace(/[-.]/g, '').length > 15) {
+          return result.toExponential(10);
+        }
+
+        // 소수점 자릿수 제한
+        if (result % 1 !== 0) {
+          return parseFloat(result.toFixed(10));
+        }
+
+        return result;
+      }
+
+      // 숫자 버튼 클릭 처리 함수
+      function clickNumber(buttonElem) {
+        if (!validateInputLength()) {
+          return;
+        }
+
+        const number = buttonElem.textContent;
+
+        if (handleNewInput(number)) {
+          return;
+        }
+
+        appendToInput(number);
+      }
+
+      // 계산 실행 함수
+      function calculateResult() {
+        const expression = inputElem.value;
+
+        // 0으로 나누기 검사
+        if (/\/\s*0(?!\d)/.test(expression)) {
+          showError('0으로 나눌 수 없습니다.');
+          return;
+        }
+
+        try {
+          const calcFunction = new Function('return ' + expression);
+          const result = formatResult(calcFunction());
+
+          updateInput(result);
+          isNewInput = true;
+        } catch (error) {
+          showError('잘못된 수식입니다.');
+        }
+      }
+
+      // 기호 버튼 클릭 처리 함수
+      function clickSymbol(buttonElem) {
+        const symbol = buttonElem.textContent;
+
+        // 초기화 버튼
+        if (symbol === 'C') {
+          handleClear();
+          return;
+        }
+
+        // 계산 버튼
+        if (symbol === '=') {
+          calculateResult();
+          return;
+        }
+
+        // 연산자 버튼
+        handleOperator(symbol);
+      }
+    </script>
+  </body>
+</html>

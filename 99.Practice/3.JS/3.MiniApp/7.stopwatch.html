@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        height: 100vh;
+        margin: 0;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      #stopWatch {
+        font-size: 42px;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+      #controls {
+        display: flex;
+        gap: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stopWatch">00:00.000</div>
+    <div id="controls">
+      <button id="start">Start</button>
+      <button id="stop" disabled>Stop</button>
+      <button id="reset">Reset</button>
+    </div>
+    <script>
+      let startTime;
+      let running = false;
+      let elapsedTime = 0;
+      let animationFrameId;
+
+      const stopWatchElem = document.querySelector('#stopWatch');
+      const startButton = document.querySelector('#start');
+      const stopButton = document.querySelector('#stop');
+      const resetButton = document.querySelector('#reset');
+
+      // 시간을 00:00.000 형식으로 포맷팅하는 함수
+      function formatTime(ms) {
+        const isoString = Date.prototype.toISOString.call(new Date(ms));
+        return isoString.substring(14, 23);
+      }
+
+      // 화면 업데이트 함수
+      function updateDisplay() {
+        if (running) {
+          const currentTime = Date.now();
+          elapsedTime = currentTime - startTime;
+          stopWatchElem.textContent = formatTime(elapsedTime);
+          animationFrameId = requestAnimationFrame(updateDisplay);
+        }
+      }
+
+      // 버튼 상태 업데이트 함수
+      function updateButtonState() {
+        startButton.disabled = running ? true : false;
+        stopButton.disabled = running ? false : true;
+      }
+
+      // 시작 버튼 기능
+      function startTimer() {
+        if (!running) {
+          running = true;
+          startTime = Date.now() - elapsedTime;
+          animationFrameId = requestAnimationFrame(updateDisplay);
+          updateButtonState();
+        }
+      }
+
+      // 정지 버튼 기능
+      function stopTimer() {
+        if (running) {
+          running = false;
+          cancelAnimationFrame(animationFrameId);
+          updateButtonState();
+        }
+      }
+
+      // 리셋 버튼 기능
+      function resetTimer() {
+        running = false;
+        cancelAnimationFrame(animationFrameId);
+        elapsedTime = 0;
+        stopWatchElem.textContent = '00:00.000';
+        updateButtonState();
+      }
+
+      // 이벤트 리스너 설정
+      startButton.addEventListener('click', startTimer);
+      stopButton.addEventListener('click', stopTimer);
+      resetButton.addEventListener('click', resetTimer);
+
+      // 초기 버튼 상태 설정
+      stopButton.disabled = true;
+    </script>
+  </body>
+</html>
