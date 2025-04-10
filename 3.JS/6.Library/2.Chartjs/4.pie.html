@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div>
+      <canvas width="60" height="20" id="myChart"></canvas>
+    </div>
+
+    <script>
+      const ctx = document.getElementById('myChart');
+
+      const data = {
+        labels: ['red', 'blue', 'yellow'],
+        datasets: [
+          {
+            label: ['red', 'blue', 'yellow'],
+            data: [15, 74, 24],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.4)',
+              'rgba(54, 162, 235, 0.4)',
+              'rgba(255, 206, 86, 0.4)',
+            ],
+            hoverOffset: 4,
+          },
+        ],
+      };
+
+      const config = {
+        type: 'pie',
+        data: data,
+        options: {
+          responsive: true,
+        },
+      };
+      const myChart = new Chart(ctx, config);
+    </script>
+  </body>
+</html>
