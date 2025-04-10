@@ -3,7 +3,7 @@ const canvas = document.querySelector('#myCanvas');
 const ctx = canvas.getContext('2d');
 
 // 상수 정의
-const DEGREE_TO_RADIAN = Math.PI / 180;
+const DEG_TO_RAD = Math.PI / 180;
 const DIRECTIONS = {
   UP: 'up',
   DOWN: 'down',
@@ -11,9 +11,9 @@ const DIRECTIONS = {
   RIGHT: 'right',
 };
 const ROTATION_ANGLES = {
-  [DIRECTIONS.UP]: -DEGREE_TO_RADIAN * 90,
-  [DIRECTIONS.DOWN]: DEGREE_TO_RADIAN * 90,
-  [DIRECTIONS.LEFT]: DEGREE_TO_RADIAN * 180,
+  [DIRECTIONS.UP]: -DEG_TO_RAD * 90,
+  [DIRECTIONS.DOWN]: DEG_TO_RAD * 90,
+  [DIRECTIONS.LEFT]: DEG_TO_RAD * 180,
   [DIRECTIONS.RIGHT]: 0,
 };
 const DIRECTION_VECTORS = {
@@ -34,11 +34,11 @@ const pacman = {
   position: { x: 300, y: 200 },
   radius: 30,
   mouth: {
-    startAngle: DEGREE_TO_RADIAN * 36,
-    endAngle: DEGREE_TO_RADIAN * 324,
-    maxOpenAngle: DEGREE_TO_RADIAN * 36,
+    startAngle: DEG_TO_RAD * 45,
+    endAngle: DEG_TO_RAD * 315,
+    maxOpenAngle: DEG_TO_RAD * 45,
     isOpening: true,
-    angleSpeed: DEGREE_TO_RADIAN * 2,
+    angleSpeed: DEG_TO_RAD * 5,
   },
   movement: {
     direction: DIRECTIONS.RIGHT,
