@@ -1,0 +1,14 @@
+const os = require('os');
+console.log('호스트 이름', os.hostname());
+console.log('임시폴더경로', os.tmpdir());
+// console.log('cpu 정보', os.cpus());
+const memInGB = os.totalmem() / 1024 / 1024 / 1024;
+console.log('메모리 용량', memInGB.toFixed(2), 'GB');
+console.log('운영체제', os.platform());
+console.log('운영체제 버전', os.release());
+console.log('운영체제 아키텍처', os.arch());
+console.log('운영체제 타입', os.type());
+console.log('운영체제 버전', os.version());
+console.log('운영체제 네트워크', os.networkInterfaces());
+console.log('운영체제 업타임', os.uptime());
+console.log('운영체제 유저 정보', os.userInfo());
