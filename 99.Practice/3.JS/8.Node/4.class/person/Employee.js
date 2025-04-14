@@ -1,14 +1,18 @@
-const Person = require('./Person.js');
+import Person from './Person.js';
 
-const Employee = class extends Person {
+class Employee extends Person {
   constructor(name, jobTitle) {
     super(name);
     this.jobTitle = jobTitle;
   }
 
-  greet() {
-    return `${this.name}: 내 직업은 ${this.jobTitle}.`;
+  getJobTitle() {
+    return this.jobTitle;
   }
-};
 
-module.exports = Employee;
+  greet() {
+    return `${this.getName()}: 내 직업은 ${this.getJobTitle()}.`;
+  }
+}
+
+export default Employee;

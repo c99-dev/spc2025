@@ -1,6 +1,6 @@
-const Person = require('./Person.js');
-const Employee = require('./Employee.js');
-const Student = require('./Student.js');
+import Person from './Person.js';
+import Employee from './Employee.js';
+import Student from './Student.js';
 
 const person = new Person('홍길동');
 console.log(person.greet());
