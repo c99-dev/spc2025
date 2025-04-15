@@ -34,24 +34,21 @@
       );
     }
 
-    function fetchUser(method, body, id) {
+    async function fetchUser(method, body = null, id = null) {
       const url = id ? `/users/${id}` : '/users';
       const options = {
-        method: method,
+        method,
         headers: {
           'Content-Type': 'application/json',
         },
       };
-      if (body) {
-        options.body = JSON.stringify(body);
-      }
-      return fetch(url, options).then((response) => {
-        return response.json();
-      });
+      if (body) options.body = JSON.stringify(body);
+      const response = await fetch(url, options);
+      return await response.json();
     }
 
     window.onload = function () {
-      fetchUser('GET', null).then((data) => {
+      fetchUser('GET').then((data) => {
         const users = data.users;
         userMessage.innerHTML = data.message;
         userList.innerHTML = '';
