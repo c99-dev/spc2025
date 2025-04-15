@@ -50,7 +50,6 @@ app.delete('/users/:id', (req, res) => {
   delete users[userId];
   res.json({
     user: deletedUser,
-    message: '사용자가 성공적으로 삭제되었습니다.',
   });
   console.log(users);
 });
