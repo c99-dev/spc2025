@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>사용자 추가 삭제</title>
+  </head>
+  <body>
+    <h1>Users!</h1>
+    <h3 id="userMessage">Wellcome</h3>
+    <input type="text" id="userName" placeholder="사용자 이름" required />
+    <button id="addUser">사용자 추가</button>
+    <ul id="userList">
+      <li>사용자가 없습니다.</li>
+    </ul>
+  </body>
+  <script>
+    const userNameInput = document.getElementById('userName');
+    const addUserButton = document.getElementById('addUser');
+    const userList = document.getElementById('userList');
+    const userMessage = document.getElementById('userMessage');
+
+    function appendLi(userId, userName) {
+      const li = document.createElement('li');
+      li.innerHTML = `<strong>ID: </strong><span class="userId">${userId}</span>, <strong>Name: </strong><span class="userName">${userName}</span>
+        <button onclick="editUser(${userId})">수정</button>
+        <button onclick="deleteUser(${userId})">삭제</button>`;
+      userList.appendChild(li);
+    }
+
+    function findLiById(userId) {
+      return Array.from(userList.querySelectorAll('li')).find(
+        (li) => li.querySelector('.userId').innerText == userId
+      );
+    }
+
+    function fetchUser(method, body, id) {
+      const url = id ? `/users/${id}` : '/users';
+      const options = {
+        method: method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+      if (body) {
+        options.body = JSON.stringify(body);
+      }
+      return fetch(url, options).then((response) => {
+        return response.json();
+      });
+    }
+
+    window.onload = function () {
+      fetchUser('GET', null).then((data) => {
+        const users = data.users;
+        userMessage.innerHTML = data.message;
+        userList.innerHTML = '';
+        Object.entries(users).forEach(([userId, user]) => {
+          appendLi(userId, user.name);
+        });
+      });
+    };
+
+    function addUser() {
+      const userName = userNameInput.value.trim();
+      fetchUser('POST', { name: userName }).then((data) => {
+        console.log('User added:', data);
+        userMessage.innerHTML = data.message;
+        appendLi(data.userId, userName);
+        userNameInput.value = '';
+      });
+    }
+
+    function editUser(userId) {
+      const li = findLiById(userId);
+      const userName = li.querySelector('.userName').innerText;
+      const newName = prompt('새로운 사용자 이름을 입력하세요:', userName);
+      if (newName) {
+        fetchUser('PUT', { name: newName }, userId).then((data) => {
+          console.log('User updated:', data);
+          userMessage.innerHTML = data.message;
+          li.querySelector('span.userName').innerText = newName;
+        });
+      }
+    }
+
+    function deleteUser(userId) {
+      fetchUser('DELETE', null, userId).then((data) => {
+        userMessage.innerHTML = data.message;
+        findLiById(userId).remove();
+      });
+    }
+
+    addUserButton.addEventListener('click', addUser);
+    userNameInput.addEventListener('keypress', function (event) {
+      if (event.key === 'Enter') {
+        addUser();
+      }
+    });
+  </script>
+</html>
