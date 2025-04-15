@@ -23,14 +23,20 @@ app.get('/users', (req, res) => {
 // curl 127.0.0.1:3000/users -X POST -d "{\"name\": \"john\"}" -H "Content-Type: application/json"
 let userIdIndex = 1;
 app.post('/users', (req, res) => {
+  const { name, nickname, age } = req.body;
   const userId = userIdIndex++;
-  users[userId] = req.body;
+  users[userId] = { name, nickname, age };
+  res.json({
+    user: users[userId],
+  });
   console.log(users);
 });
 
 // curl 127.0.0.1:3000/users/1 -X PUT -d "{\"name\": \"john123\"}" -H "Content-Type: application/json"
 app.put('/users/:id', (req, res) => {
-  users[userId] = req.body;
+  const userId = req.params.id;
+  const { name, nickname, age } = req.body;
+  users[userId] = { name, nickname, age };
   res.json({
     user: users[userId],
   });
@@ -39,7 +45,13 @@ app.put('/users/:id', (req, res) => {
 
 // curl 127.0.0.1:3000/users/1 -X DELETE
 app.delete('/users/:id', (req, res) => {
+  const userId = req.params.id;
+  const deletedUser = users[userId];
   delete users[userId];
+  res.json({
+    user: deletedUser,
+    message: '사용자가 성공적으로 삭제되었습니다.',
+  });
   console.log(users);
 });
 

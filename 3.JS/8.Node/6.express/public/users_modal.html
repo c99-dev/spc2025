@@ -13,12 +13,16 @@
       tbody > tr {
         cursor: pointer;
       }
+      .input-group-text {
+        width: 70px;
+        justify-content: center;
+      }
     </style>
   </head>
   <body>
     <div class="container m-5">
       <h1>사용자 추가 삭제</h1>
-      <form class="form-inline d-flex flex-column" id="userForm">
+      <form class="form-inline d-flex flex-column mt-3" id="userForm">
         <div class="input-group mb-2">
           <span class="input-group-text" id="inputGroup-sizing-default"
             >이름</span
@@ -60,7 +64,7 @@
             required
           />
         </div>
-        <button id="addUser" type="submit" class="btn btn-primary">
+        <button id="addUser" type="submit" class="btn btn-primary mt-2">
           사용자 추가
         </button>
       </form>
@@ -84,27 +88,18 @@
         </tbody>
       </table>
     </div>
-    <button
-      type="button"
-      class="btn btn-primary"
-      data-bs-toggle="modal"
-      data-bs-target="#exampleModal"
-      data-bs-whatever="@getbootstrap"
-    >
-      Open modal for @getbootstrap
-    </button>
 
     <div
       class="modal fade"
-      id="exampleModal"
+      id="modal"
       tabindex="-1"
-      aria-labelledby="exampleModalLabel"
+      aria-labelledby="modalLabel"
       aria-hidden="true"
     >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
+            <h1 class="modal-title fs-5" id="modalLabel">사용자 정보</h1>
             <button
               type="button"
               class="btn-close"
@@ -115,28 +110,39 @@
           <div class="modal-body">
             <form>
               <div class="mb-3">
-                <label for="recipient-name" class="col-form-label"
-                  >Recipient:</label
-                >
-                <input type="text" class="form-control" id="recipient-name" />
+                <label for="modal-name" class="col-form-label">이름:</label>
+                <input type="text" class="form-control" id="modal-name" />
               </div>
               <div class="mb-3">
-                <label for="message-text" class="col-form-label"
-                  >Message:</label
+                <label for="modal-nickname" class="col-form-label"
+                  >닉네임:</label
                 >
-                <textarea class="form-control" id="message-text"></textarea>
+                <input type="text" class="form-control" id="modal-nickname" />
+              </div>
+              <div class="mb-3">
+                <label for="modal-age" class="col-form-label">나이:</label>
+                <input type="text" class="form-control" id="modal-age" />
               </div>
             </form>
           </div>
           <div class="modal-footer">
             <button
               type="button"
+              class="btn btn-danger me-auto"
+              id="delete-user"
+            >
+              삭제
+            </button>
+            <button
+              type="button"
               class="btn btn-secondary"
               data-bs-dismiss="modal"
             >
-              Close
+              닫기
             </button>
-            <button type="button" class="btn btn-primary">Send message</button>
+            <button type="button" class="btn btn-primary" id="update-user">
+              정보 수정
+            </button>
           </div>
         </div>
       </div>
@@ -145,6 +151,7 @@
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const userList = document.querySelector('tbody');
+      let selectedUserId = null;
 
       async function fetchUser(method, body = null, id = null) {
         const url = id ? `/users/${id}` : '/users';
@@ -170,6 +177,19 @@
               <td>${user.name}</td>
               <td>${user.nickname}</td>
               <td>${user.age}</td>`;
+
+            row.addEventListener('click', function () {
+              selectedUserId = userId;
+              document.getElementById('modal-name').value = user.name;
+              document.getElementById('modal-nickname').value = user.nickname;
+              document.getElementById('modal-age').value = user.age;
+
+              const modal = new bootstrap.Modal(
+                document.getElementById('modal')
+              );
+              modal.show();
+            });
+
             userList.appendChild(row);
           });
         });
@@ -194,6 +214,44 @@
           updateUserList();
         });
       });
+
+      document
+        .getElementById('update-user')
+        .addEventListener('click', function () {
+          if (selectedUserId) {
+            const name = document.getElementById('modal-name').value.trim();
+            const nickname = document
+              .getElementById('modal-nickname')
+              .value.trim();
+            const age = document.getElementById('modal-age').value.trim();
+
+            fetchUser('PUT', { name, nickname, age }, selectedUserId).then(
+              () => {
+                const modal = bootstrap.Modal.getInstance(
+                  document.getElementById('modal')
+                );
+                modal.hide();
+                updateUserList();
+              }
+            );
+          }
+        });
+
+      document
+        .getElementById('delete-user')
+        .addEventListener('click', function () {
+          if (selectedUserId) {
+            if (confirm('정말로 이 사용자를 삭제하시겠습니까?')) {
+              fetchUser('DELETE', null, selectedUserId).then(() => {
+                const modal = bootstrap.Modal.getInstance(
+                  document.getElementById('modal')
+                );
+                modal.hide();
+                updateUserList();
+              });
+            }
+          }
+        });
     });
   </script>
 </html>
