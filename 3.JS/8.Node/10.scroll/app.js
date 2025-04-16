@@ -17,10 +17,6 @@ app.get('/items', (req, res) => {
   res.json(data.slice(startItemIndex, endItemIndex));
 });
 
-app.get('/items/count', (req, res) => {
-  res.json({ count: data.length });
-});
-
 app.listen(port, () => {
   console.log(`서버가 http://localhost:${port} 에서 실행 중입니다.`);
 });
