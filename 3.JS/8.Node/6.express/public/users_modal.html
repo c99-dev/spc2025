@@ -162,37 +162,40 @@
           },
         };
         if (body) options.body = JSON.stringify(body);
-        const response = await fetch(url, options);
-        return await response.json();
+        return await fetch(url, options);
       }
 
       function updateUserList() {
         userList.innerHTML = '';
 
-        fetchUser('GET').then((data) => {
-          const users = data.users;
-          Object.entries(users).forEach(([userId, user]) => {
-            const row = document.createElement('tr');
-            row.innerHTML = `<th scope="row">${userId}</th>
+        fetchUser('GET')
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            const users = data.users;
+            Object.entries(users).forEach(([userId, user]) => {
+              const row = document.createElement('tr');
+              row.innerHTML = `<th scope="row">${userId}</th>
               <td>${user.name}</td>
               <td>${user.nickname}</td>
               <td>${user.age}</td>`;
 
-            row.addEventListener('click', function () {
-              selectedUserId = userId;
-              document.getElementById('modal-name').value = user.name;
-              document.getElementById('modal-nickname').value = user.nickname;
-              document.getElementById('modal-age').value = user.age;
+              row.addEventListener('click', function () {
+                selectedUserId = userId;
+                document.getElementById('modal-name').value = user.name;
+                document.getElementById('modal-nickname').value = user.nickname;
+                document.getElementById('modal-age').value = user.age;
 
-              const modal = new bootstrap.Modal(
-                document.getElementById('modal')
-              );
-              modal.show();
+                const modal = new bootstrap.Modal(
+                  document.getElementById('modal')
+                );
+                modal.show();
+              });
+
+              userList.appendChild(row);
             });
-
-            userList.appendChild(row);
           });
-        });
       }
 
       updateUserList();
