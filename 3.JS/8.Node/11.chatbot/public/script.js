@@ -29,15 +29,33 @@ function loading() {
 
   function appendMessage(message, sender) {
     const messageElement = document.createElement('div');
-    messageElement.textContent = sender + ': ' + message;
+    const iconElement = document.createElement('i');
+    const textElement = document.createElement('span');
+
+    messageElement.classList.add(
+      sender === '나' ? 'message-user' : 'message-chatbot'
+    );
+
+    if (sender === '나') {
+      iconElement.classList.add('bi', 'bi-person-fill');
+    } else {
+      iconElement.classList.add('bi', 'bi-robot');
+    }
+
+    textElement.textContent = message;
+
+    messageElement.appendChild(iconElement);
+    messageElement.appendChild(textElement);
     chatbotMessages.appendChild(messageElement);
     scrollToBottom();
   }
 
   sendButton.addEventListener('click', function () {
-    appendMessage(chatbotInput.value, '나');
-
     const userInput = chatbotInput.value;
+    if (!userInput.trim()) return;
+
+    appendMessage(userInput, '나');
+
     chatbotInput.value = '';
 
     fetch('/api/chat', {
@@ -48,10 +66,26 @@ function loading() {
       body: JSON.stringify({ question: userInput }),
     })
       .then((response) => {
+        if (!response.ok) {
+          return response
+            .json()
+            .then((errData) => {
+              throw new Error(
+                errData.answer || `으아 에러 발생! status: ${response.status}`
+              );
+            })
+            .catch(() => {
+              throw new Error(`으아 에러 발생! status: ${response.status}`);
+            });
+        }
         return response.json();
       })
       .then((data) => {
         appendMessage(data.answer, '챗봇');
+      })
+      .catch((error) => {
+        console.error('Fetch error:', error);
+        appendMessage('서버와 연결할 수 없습니다.', '챗봇');
       });
   });
 }

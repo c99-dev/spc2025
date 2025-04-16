@@ -10,8 +10,15 @@ app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.post('/api/chat', (req, res) => {
-  const question = req.body.question;
-  res.json({ answer: question });
+  try {
+    const question = req.body.question;
+    res.json({ answer: 'Echo: ' + question });
+  } catch (error) {
+    console.error('Error in /api/chat:', error);
+    res
+      .status(500)
+      .json({ answer: '서버에서 알 수 없는 오류가 발생했습니다.' });
+  }
 });
 
 app.listen(port, () => {
