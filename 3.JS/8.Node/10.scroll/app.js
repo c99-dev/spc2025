@@ -8,13 +8,17 @@ const path = require('path');
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-const data = Array.from({ length: 200 }, (_, i) => `Item ${i + 1}`);
+const data = Array.from({ length: 185 }, (_, i) => `Item ${i + 1}`);
 
 app.get('/items', (req, res) => {
   const { start, end } = req.query;
   const startItemIndex = parseInt(start, 10) || 0;
   const endItemIndex = parseInt(end, 10) || startItemIndex + 20;
   res.json(data.slice(startItemIndex, endItemIndex));
+});
+
+app.get('/items/count', (req, res) => {
+  res.json({ count: data.length });
 });
 
 app.listen(port, () => {
