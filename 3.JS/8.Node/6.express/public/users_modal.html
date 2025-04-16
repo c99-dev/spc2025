@@ -22,6 +22,7 @@
   <body>
     <div class="container m-5">
       <h1>사용자 추가 삭제</h1>
+      <div id="alertPlaceholder" class="mt-3"></div>
       <form class="form-inline d-flex flex-column mt-3" id="userForm">
         <div class="input-group mb-2">
           <span class="input-group-text" id="inputGroup-sizing-default"
@@ -108,7 +109,8 @@
             ></button>
           </div>
           <div class="modal-body">
-            <form>
+            <div id="modalAlertPlaceholder"></div>
+            <form id="modalUserForm">
               <div class="mb-3">
                 <label for="modal-name" class="col-form-label">이름:</label>
                 <input type="text" class="form-control" id="modal-name" />
@@ -137,6 +139,7 @@
               type="button"
               class="btn btn-secondary"
               data-bs-dismiss="modal"
+              id="close-modal"
             >
               닫기
             </button>
@@ -150,8 +153,40 @@
   </body>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      const userList = document.querySelector('tbody');
+      const userList = document.querySelector('.userList');
+      const userForm = document.getElementById('userForm');
+      const addUserBtn = document.getElementById('addUser');
+      const modalElement = document.getElementById('modal');
+      const modal = new bootstrap.Modal(modalElement);
+      const modalUserForm = document.getElementById('modalUserForm');
+      const updateUserBtn = document.getElementById('update-user');
+      const deleteUserBtn = document.getElementById('delete-user');
+      const alertPlaceholder = document.getElementById('alertPlaceholder');
+      const modalAlertPlaceholder = document.getElementById(
+        'modalAlertPlaceholder'
+      );
+
       let selectedUserId = null;
+
+      function showAlert(
+        message,
+        type = 'danger',
+        placeholder = alertPlaceholder
+      ) {
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = [
+          `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+          `   <div>${message}</div>`,
+          '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+          '</div>',
+        ].join('');
+        placeholder.innerHTML = '';
+        placeholder.append(wrapper);
+      }
+
+      function clearAlert(placeholder = alertPlaceholder) {
+        placeholder.innerHTML = '';
+      }
 
       async function fetchUser(method, body = null, id = null) {
         const url = id ? `/users/${id}` : '/users';
@@ -162,99 +197,191 @@
           },
         };
         if (body) options.body = JSON.stringify(body);
-        return await fetch(url, options);
+        const response = await fetch(url, options);
+        if (!response.ok) {
+          const errorData = await response
+            .json()
+            .catch(() => ({ message: 'Unknown server error' }));
+          throw new Error(
+            errorData.message || `HTTP error! status: ${response.status}`
+          );
+        }
+        if (method === 'DELETE' && response.status === 200) {
+          return { message: 'User deleted successfully' };
+        }
+        if (
+          response.headers.get('Content-Type')?.includes('application/json')
+        ) {
+          return await response.json();
+        }
+        return response;
       }
 
-      function updateUserList() {
+      async function updateUserList() {
         userList.innerHTML = '';
-
-        fetchUser('GET')
-          .then((response) => {
-            return response.json();
-          })
-          .then((data) => {
-            const users = data.users;
-            Object.entries(users).forEach(([userId, user]) => {
-              const row = document.createElement('tr');
-              row.innerHTML = `<th scope="row">${userId}</th>
+        clearAlert();
+        try {
+          const data = await fetchUser('GET');
+          const users = data.users;
+          if (Object.keys(users).length === 0) {
+            userList.innerHTML =
+              '<tr><td colspan="4" class="text-center">사용자가 없습니다.</td></tr>';
+            return;
+          }
+          Object.entries(users).forEach(([userId, user]) => {
+            const row = document.createElement('tr');
+            row.setAttribute('role', 'button');
+            row.setAttribute('tabindex', '0');
+            row.innerHTML = `<th scope="row">${userId}</th>
               <td>${user.name}</td>
               <td>${user.nickname}</td>
               <td>${user.age}</td>`;
 
-              row.addEventListener('click', function () {
-                selectedUserId = userId;
-                document.getElementById('modal-name').value = user.name;
-                document.getElementById('modal-nickname').value = user.nickname;
-                document.getElementById('modal-age').value = user.age;
-
-                const modal = new bootstrap.Modal(
-                  document.getElementById('modal')
-                );
-                modal.show();
-              });
-
-              userList.appendChild(row);
+            row.addEventListener('click', function () {
+              selectedUserId = userId;
+              document.getElementById('modal-name').value = user.name;
+              document.getElementById('modal-nickname').value = user.nickname;
+              document.getElementById('modal-age').value = user.age;
+              clearAlert(modalAlertPlaceholder);
+              modal.show();
             });
+
+            row.addEventListener('keydown', function (event) {
+              if (event.key === 'Enter' || event.key === ' ') {
+                this.click();
+              }
+            });
+
+            userList.appendChild(row);
           });
+        } catch (error) {
+          console.error('Failed to fetch users:', error);
+          showAlert(`사용자 목록 로딩 실패: ${error.message}`);
+        }
       }
 
       updateUserList();
 
-      userForm.addEventListener('submit', function (event) {
+      userForm.addEventListener('submit', async function (event) {
         event.preventDefault();
+        clearAlert();
         const userName = document.getElementById('userName').value.trim();
         const userNickname = document
           .getElementById('userNickname')
           .value.trim();
         const userAge = document.getElementById('userAge').value.trim();
 
-        fetchUser('POST', {
-          name: userName,
-          nickname: userNickname,
-          age: userAge,
-        }).then(() => {
-          document.getElementById('userForm').reset();
-          updateUserList();
-        });
+        if (
+          !userName ||
+          !userNickname ||
+          !userAge ||
+          isNaN(parseInt(userAge))
+        ) {
+          showAlert('모든 필드를 올바르게 입력해주세요 (나이는 숫자).');
+          return;
+        }
+
+        addUserBtn.disabled = true;
+        addUserBtn.textContent = '추가 중...';
+
+        try {
+          await fetchUser('POST', {
+            name: userName,
+            nickname: userNickname,
+            age: userAge,
+          });
+          userForm.reset();
+          await updateUserList();
+          showAlert('사용자가 성공적으로 추가되었습니다.', 'success');
+        } catch (error) {
+          console.error('Failed to add user:', error);
+          showAlert(`사용자 추가 실패: ${error.message}`);
+        } finally {
+          addUserBtn.disabled = false;
+          addUserBtn.textContent = '사용자 추가';
+        }
       });
 
-      document
-        .getElementById('update-user')
-        .addEventListener('click', function () {
-          if (selectedUserId) {
-            const name = document.getElementById('modal-name').value.trim();
-            const nickname = document
-              .getElementById('modal-nickname')
-              .value.trim();
-            const age = document.getElementById('modal-age').value.trim();
+      updateUserBtn.addEventListener('click', async function () {
+        clearAlert(modalAlertPlaceholder);
+        if (selectedUserId) {
+          const name = document.getElementById('modal-name').value.trim();
+          const nickname = document
+            .getElementById('modal-nickname')
+            .value.trim();
+          const age = document.getElementById('modal-age').value.trim();
 
-            fetchUser('PUT', { name, nickname, age }, selectedUserId).then(
-              () => {
-                const modal = bootstrap.Modal.getInstance(
-                  document.getElementById('modal')
-                );
-                modal.hide();
-                updateUserList();
-              }
+          if (!name || !nickname || !age || isNaN(parseInt(age))) {
+            showAlert(
+              '모든 필드를 올바르게 입력해주세요 (나이는 숫자).',
+              'danger',
+              modalAlertPlaceholder
             );
+            return;
           }
-        });
 
-      document
-        .getElementById('delete-user')
-        .addEventListener('click', function () {
-          if (selectedUserId) {
-            if (confirm('정말로 이 사용자를 삭제하시겠습니까?')) {
-              fetchUser('DELETE', null, selectedUserId).then(() => {
-                const modal = bootstrap.Modal.getInstance(
-                  document.getElementById('modal')
-                );
-                modal.hide();
-                updateUserList();
-              });
+          updateUserBtn.disabled = true;
+          deleteUserBtn.disabled = true;
+          updateUserBtn.textContent = '수정 중...';
+
+          try {
+            await fetchUser('PUT', { name, nickname, age }, selectedUserId);
+            modal.hide();
+            await updateUserList();
+            showAlert('사용자 정보가 성공적으로 수정되었습니다.', 'success');
+          } catch (error) {
+            console.error('Failed to update user:', error);
+            showAlert(
+              `정보 수정 실패: ${error.message}`,
+              'danger',
+              modalAlertPlaceholder
+            );
+          } finally {
+            updateUserBtn.disabled = false;
+            deleteUserBtn.disabled = false;
+            updateUserBtn.textContent = '정보 수정';
+          }
+        }
+      });
+
+      deleteUserBtn.addEventListener('click', async function () {
+        clearAlert(modalAlertPlaceholder);
+        if (selectedUserId) {
+          if (confirm('정말로 이 사용자를 삭제하시겠습니까?')) {
+            updateUserBtn.disabled = true;
+            deleteUserBtn.disabled = true;
+            deleteUserBtn.textContent = '삭제 중...';
+
+            try {
+              await fetchUser('DELETE', null, selectedUserId);
+              modal.hide();
+              await updateUserList();
+              showAlert('사용자가 성공적으로 삭제되었습니다.', 'warning');
+            } catch (error) {
+              console.error('Failed to delete user:', error);
+              showAlert(
+                `삭제 실패: ${error.message}`,
+                'danger',
+                modalAlertPlaceholder
+              );
+            } finally {
+              updateUserBtn.disabled = false;
+              deleteUserBtn.disabled = false;
+              deleteUserBtn.textContent = '삭제';
             }
           }
-        });
+        }
+      });
+
+      modalElement.addEventListener('hidden.bs.modal', function () {
+        modalUserForm.reset();
+        selectedUserId = null;
+        clearAlert(modalAlertPlaceholder);
+        updateUserBtn.disabled = false;
+        deleteUserBtn.disabled = false;
+        updateUserBtn.textContent = '정보 수정';
+        deleteUserBtn.textContent = '삭제';
+      });
     });
   </script>
 </html>
