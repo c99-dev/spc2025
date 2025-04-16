@@ -2,20 +2,29 @@
 
 1. 강사님이 제공한 예제와 다른 나만의 차별점 두기
 
-- 사소한 것이라도 좋으니 나만의 차별점 두기
-- 예를 들어 색상, 폰트, 레이아웃, 기능 추가 구현 등
+   - 사소한 것이라도 좋으니 나만의 차별점 두기
+   - 예를 들어 색상, 레이아웃, 기능 추가 구현 등
+   - 기능 추가 구현이 가장 좋음
 
-2. 변수명, 함수명에 항상 의미를 담기
+2. 명명에 항상 의미를 담기
 
-- `a`라는 변수명은 `a`가 무엇을 의미하는지 알 수 없음
-- 전치사 `to`, `for`, `of`를 사용하여 의미를 담기
-- `by`, `with`, `in`, `on`, `at` 등도 적절하게 사용하기
+   - 변수명
+     - `a`라는 변수명은 `a`가 무엇을 의미하는지 알 수 없음
+     - 명사가 아닌 동사로 시작하는 경우는 `is`, `has`, `can` 등으로 시작하기
+   - 함수명
+     - 전치사 `to`, `for`, `of`를 사용하여 의미를 담기
+     - `by`, `with`, `in`, `on`, `at` 등도 적절하게 사용하기
+   - URL
+     - RestFul API를 사용할 때는 URL에 의미를 담기
+     - 예를 들어, `GET /users`는 모든 사용자를 가져오는 것이고, `GET /users/1`은
+       id 가 1인 사용자를 가져오는 것
+     - 단수형과 복수형을 적절하게 사용하기
 
 3. 목적을 달성하고 나면 리팩토링하기
 
-- 리팩토링을 통해 가독성을 높이고, 유지보수성을 높이기
-- 중복되는 코드를 줄이고 의미 단위로 구분하기
-- 예를 들어, `for`문을 `forEach`로 바꾸기, `if`문을 `switch`문으로 바꾸기 등
+   - 리팩토링을 통해 가독성을 높이고, 유지보수성을 높이기
+   - 중복되는 코드를 줄이고 의미 단위로 구분하기
+   - 예를 들어, `for`문을 `forEach`로 바꾸기, `if`문을 `switch`문으로 바꾸기 등
 
 ## 목차
 
@@ -42,7 +51,7 @@
 
 - [x] [넷플릭스 HTML/CSS 클론](https://github.com/c99-dev/spc2025/tree/main/2.CSS/netflix_clone)
   - 이미지 그라데이션에 신경을 많이 씀
-  - 배너의 볼록하게 잘린 부분을 clip-path: polygon()을 사용하여 구현
+  - 배너의 볼록하게 잘린 부분을 `clip-path: polygon()`을 사용하여 구현
 
 ## 3.JS
 
@@ -57,7 +66,7 @@
 ### 3.MiniApp
 
 - [x] [스톱워치](https://github.com/c99-dev/spc2025/blob/main/3.JS/3.MiniApp/7.stopwatch.html)
-  - requestAnimationFrame()을 사용하여 스톱워치 구현
+  - `requestAnimationFrame()`을 사용하여 스톱워치 구현
   - 00:00.000 단위로 스톱워치 구현
 
 ### 4.Canvas
@@ -65,7 +74,7 @@
 - [x] [팩맨 게임](https://github.com/c99-dev/spc2025/blob/main/3.JS/4.Canvas/pacman)
 
   - 방향에 따라 팩맨이 회전하도록 구현
-  - [canvas arc 블로그 글 작성](https://velog.io/@c99/JavaScript-Canvas%EB%A5%BC-%EB%B0%B0%EC%9A%B0%EB%A9%B0-%EC%9D%B4%ED%95%B4-%EB%AA%BB%ED%95%9C-%ED%95%9C-%EA%B0%80%EC%A7%80-CanvasRenderingContext2D-arc-%EB%A9%94%EC%84%9C%EB%93%9C)
+  - [Canvas의 Arc 관련 블로그 글 작성](https://velog.io/@c99/JavaScript-Canvas%EB%A5%BC-%EB%B0%B0%EC%9A%B0%EB%A9%B0-%EC%9D%B4%ED%95%B4-%EB%AA%BB%ED%95%9C-%ED%95%9C-%EA%B0%80%EC%A7%80-CanvasRenderingContext2D-arc-%EB%A9%94%EC%84%9C%EB%93%9C)
 
 - [x] [스네이크 게임](https://github.com/c99-dev/spc2025/blob/main/3.JS/4.Canvas/snake)
   - 머리가 몸에 닿거나, 벽에 부딫일 때 게임 오버 추가
@@ -85,7 +94,7 @@
 #### 2.function
 
 - [x] [별 찍기](https://github.com/c99-dev/spc2025/blob/main/3.JS/8.Node/2.function/4.triangle.js)
-  - repeat() 메서드를 사용하여 별 찍기 구현
+  - `String.prototype.repeat()` 메서드를 사용하여 별 찍기 구현
 
 #### 4.class
 
@@ -94,7 +103,7 @@
   - 차량에 누가 탑승했는지 확인
   - 최대 탑승자 수 제한
   - 차량이 달리는 중에 탑승 불가능
-  - get, set 키워드와 # -> private 키워드 사용
+  - `get`, `set` 키워드와 `#`-> private 키워드 사용
 
 - [x] [객체지향 설계](https://github.com/c99-dev/spc2025/blob/main/3.JS/8.Node/4.class/person)
 
@@ -110,8 +119,8 @@
 - [x] [무한 스크롤](https://github.com/c99-dev/spc2025/blob/main/3.JS/8.Node/10.scroll)
   - 스크롤의 사용성을 위해 끝에 닿을 때가 아닌, 스크롤이 도착하기 직전에 데이터
     를 불러옴
-  - 여러번 이벤트가 실행되는 문제 때문에 throttle을 사용했지만, isFetching 플래
-    그 변수를 추가하여 DOM이 그려진 후 작동하도록 개선
+  - 여러번 이벤트가 실행되는 문제 때문에 throttle로 구현한 것을 `isFetching` 플
+    래그 변수를 추가하여 DOM이 그려진 후 작동하도록 개선
 
 #### 11.chatbot
 
