@@ -1,4 +1,4 @@
-const Person = require('./Person.js');
+import Person from './Person.js';
 
 class Student extends Person {
   constructor(name, major) {
@@ -6,9 +6,13 @@ class Student extends Person {
     this.major = major;
   }
 
+  getMajor() {
+    return this.major;
+  }
+
   greet() {
-    return `${this.name}: 내 전공은 ${this.major}.`;
+    return `${this.getName()}: 내 전공은 ${this.getMajor()}.`;
   }
 }
 
-module.exports = Student;
+export default Student;

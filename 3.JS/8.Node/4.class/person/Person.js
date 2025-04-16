@@ -3,9 +3,13 @@ class Person {
     this.name = name;
   }
 
+  getName() {
+    return this.name;
+  }
+
   greet() {
-    return `${this.name}: 안니영`;
+    return `${this.name}: 안녕하세요`;
   }
 }
 
-module.exports = Person;
+export default Person;
