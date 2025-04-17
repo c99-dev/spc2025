@@ -36,7 +36,7 @@
     - [2.Event](#2event)
     - [3.MiniApp](#3miniapp)
     - [4.Canvas](#4canvas)
-    - [6.Library\_Bootstrap](#6library_bootstrap)
+    - [6.Library_Bootstrap](#6library_bootstrap)
     - [7.Fetch](#7fetch)
     - [8.Node](#8node)
       - [2.function](#2function)
@@ -44,6 +44,8 @@
       - [6.express](#6express)
       - [10.scroll](#10scroll)
       - [11.chatbot](#11chatbot)
+  - [4.Python](#4python)
+    - [1.basic](#1basic)
 
 ## 2.CSS
 
@@ -129,3 +131,9 @@
   - [ ] SSE(server-sent event)를 사용하여 실시간으로 데이터 전송
     - 서버에서 클라이언트로 단방향 데이터 전송
     - 화면에 한글자씩 나오도록 구현
+
+## 4.Python
+
+### 1.basic
+
+- [x] [별찍기](https://github.com/c99-dev/spc2025/blob/main/4.Python/1.basic/print_star.py)
