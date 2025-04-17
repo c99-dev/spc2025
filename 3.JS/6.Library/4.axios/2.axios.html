@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>axios를 사용한 외부 요청</h1>
+    <button id="loadDataBtn">데이터 로드</button>
+    <button id="postDataBtn">데이터 전송</button>
+    <button id="loadImageBtn">이미지 로드</button>
+
+    <div id="result"></div>
+    <script>
+      document
+        .getElementById('loadDataBtn')
+        .addEventListener('click', async () => {
+          try {
+            const response = await axios.get(
+              'https://jsonplaceholder.typicode.com/posts/1'
+            );
+            const data = response.data;
+
+            document.getElementById('result').innerHTML = `
+            <p><strong>타이틀:</strong> ${data.title}</p>
+            <p><strong>본문:</strong> ${data.body}</p>
+          `;
+          } catch (error) {
+            document.getElementById('result').innerHTML = `
+            <p><strong>에러:</strong> ${error}</p>
+          `;
+          }
+        });
+      document
+        .getElementById('postDataBtn')
+        .addEventListener('click', async () => {
+          const postData = {
+            title: 'foo',
+            body: 'bar',
+            userId: 1,
+          };
+          const response = await axios.post(
+            'https://jsonplaceholder.typicode.com/posts',
+            postData
+          );
+          const data = response.data;
+          document.getElementById('result').innerHTML = JSON.stringify(
+            data,
+            null,
+            2
+          );
+        });
+
+      document
+        .getElementById('loadImageBtn')
+        .addEventListener('click', async () => {
+          const response = await axios.get(
+            'https://dog.ceo/api/breeds/image/random'
+          );
+          const data = response.data;
+          document.getElementById('result').innerHTML = `
+            <img src="${data.message}" alt="Random Dog" />
+          `;
+        });
+    </script>
+  </body>
+</html>
