@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Contents Types</title>
+  </head>
+  <body>
+    <h1>서버</h1>
+    <h2>1. JSON 송수신 예제</h2>
+    <textarea name="jsonInput" id="jsonInput">
+{"name":"John", "age":"30"}</textarea
+    >
+    <button id="jsonSendButton">전송</button>
+
+    <h2>2. 폼데이터 송수신 형태(urlencoded)</h2>
+    <form>
+      <input type="text" id="formName" placeholder="이름" value="John" />
+      <input type="text" id="formAge" placeholder="나이" value="30" />
+      <button type="submit" id="formSubmit">전송</button>
+    </form>
+
+    <h2>3. 문자열 송수신</h2>
+    <textarea name="textInput" id="textInput">이런 저런 데이터</textarea>
+    <button id="textSendButton">전송</button>
+
+    <h2>응답 출력</h2>
+    <pre id="output">응답은 여기에 출력</pre>
+
+    <script src="script.js"></script>
+  </body>
+</html>
