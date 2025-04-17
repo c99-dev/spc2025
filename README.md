@@ -24,7 +24,7 @@
 
    - 리팩토링을 통해 가독성을 높이고, 유지보수성을 높이기
    - 중복되는 코드를 줄이고 의미 단위로 구분하기
-   - 예를 들어, `for`문을 `forEach`로 바꾸기, `if`문을 `switch`문으로 바꾸기 등
+   - 하나의 함수는 하나의 기능만 수행하도록 하기
 
 ## 목차
 
@@ -36,7 +36,7 @@
     - [2.Event](#2event)
     - [3.MiniApp](#3miniapp)
     - [4.Canvas](#4canvas)
-    - [6.Library_Bootstrap](#6library_bootstrap)
+    - [6.Library\_Bootstrap](#6library_bootstrap)
     - [7.Fetch](#7fetch)
     - [8.Node](#8node)
       - [2.function](#2function)
@@ -74,7 +74,7 @@
 - [x] [팩맨 게임](https://github.com/c99-dev/spc2025/blob/main/3.JS/4.Canvas/pacman)
 
   - 방향에 따라 팩맨이 회전하도록 구현
-  - [Canvas의 Arc 관련 블로그 글 작성](https://velog.io/@c99/JavaScript-Canvas%EB%A5%BC-%EB%B0%B0%EC%9A%B0%EB%A9%B0-%EC%9D%B4%ED%95%B4-%EB%AA%BB%ED%95%9C-%ED%95%9C-%EA%B0%80%EC%A7%80-CanvasRenderingContext2D-arc-%EB%A9%94%EC%84%9C%EB%93%9C)
+  - [[블로그] Canvas의 Arc 관련 글 작성](https://velog.io/@c99/JavaScript-Canvas%EB%A5%BC-%EB%B0%B0%EC%9A%B0%EB%A9%B0-%EC%9D%B4%ED%95%B4-%EB%AA%BB%ED%95%9C-%ED%95%9C-%EA%B0%80%EC%A7%80-CanvasRenderingContext2D-arc-%EB%A9%94%EC%84%9C%EB%93%9C)
 
 - [x] [스네이크 게임](https://github.com/c99-dev/spc2025/blob/main/3.JS/4.Canvas/snake)
   - 머리가 몸에 닿거나, 벽에 부딫일 때 게임 오버 추가
@@ -125,6 +125,6 @@
 #### 11.chatbot
 
 - [x] [챗봇 UI 에코서버](https://github.com/c99-dev/spc2025/blob/main/3.JS/8.Node/11.chatbot)
-  - [ ] SSE(server sent event)를 사용하여 실시간으로 데이터 전송
+  - [ ] SSE(server-sent event)를 사용하여 실시간으로 데이터 전송
     - 서버에서 클라이언트로 단방향 데이터 전송
     - 화면에 한글자씩 나오도록 구현
