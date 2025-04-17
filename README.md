@@ -67,7 +67,8 @@
 
 - [x] [스톱워치](https://github.com/c99-dev/spc2025/blob/main/3.JS/3.MiniApp/7.stopwatch.html)
   - `requestAnimationFrame()`을 사용하여 스톱워치 구현
-  - 00:00.000 단위로 스톱워치 구현
+  - 00:00.000 단위로 스톱워치 구현 -> 모니터 주사율에 따라 최소로 더해지면서 보
+    여지는 시간이 다름
 
 ### 4.Canvas
 
