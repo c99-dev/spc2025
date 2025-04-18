@@ -46,6 +46,7 @@
       - [11.chatbot](#11chatbot)
   - [4.Python](#4python)
     - [1.basic](#1basic)
+    - [3.scrap](#3scrap)
 
 ## 2.CSS
 
@@ -137,3 +138,9 @@
 ### 1.basic
 
 - [x] [별찍기](https://github.com/c99-dev/spc2025/blob/main/4.Python/1.basic/print_star.py)
+
+### 3.scrap
+
+- [x] [네이버 뉴스 스크래핑](https://github.com/c99-dev/spc2025/blob/main/4.Python/3.scrap/11.naversportsnews.py)
+  - `playwright`를 사용하여 네이버 스포츠 뉴스 스크래핑
+  - `asyncio`를 사용하여 여러 링크를 비동기적으로 스크래핑
