@@ -53,16 +53,32 @@ print(s, t, sep="! ")
 # 2 + 2 * 3 = 8
 
 # 15
+a = "132"
+print(type(a))
 
 # 16
+num_str = "720"
+print(int(num_str))
 
 # 17
+num = 100
+print(str(num))
 
 # 18
+float_str = "15.79"
+print(float(float_str))
 
 # 19
+year = "2020"
+int_year = int(year)
+for i in range(1, 4):
+    print(int_year - i)
 
 # 20
+month_price = 48584
+payment_term = 36
+total_payment = month_price * payment_term
+print(total_payment)
 
 # 21
 
