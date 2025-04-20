@@ -146,7 +146,7 @@
   - `playwright`를 사용하여 네이버 스포츠 뉴스 스크래핑
   - `asyncio`를 사용하여 여러 링크를 비동기적으로 스크래핑
 
-- [x] [영화 차트 스크래핑](https://github.com/c99-dev/spc2025/blob/main/4.Python/3.scrap/moviechart/moviechart.py)
+- [x] [영화 차트 스크래핑](https://github.com/c99-dev/spc2025/blob/main/4.Python/3.scrap/moviechart)
   - `playwright` 를 사용하여 영화 차트 스크래핑
     - [x] 제목, 이미지경로, 상세페이지링크
     - [x] 로컬내PC에 이미지 저장하기
