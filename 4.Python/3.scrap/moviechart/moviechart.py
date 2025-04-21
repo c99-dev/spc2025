@@ -1,8 +1,8 @@
 from playwright.sync_api import sync_playwright
 import os
 import requests
-from urllib.parse import unquote
 import json
+import re
 
 
 def run(playwright):
@@ -19,7 +19,7 @@ def run(playwright):
         # 3-1. 제목, 이미지경로, 상세 페이지 링크, 랭크
         info = movie.locator("div.movie-info")
         movie_a = movie.locator("a").first
-        image_link = movie_a.locator("img").get_attribute("src").split("source=")[1]
+        image_link = base_url + movie_a.locator("img").get_attribute("src")
         rank = movie_a.locator("p.rank").inner_text()
         title_text = info.locator("div.movie-title").inner_text()
         link = base_url + movie_a.get_attribute("href")
@@ -27,7 +27,7 @@ def run(playwright):
         # 3-2. 로컬 PC에 이미지 저장
         if not os.path.exists(os.path.join(local_dir, "images")):
             os.makedirs(os.path.join(local_dir, "images"))
-        file_name = unquote(os.path.basename(image_link))
+        file_name = re.sub(r'[\\/*?:"<>|. ]', "_", title_text) + ".jpg"
         file_path = os.path.join(local_dir, "images", file_name)
         response = requests.get(image_link)
         with open(file_path, "wb") as image:
@@ -42,10 +42,9 @@ def run(playwright):
 
     browser.close()
 
-    # 3-4. csv에 저장하기 및 json 으로도 저장해보기
     csv_file_path = os.path.join(local_dir, "movies.csv")
     json_file_path = os.path.join(local_dir, "movies.json")
-
+    # 3-4. csv에 저장하기 및 json 으로도 저장해보기
     with open(csv_file_path, "w", encoding="utf-8") as csv_file:
         csv_file.write("Rank,Title,Link,Synopsis\n")
 
