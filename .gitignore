@@ -1,5 +1,4 @@
 node_modules
-temp*
 *.exe
 .env
 /4.Python/3.scrap/moviechart/images
