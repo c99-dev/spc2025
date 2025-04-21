@@ -12,13 +12,13 @@ def run(playwright):
     browser = playwright.chromium.launch(headless=False)
     page = browser.new_page()
     page.goto(base_url + "/rank/realtime/index/image")
-    movies_list = page.locator("ul.movieBox-list > li").all()
+    movies_list_elements = page.locator("ul.movieBox-list > li").all()
 
-    movies_dict = {}
-    for movie in movies_list:
+    movies_data = []  # 딕셔너리 대신 리스트 초기화
+    for movie_element in movies_list_elements:
         # 3-1. 제목, 이미지경로, 상세 페이지 링크, 랭크
-        info = movie.locator("div.movie-info")
-        movie_a = movie.locator("a").first
+        info = movie_element.locator("div.movie-info")
+        movie_a = movie_element.locator("a").first
         image_link = base_url + movie_a.locator("img").get_attribute("src")
         rank = movie_a.locator("p.rank").inner_text()
         title_text = info.locator("div.movie-title").inner_text()
@@ -27,7 +27,7 @@ def run(playwright):
         # 3-2. 로컬 PC에 이미지 저장
         if not os.path.exists(os.path.join(local_dir, "images")):
             os.makedirs(os.path.join(local_dir, "images"))
-        file_name = re.sub(r'[\\/*?:"<>|. ]', "_", title_text) + ".jpg"
+        file_name = re.sub(r'[\\/*?:"<>|. ]+', "_", title_text) + ".jpg"
         file_path = os.path.join(local_dir, "images", file_name)
         response = requests.get(image_link)
         with open(file_path, "wb") as image:
@@ -36,9 +36,12 @@ def run(playwright):
         # 3-3. 상세 페이지 링크를 타고 들어가서 시놉시스(줄거리) 가져오기
         page.goto(link)
         synopsis = page.locator("div.text").inner_text()
-        page.goto(base_url + "/rank/realtime/index/image")
+        page.goto(base_url + "/rank/realtime/index/image")  # 원래 페이지로 돌아가기
 
-        movies_dict[rank] = {"title": title_text, "link": link, "synopsis": synopsis}
+        # 리스트에 영화 정보 딕셔너리 추가
+        movies_data.append(
+            {"rank": rank, "title": title_text, "link": link, "synopsis": synopsis}
+        )
 
     browser.close()
 
@@ -48,14 +51,16 @@ def run(playwright):
     with open(csv_file_path, "w", encoding="utf-8") as csv_file:
         csv_file.write("Rank,Title,Link,Synopsis\n")
 
-    for rank, movie in movies_dict.items():
+    # 리스트를 순회하며 CSV 파일 작성
+    for movie in movies_data:
         with open(csv_file_path, "a", encoding="utf-8") as csv_file:
             csv_file.write(
-                f'"{rank}","{movie["title"]}","{movie["link"]}","{movie["synopsis"].replace('"', '""')}"\n'
+                f'"{movie["rank"]}","{movie["title"]}","{movie["link"]}","{movie["synopsis"].replace('"', '""')}"\n'
             )
 
+    # 리스트를 JSON 파일로 저장
     with open(json_file_path, "w", encoding="utf-8") as json_file:
-        json.dump(movies_dict, json_file, ensure_ascii=False, indent=4)
+        json.dump(movies_data, json_file, ensure_ascii=False, indent=4)
 
 
 def main():
