@@ -36,7 +36,7 @@
     - [2.Event](#2event)
     - [3.MiniApp](#3miniapp)
     - [4.Canvas](#4canvas)
-    - [6.Library_Bootstrap](#6library_bootstrap)
+    - [6.Library\_Bootstrap](#6library_bootstrap)
     - [7.Fetch](#7fetch)
     - [8.Node](#8node)
       - [2.function](#2function)
@@ -47,6 +47,9 @@
   - [4.Python](#4python)
     - [1.basic](#1basic)
     - [3.scrap](#3scrap)
+    - [5.flask](#5flask)
+      - [5.chatbot\_echo](#5chatbot_echo)
+      - [6.chatbot\_recommend](#6chatbot_recommend)
 
 ## 2.CSS
 
@@ -156,3 +159,17 @@
     - [x] 로컬내PC에 이미지 저장하기
     - [x] 상세페이지링크를 타고 들어가서 시놉시스(줄거리) 가져오기
     - [x] csv에 저장하기 및 json 으로도 저장해보기
+
+### 5.flask
+
+#### 5.chatbot_echo
+
+- [클라이언트](https://github.com/c99-dev/spc2025/tree/main/3.JS/9.project/2.chatbot)
+- [x] [챗봇 에코 서버](https://github.com/c99-dev/spc2025/blob/main/4.Python/5.flask/5.chatbot_echo/app.py)
+
+#### 6.chatbot_recommend
+
+- [클라이언트](https://github.com/c99-dev/spc2025/tree/main/3.JS/9.project/2.chatbot)
+- [x] [챗봇 추천 서버](https://github.com/c99-dev/spc2025/tree/main/4.Python/5.flask/6.chatbot_recommend)
+  - 추천 입력 시 모든 영화 중 랜덤한 영화를 한 개 추천 구현
+  - 추천 영화 하이라이팅 및 스크롤 이동 구현
