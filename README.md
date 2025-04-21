@@ -142,7 +142,7 @@
 
 - [x] [별찍기](https://github.com/c99-dev/spc2025/blob/main/4.Python/1.basic/print_star.py)
 - [ ] [Python 300제](https://github.com/c99-dev/spc2025/tree/main/4.Python/1.basic/problem300)
-  - [ ] 1~100
+  - [x] 1~100
   - [ ] 101~199
   - [ ] 201~300
 
