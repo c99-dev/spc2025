@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>랜덤 챔피언 불러오기</h1>
+    <button id="loadBtn">챔피언 이미지 불러오기</button>
+    <div id="imageContainer"></div>
+    <script>
+      imageContainer = document.getElementById('imageContainer');
+      document
+        .getElementById('loadBtn')
+        .addEventListener('click', async function () {
+          const res = await fetch('http://localhost:5000/random-champ');
+          const data = await res.json();
+          const url = data.url;
+          const img = document.createElement('img');
+          img.src = url;
+          imageContainer.innerHTML = '';
+          imageContainer.appendChild(img);
+        });
+    </script>
+  </body>
+</html>
