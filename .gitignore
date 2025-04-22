@@ -2,3 +2,8 @@ node_modules
 *.exe
 .env
 /4.Python/3.scrap/moviechart/images
+
+*.db
+*.sqlite
+*.sqlite3
+/5.DB
