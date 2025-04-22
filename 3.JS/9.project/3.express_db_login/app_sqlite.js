@@ -8,10 +8,6 @@ const db = new slqite3.Database('users.db');
 app.use(express.static('public'));
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
 app.route('/login').post(async (req, res) => {
   const { username, password } = req.body;
   db.get(

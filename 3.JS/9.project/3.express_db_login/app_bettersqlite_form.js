@@ -7,10 +7,6 @@ const db = require('better-sqlite3')('users.db');
 app.use(express.static('public', { index: 'index_form.html' }));
 app.use(express.urlencoded());
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index_form.html'));
-});
-
 app.route('/login').post((req, res) => {
   const { username, password } = req.body;
   const userQuery = db.prepare(
