@@ -44,6 +44,8 @@
       - [6.express](#6express)
       - [10.scroll](#10scroll)
       - [11.chatbot](#11chatbot)
+    - [9.Project](#9project)
+      - [4.session\_cart](#4session_cart)
   - [4.Python](#4python)
     - [1.basic](#1basic)
     - [3.scrap](#3scrap)
@@ -135,6 +137,16 @@
   - [ ] SSE(server-sent event)를 사용하여 실시간으로 데이터 전송
     - 서버에서 클라이언트로 단방향 데이터 전송
     - 화면에 한글자씩 나오도록 구현
+
+### 9.Project
+
+#### 4.session_cart
+
+- [x] [세션 활용 쇼핑 사이트](https://github.com/c99-dev/spc2025/tree/main/3.JS/9.project/4.session_cart)
+  - [x] 장바구니에 담긴 상품 삭제하기
+  - [x] 장바구니에 담긴 상품 수량 변경하기
+  - [x] 장바구니에 담긴 상품 총 가격 계산하기
+  - [x] 관리자 페이지 추가 구현
 
 ## 4.Python
 
