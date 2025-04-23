@@ -1,0 +1,60 @@
+body {
+  font-family: sans-serif;
+  margin: 0; /* body 마진 제거 */
+  background-color: #f4f4f4;
+}
+header {
+  background-color: #333;
+  color: white;
+  padding: 10px 20px; /* 좌우 패딩 추가 */
+  margin-bottom: 20px;
+  overflow: hidden; /* float 해제 */
+}
+header ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  float: left; /* 왼쪽 정렬 */
+}
+header ul li {
+  display: inline;
+  margin-right: 15px; /* 오른쪽 마진만 */
+}
+header ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  line-height: 30px; /* 세로 중앙 정렬 위해 추가 */
+}
+#user-info {
+  float: right; /* 오른쪽 정렬 */
+  line-height: 30px; /* 세로 중앙 정렬 위해 추가 */
+  font-weight: bold;
+}
+#user-info span {
+  /* 사용자 이름 스타일 */
+  margin-right: 15px;
+}
+#user-info a {
+  /* 로그인/로그아웃 링크 스타일 */
+  color: #ffc107;
+  text-decoration: none;
+  font-weight: bold;
+}
+#user-info a:hover {
+  text-decoration: underline;
+}
+.content {
+  padding: 0 20px; /* 내용 좌우 패딩 */
+}
+#main-content {
+  text-align: center; /* 중앙 정렬 */
+  margin-top: 50px;
+}
+#main-content h1 {
+  color: #333;
+}
+#main-content h2 {
+  color: #555;
+  margin-top: 30px;
+}

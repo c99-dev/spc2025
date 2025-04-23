@@ -1,0 +1,138 @@
+body {
+  font-family: sans-serif;
+  margin: 0; /* body 마진 제거 */
+  background-color: #f4f4f4;
+}
+header {
+  background-color: #333;
+  color: white;
+  padding: 10px 20px; /* 좌우 패딩 추가 */
+  margin-bottom: 20px;
+  overflow: hidden; /* float 해제 */
+}
+header ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  float: left; /* 왼쪽 정렬 */
+}
+header ul li {
+  display: inline;
+  margin-right: 15px; /* 오른쪽 마진만 */
+}
+header ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  line-height: 30px; /* 세로 중앙 정렬 위해 추가 */
+}
+#user-info {
+  float: right; /* 오른쪽 정렬 */
+  line-height: 30px; /* 세로 중앙 정렬 위해 추가 */
+  font-weight: bold;
+}
+#user-info span {
+  /* 사용자 이름 스타일 */
+  margin-right: 15px;
+}
+#user-info a {
+  /* 로그인/로그아웃 링크 스타일 */
+  color: #ffc107;
+  text-decoration: none;
+  font-weight: bold;
+}
+#user-info a:hover {
+  text-decoration: underline;
+}
+.content {
+  padding: 0 20px; /* 내용 좌우 패딩 */
+}
+h1 {
+  text-align: center;
+  color: #333;
+}
+#cart-table {
+  width: 80%;
+  margin: 20px auto;
+  border-collapse: collapse;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+#cart-table th,
+#cart-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+#cart-table th {
+  background-color: #f2f2f2;
+  color: #333;
+  text-align: center;
+}
+#cart-table td {
+  color: #555;
+  text-align: center;
+  vertical-align: middle; /* 버튼과 텍스트 세로 정렬 */
+}
+#cart-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+#cart-items {
+  margin-top: 20px;
+}
+
+/* 수량 조절 버튼 스타일 */
+.quantity-btn {
+  background-color: #ddd;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 3px;
+  margin: 0 5px; /* 버튼 좌우 마진 */
+}
+.quantity-btn:hover {
+  background-color: #ccc;
+}
+.item-count {
+  display: inline-block; /* span 요소 정렬 위해 */
+  min-width: 20px; /* 최소 너비 확보 */
+  text-align: center;
+}
+
+/* 삭제 버튼 스타일 */
+.delete-btn {
+  background-color: #f44336; /* 빨간색 배경 */
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+.delete-btn:hover {
+  background-color: #d32f2f; /* 호버 시 약간 어둡게 */
+}
+
+/* 장바구니 금액 관련 스타일 */
+.total-section {
+  margin-top: 20px;
+  border-top: 2px solid #ddd;
+  padding-top: 10px;
+  text-align: right;
+  font-size: 18px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.total-amount {
+  font-weight: bold;
+  color: #e63946;
+  font-size: 22px;
+}
+
+.item-total {
+  text-align: right;
+  font-weight: bold;
+}
