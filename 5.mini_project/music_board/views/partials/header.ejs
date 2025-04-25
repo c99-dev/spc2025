@@ -1,0 +1,36 @@
+<header
+  class="bg-dark text-white d-flex justify-content-between align-items-center p-3"
+>
+  <span class="fs-4">Music App</span>
+  <ul class="nav justify-content-end">
+    <li class="nav-item">
+      <a class="nav-link text-white" href="/">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-white" href="/toplikes">TopLikes</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-white" href="/hashtags">Hashtags</a>
+    </li>
+    <% if (user) { %>
+    <!-- 로그인 상태일 때 표시될 링크 -->
+    <li class="nav-item">
+      <a class="nav-link text-white" href="/notifications">Notifications</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-white" href="/profile"
+        >Profile (<%= user.username %>)</a
+      >
+      <!-- 예시: 사용자 이름 표시 -->
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-white" href="/logout">Logout</a>
+    </li>
+    <% } else { %>
+    <!-- 로그아웃 상태일 때 표시될 링크 -->
+    <li class="nav-item">
+      <a class="nav-link text-white" href="/login">Login</a>
+    </li>
+    <% } %>
+  </ul>
+</header>

@@ -3,7 +3,8 @@ const router = express.Router();
 const path = require('path');
 
 router.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
+  const user = null; // 예시: 로그아웃 상태
+  res.render('musicBoard', { user: user });
 });
 
 module.exports = router;
