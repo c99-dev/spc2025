@@ -11,6 +11,7 @@ const { createTables } = require('./db/init');
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.set('layout', 'layout');
+app.use(express.static(path.join(__dirname, 'public')));
 
 // db 초기화
 createTables();
@@ -21,8 +22,10 @@ app.use(express.json());
 app.use(expressLayouts);
 
 // routes
-const musicBoard = require('./routes/musicBoard');
-app.use('/', musicBoard);
+const home = require('./routes/home');
+app.use('/', home);
+const topLikes = require('./routes/topLikes');
+app.use('/topLikes', topLikes);
 
 app.listen(port, () => {
   console.log(`서버 여기서 실행 중 http://localhost:${port}`);
