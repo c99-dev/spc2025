@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>내가 만드는 나만의 트위터</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <nav></nav>
+    <h1>트윗 글작성</h1>
+    <div id="flash-message" class="flash-message"></div>
+    <div class="tweet-form-container">
+      <form id="tweet-form" class="tweet-form">
+        <div class="form-group">
+          <label for="content">트윗 내용</label>
+          <textarea
+            id="content"
+            class="tweet-textarea"
+            rows="4"
+            placeholder="무슨 일이 일어나고 있나요?"
+            required
+          ></textarea>
+        </div>
+        <button id="tweet-btn" type="submit" class="tweet-button">
+          트윗하기
+        </button>
+      </form>
+    </div>
+    <script src="js/common.js"></script>
+    <script src="js/tweet.js"></script>
+  </body>
+</html>

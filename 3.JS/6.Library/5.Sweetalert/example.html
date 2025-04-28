@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>SweetAlert Example</title>
+  </head>
+  <body>
+    <h1>디자인 팝업</h1>
+    <button onclick="showAlert()">팝업 열기</button>
+    <script>
+      function showAlert() {
+        Swal.fire({
+          title: '데이터 로딩 중',
+          text: '로딩 완료!',
+          icon: 'success',
+          showCancelButton: true,
+          confirmButtonText: '확인',
+          cancelButtonText: '취소',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire('확인되었습니다!', '', 'success');
+          } else if (result.isDismissed) {
+            Swal.fire('취소되었습니다!', '', 'error');
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
