@@ -36,10 +36,102 @@ function requireLogin(req, res, next) {
 
 // 메인 API
 app.get('/api/tweets', (req, res) => {
-  const tweets = db
-    .prepare('SELECT * FROM tweet ORDER BY created_at DESC')
-    .all();
-  res.json(tweets);
+  let tweets;
+  const userId = req.session.user ? req.session.user.id : null; // 로그인 사용자 ID 또는 null
+
+  // 사용자 이름(username)과 좋아요 수(like_count), 로그인 사용자의 좋아요 여부(liked)를 함께 조회
+  const query = `
+    SELECT 
+      t.id, t.content, t.created_at, t.user_id, t.like_count,
+      u.username,
+      CASE WHEN l.user_id IS NOT NULL THEN 1 ELSE 0 END AS liked
+    FROM tweet t
+    JOIN user u ON t.user_id = u.id
+    LEFT JOIN like l ON t.id = l.tweet_id AND l.user_id = ?
+    ORDER BY t.created_at DESC
+  `;
+
+  try {
+    tweets = db.prepare(query).all(userId);
+    res.json(tweets);
+  } catch (error) {
+    console.error('Error fetching tweets:', error);
+    res
+      .status(500)
+      .json({ message: '트윗 목록을 불러오는 중 오류가 발생했습니다.' });
+  }
+});
+
+// 좋아요 토글 API (로그인 필요)
+app.post('/api/like/:tweetId', requireLogin, (req, res) => {
+  const tweetId = req.params.tweetId;
+  const userId = req.session.user.id;
+
+  // 트랜잭션 시작
+  const toggleLikeTransaction = db.transaction(() => {
+    // 이미 좋아요 했는지 확인
+    const existingLike = db
+      .prepare('SELECT * FROM like WHERE user_id = ? AND tweet_id = ?')
+      .get(userId, tweetId);
+
+    let liked = 0; // 최종 좋아요 상태 (0: 안함, 1: 함)
+    let newLikeCount;
+
+    if (existingLike) {
+      // 좋아요 취소
+      db.prepare('DELETE FROM like WHERE user_id = ? AND tweet_id = ?').run(
+        userId,
+        tweetId
+      );
+      db.prepare(
+        'UPDATE tweet SET like_count = like_count - 1 WHERE id = ? AND like_count > 0'
+      ).run(tweetId);
+      liked = 0;
+    } else {
+      // 좋아요 추가
+      db.prepare('INSERT INTO like (user_id, tweet_id) VALUES (?, ?)').run(
+        userId,
+        tweetId
+      );
+      db.prepare(
+        'UPDATE tweet SET like_count = like_count + 1 WHERE id = ?'
+      ).run(tweetId);
+      liked = 1;
+    }
+
+    // 최신 좋아요 수 조회
+    const tweet = db
+      .prepare('SELECT like_count FROM tweet WHERE id = ?')
+      .get(tweetId);
+    newLikeCount = tweet ? tweet.like_count : 0;
+
+    return { liked, newLikeCount };
+  });
+
+  try {
+    const result = toggleLikeTransaction();
+    res
+      .status(200)
+      .json({
+        message: '좋아요 상태가 변경되었습니다.',
+        liked: result.liked,
+        new_count: result.newLikeCount,
+      });
+  } catch (error) {
+    console.error('Like toggle error:', error);
+    // UNIQUE constraint 실패 등 예상 가능한 오류 처리 추가 가능
+    if (error.code === 'SQLITE_CONSTRAINT_UNIQUE') {
+      // 동시성 문제 등으로 이미 상태가 변경된 경우 등 처리
+      res
+        .status(409)
+        .json({
+          message:
+            '좋아요 상태 변경 중 충돌이 발생했습니다. 다시 시도해주세요.',
+        });
+    } else {
+      res.status(500).json({ message: '좋아요 처리 중 오류가 발생했습니다.' });
+    }
+  }
 });
 
 app.post('/api/login', (req, res) => {
@@ -100,10 +192,14 @@ app.post('/api/tweet', requireLogin, (req, res) => {
     const info = stmt.run(content.trim(), userId);
     const newTweet = db
       .prepare(
-        'SELECT t.*, u.username FROM tweet t JOIN user u ON t.user_id = u.id WHERE t.id = ?'
-      ) // 사용자 이름도 함께 조회
+        // username과 liked 상태(항상 0)를 포함하여 반환
+        `SELECT t.*, u.username, 0 as liked 
+         FROM tweet t 
+         JOIN user u ON t.user_id = u.id 
+         WHERE t.id = ?`
+      )
       .get(info.lastInsertRowid);
-    res.status(201).json(newTweet); // 201 Created 상태 코드 사용
+    res.status(201).json(newTweet);
   } catch (error) {
     console.error('Tweet creation error:', error);
     res.status(500).json({ message: '트윗 작성 중 오류가 발생했습니다.' });
@@ -112,8 +208,6 @@ app.post('/api/tweet', requireLogin, (req, res) => {
 
 // 프로필 조회 API (로그인 필요)
 app.get('/api/profile', requireLogin, (req, res) => {
-  // 세션에서 사용자 정보 반환 (DB 재조회 필요 시 여기서 수행)
-  // 현재는 username만 필요하므로 세션 정보 사용
   res.json({ username: req.session.user.username });
 });
 

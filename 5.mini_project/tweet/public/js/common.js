@@ -12,34 +12,6 @@ async function checkLoginStatus() {
   }
 }
 
-function updateNavbar(loginStatus) {
-  const navUl = document.querySelector('nav ul');
-  if (!navUl) return;
-
-  const loginLink = navUl.querySelector('a[href="login.html"]');
-  const logoutLink = navUl.querySelector('#logout-link'); // Logout 링크 선택
-  const profileLink = navUl.querySelector('a[href="profile.html"]');
-  const tweetLink = navUl.querySelector('a[href="tweet.html"]');
-
-  if (loginStatus.loggedIn) {
-    if (loginLink) loginLink.parentElement.style.display = 'none'; // 로그인 숨김
-    if (logoutLink) logoutLink.parentElement.style.display = 'inline-block'; // 로그아웃 표시
-    if (profileLink) profileLink.parentElement.style.display = 'inline-block'; // 프로필 표시
-    if (tweetLink) tweetLink.parentElement.style.display = 'inline-block'; // 트윗 작성 표시
-
-    // 로그아웃 링크 이벤트 리스너 추가 (한 번만 추가되도록 확인)
-    if (logoutLink && !logoutLink.dataset.listenerAttached) {
-      logoutLink.addEventListener('click', handleLogout);
-      logoutLink.dataset.listenerAttached = 'true'; // 리스너 추가됨 표시
-    }
-  } else {
-    if (loginLink) loginLink.parentElement.style.display = 'inline-block'; // 로그인 표시
-    if (logoutLink) logoutLink.parentElement.style.display = 'none'; // 로그아웃 숨김
-    if (profileLink) profileLink.parentElement.style.display = 'none'; // 프로필 숨김
-    if (tweetLink) tweetLink.parentElement.style.display = 'none'; // 트윗 작성 숨김
-  }
-}
-
 async function handleLogout(event) {
   event.preventDefault(); // 링크 기본 동작 방지
   try {
@@ -57,8 +29,45 @@ async function handleLogout(event) {
   }
 }
 
-// DOM 로드 시 로그인 상태 확인 및 네비게이션 업데이트
+function renderNavbar(loginStatus) {
+  const nav = document.querySelector('nav');
+  const ul = document.createElement('ul');
+
+  // 항상 표시되는 링크
+  ul.innerHTML = `<li><a href="index.html">Home</a></li>`;
+
+  if (loginStatus.loggedIn) {
+    // 로그인 상태일 때 표시되는 링크
+    ul.innerHTML += `
+      <li><a href="#" id="logout-link">Logout</a></li>
+      <li><a href="profile.html">Profile</a></li>
+      <li><a href="tweet.html">Tweet</a></li>
+    `;
+  } else {
+    // 로그아웃 상태일 때 표시되는 링크
+    ul.innerHTML += `<li><a href="login.html">Login</a></li>`;
+  }
+
+  nav.appendChild(ul);
+
+  // 로그아웃 링크 이벤트 리스너 추가 (로그인 상태일 때만)
+  if (loginStatus.loggedIn) {
+    const logoutLink = nav.querySelector('#logout-link');
+    if (logoutLink) {
+      logoutLink.addEventListener('click', handleLogout);
+    }
+  }
+
+  // body의 맨 앞에 네비게이션 바 추가
+  document.body.prepend(nav);
+}
+
+// DOM 로드 시 로그인 상태 확인 및 네비게이션 생성
 document.addEventListener('DOMContentLoaded', async () => {
   const loginStatus = await checkLoginStatus();
-  updateNavbar(loginStatus);
+  renderNavbar(loginStatus);
+
+  // 네비게이션 생성 후 페이지별 스크립트가 필요한 초기화 수행 가능
+  // 예: index.js의 renderTweet는 네비게이션 생성 후에 호출되어야 함
+  // 현재 구조에서는 common.js 다음에 각 페이지 js가 로드되므로 문제 없음
 });

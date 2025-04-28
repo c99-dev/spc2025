@@ -27,11 +27,7 @@ tweetForm.addEventListener('submit', async (e) => {
     if (response.ok) {
       const result = await response.json();
       console.log('트윗 게시됨:', result);
-      // 성공 메시지 표시 (선택 사항)
-      // flashMessageDiv.textContent = '트윗이 성공적으로 게시되었습니다!';
-      // flashMessageDiv.classList.add('success');
-      // alert('트윗이 성공적으로 게시되었습니다!'); // alert 대신 홈으로 바로 이동
-      window.location.href = '/'; // 성공 시 홈으로 리디렉션
+      window.location.href = '/';
     } else if (response.status === 401) {
       // 로그인이 필요한 경우
       flashMessageDiv.textContent = '트윗을 작성하려면 로그인이 필요합니다.';

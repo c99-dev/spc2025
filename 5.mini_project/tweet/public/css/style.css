@@ -81,10 +81,21 @@ h1 {
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.9em;
+  transition: background-color 0.2s ease; /* 부드러운 색상 전환 효과 */
 }
 
 .like-button:hover {
   background-color: #0056b3;
+}
+
+/* 좋아요 눌린 상태 스타일 */
+.like-button.liked {
+  background-color: #6c757d; /* 회색 계열 */
+  color: white;
+}
+
+.like-button.liked:hover {
+  background-color: #5a6268; /* 호버 시 약간 더 어둡게 */
 }
 
 .like-count {
