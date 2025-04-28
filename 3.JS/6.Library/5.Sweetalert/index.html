@@ -7,24 +7,53 @@
     <title>SweetAlert Example</title>
   </head>
   <body>
-    <h1>디자인 팝업</h1>
-    <button onclick="showAlert()">팝업 열기</button>
+    <h1>로그인 팝업</h1>
+    <button onclick="login()">로그인</button>
     <script>
-      function showAlert() {
-        Swal.fire({
-          title: '데이터 로딩 중',
-          text: '로딩 완료!',
-          icon: 'success',
-          showCancelButton: true,
-          confirmButtonText: '확인',
+      async function login() {
+        const { value: formValues } = await Swal.fire({
+          title: '로그인',
+          html: `
+            <input id="swal-input-email" class="swal2-input" placeholder="이메일" type="email">
+            <input id="swal-input-password" class="swal2-input" placeholder="비밀번호" type="password">
+          `,
+          confirmButtonText: '로그인',
           cancelButtonText: '취소',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            Swal.fire('확인되었습니다!', '', 'success');
-          } else if (result.isDismissed) {
-            Swal.fire('취소되었습니다!', '', 'error');
-          }
+          showCancelButton: true,
+          focusConfirm: false,
+          preConfirm: () => {
+            const email = document.getElementById('swal-input-email').value;
+            const password = document.getElementById(
+              'swal-input-password'
+            ).value;
+            if (!email || !password) {
+              Swal.showValidationMessage('이메일과 비밀번호를 입력하세요.');
+              return false;
+            }
+            return { email, password };
+          },
         });
+        if (formValues) {
+          Swal.fire({
+            title: '전송 중...',
+            didOpen: () => {
+              Swal.showLoading();
+            },
+          });
+          const res = await fetch('http://localhost:3000/api/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formValues),
+          });
+          const data = await res.json();
+          if (res.ok) {
+            Swal.fire('Success', data.message, '성공!');
+          } else {
+            Swal.fire('Error', data.message, '실패..');
+          }
+        }
       }
     </script>
   </body>
