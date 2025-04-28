@@ -1,0 +1,450 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <div class="d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">인기 해시태그</h3>
+            <div class="btn-group" role="group">
+              <button
+                type="button"
+                class="btn btn-light btn-sm active"
+                id="showTableBtn"
+              >
+                <i class="bi bi-table"></i> 표 보기
+              </button>
+              <button
+                type="button"
+                class="btn btn-light btn-sm"
+                id="showCloudBtn"
+              >
+                <i class="bi bi-cloud"></i> 클라우드 보기
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div id="tableView" class="table-responsive">
+            <% if (typeof tagList !== 'undefined' && tagList && tagList.length > 0) { %>
+            <table class="table table-striped table-hover">
+              <thead class="table-dark">
+                <tr>
+                  <th scope="col">해시태그</th>
+                  <th scope="col">그래프</th>
+                  <th scope="col">사용 횟수</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% for (let i = 0; i < tagList.length; i++) { %>
+                <tr class="tag-row" data-tag="<%= tagList[i].name %>">
+                  <td>
+                    <a
+                      href="/hashtags/<%= tagList[i].name %>"
+                      class="text-decoration-none"
+                    >
+                      <span class="badge bg-info text-dark fs-6">
+                        #<%= tagList[i].name %>
+                      </span>
+                    </a>
+                  </td>
+                  <td>
+                    <div class="progress" style="height: 20px">
+                      <div
+                        class="progress-bar bg-success"
+                        role="progressbar"
+                        /* prettier-ignore */
+                        style="width: <%= (tagList[i].count / maxCount) * 100 %>%;"
+                        aria-valuenow="<%= tagList[i].count %>"
+                        aria-valuemin="0"
+                        aria-valuemax="<%= maxCount %>"
+                      ></div>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="badge bg-secondary"
+                      ><%= tagList[i].count %></span
+                    >
+                  </td>
+                </tr>
+                <% } %>
+              </tbody>
+            </table>
+            <% } else { %>
+            <div class="alert alert-info">
+              <i class="bi bi-info-circle me-2"></i>
+              아직 등록된 해시태그가 없습니다. 음악에 태그를 추가해보세요.
+            </div>
+            <% } %>
+          </div>
+
+          <% if (typeof tagList !== 'undefined' && tagList && tagList.length > 0) { %>
+          <div id="cloudView" class="tag-cloud-container" style="display: none">
+            <div id="tag-cloud" class="position-relative" style="height: 400px">
+              <% for (let i = 0; i < tagList.length; i++) { const fontSize = Math.max(14 + Math.floor((tagList[i].count / maxCount) * 30), 14); const opacity = 0.5 + (tagList[i].count / maxCount) * 0.5; const weight = Math.ceil((tagList[i].count / maxCount) * 7) + 1; %>
+              <a
+                href="/hashtags/<%= tagList[i].name %>"
+                class="tag-item position-absolute text-decoration-none"
+                data-weight="<%= weight %>"
+                /* prettier-ignore */
+                style="
+                  font-size: <%= fontSize %>px;
+                  opacity: <%= opacity %>;
+                  font-weight: <%= weight * 100 %>;
+                  color: hsl(<%= (i * 25) % 360 %>, 70%, 50%);
+                "
+              >
+                #<%= tagList[i].name %>
+              </a>
+              <% } %>
+            </div>
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // 태그 클라우드 애니메이션
+    setupTagCloud();
+
+    // 표/클라우드 뷰 전환
+    const tableView = document.getElementById('tableView');
+    const cloudView = document.getElementById('cloudView');
+    const showTableBtn = document.getElementById('showTableBtn');
+    const showCloudBtn = document.getElementById('showCloudBtn');
+
+    showTableBtn.addEventListener('click', function () {
+      tableView.style.display = 'block';
+      cloudView.style.display = 'none';
+      showTableBtn.classList.add('active');
+      showCloudBtn.classList.remove('active');
+    });
+
+    showCloudBtn.addEventListener('click', function () {
+      tableView.style.display = 'none';
+      cloudView.style.display = 'block';
+      showTableBtn.classList.remove('active');
+      showCloudBtn.classList.add('active');
+
+      // 클라우드 뷰로 전환할 때 애니메이션 리셋
+      resetTagCloud();
+    });
+
+    // 태그 행에 호버 효과 추가
+    document.querySelectorAll('.tag-row').forEach((row) => {
+      row.addEventListener('mouseenter', function () {
+        this.classList.add('table-hover');
+        this.style.cursor = 'pointer';
+      });
+
+      row.addEventListener('mouseleave', function () {
+        this.classList.remove('table-hover');
+      });
+
+      row.addEventListener('click', function () {
+        const tagName = this.dataset.tag;
+        window.location.href = `/hashtags/${tagName}`;
+      });
+    });
+  });
+
+  // 타이머 ID를 저장할 배열
+  const tagTimers = [];
+
+  // 태그 클라우드 리셋
+  function resetTagCloud() {
+    // 기존 타이머 모두 제거
+    tagTimers.forEach((timerId) => clearInterval(timerId));
+    tagTimers.length = 0;
+
+    // 클라우드 태그 재설정
+    setupTagCloud();
+  }
+
+  // 태그 클라우드 설정
+  function setupTagCloud() {
+    const cloudContainer = document.getElementById('tag-cloud');
+    if (!cloudContainer) return;
+
+    const cloudItems = cloudContainer.querySelectorAll('.tag-item');
+    const containerWidth = cloudContainer.offsetWidth;
+    const containerHeight = cloudContainer.offsetHeight;
+
+    // 중심점 계산
+    const centerX = containerWidth / 2;
+    const centerY = containerHeight / 2;
+
+    // 태그 아이템 위치 정보를 저장할 배열
+    const tagPositions = [];
+
+    // 초기화 함수 - 지연 적용하여 DOM이 완전히 렌더링되도록 함
+    setTimeout(() => {
+      // 각 태그에 초기 위치 부여 (가운데에서부터 시작)
+      cloudItems.forEach((item, index) => {
+        const weight = parseInt(item.getAttribute('data-weight'), 10);
+
+        // 현재 아이템의 크기 측정
+        const itemWidth = item.offsetWidth;
+        const itemHeight = item.offsetHeight;
+
+        // 처음 위치는 가운데에서 약간 랜덤하게 배치 (시작부터 가운데 근처에서 생성)
+        const initialOffset = 80; // 가운데에서 최대 얼마나 떨어질지
+        let left =
+          centerX - itemWidth / 2 + (Math.random() - 0.5) * initialOffset;
+        let top =
+          centerY - itemHeight / 2 + (Math.random() - 0.5) * initialOffset;
+
+        // 컨테이너 경계 체크
+        left = Math.max(10, Math.min(left, containerWidth - itemWidth - 10));
+        top = Math.max(10, Math.min(top, containerHeight - itemHeight - 10));
+
+        // 무작위 회전 (가중치가 높을수록 회전 적게)
+        const rotation = (Math.random() - 0.5) * (30 - weight);
+
+        // 현재 태그의 위치 및 크기 정보 저장
+        tagPositions.push({
+          element: item,
+          left,
+          top,
+          width: itemWidth,
+          height: itemHeight,
+          rotation,
+          weight,
+        });
+
+        // 스타일 적용
+        item.style.position = 'absolute';
+        item.style.transform = `rotate(${rotation}deg)`;
+        item.style.left = `${left}px`;
+        item.style.top = `${top}px`;
+        item.style.transition =
+          'transform 0.3s ease, left 0.5s ease, top 0.5s ease';
+        item.style.zIndex = weight;
+
+        // 마우스 오버 효과
+        item.addEventListener('mouseenter', function () {
+          this.style.transform = `rotate(0deg) scale(1.2)`;
+          this.style.zIndex = 20;
+        });
+
+        item.addEventListener('mouseleave', function () {
+          this.style.transform = `rotate(${rotation}deg) scale(1)`;
+          this.style.zIndex = weight;
+        });
+      });
+
+      // 충돌 감지 및 재배치
+      adjustPositions(tagPositions, centerX, centerY);
+
+      // 정기적인 움직임 - 가운데를 향하는 인력 추가 (타이머 ID 저장)
+      cloudItems.forEach((item, index) => {
+        const position = tagPositions[index];
+
+        const timerId = setInterval(() => {
+          if (document.getElementById('cloudView').style.display === 'block') {
+            // 중심을 향하는 움직임 + 약간의 무작위성
+            const angleToCenter = Math.atan2(
+              centerY - (position.top + position.height / 2),
+              centerX - (position.left + position.width / 2)
+            );
+
+            // 가중치가 높을수록 중심에 더 가까이
+            const gravitationalPull = Math.max(2, 10 - position.weight);
+
+            // 현재 중앙으로부터의 거리 계산
+            const currentDistanceFromCenter = Math.sqrt(
+              Math.pow(centerX - (position.left + position.width / 2), 2) +
+                Math.pow(centerY - (position.top + position.height / 2), 2)
+            );
+
+            // 거리에 따른 움직임 조절 (가까울수록 움직임 감소)
+            const distanceFactor = Math.min(1, currentDistanceFromCenter / 150);
+
+            // 새 위치 계산 (중심 방향 + 매우 작은 무작위성)
+            let newLeft =
+              position.left +
+              Math.cos(angleToCenter) * gravitationalPull * distanceFactor +
+              (Math.random() - 0.5) * 10;
+            let newTop =
+              position.top +
+              Math.sin(angleToCenter) * gravitationalPull * distanceFactor +
+              (Math.random() - 0.5) * 10;
+
+            // 컨테이너 경계 체크
+            newLeft = Math.max(
+              10,
+              Math.min(newLeft, containerWidth - position.width - 10)
+            );
+            newTop = Math.max(
+              10,
+              Math.min(newTop, containerHeight - position.height - 10)
+            );
+
+            // 위치 업데이트 (이전 위치와의 차이가 작을 때만 움직임)
+            const moveThreshold = 2;
+            const moveDistance = Math.sqrt(
+              Math.pow(newLeft - position.left, 2) +
+                Math.pow(newTop - position.top, 2)
+            );
+
+            if (moveDistance > moveThreshold) {
+              // 움직임 보간 (부드럽게 만들기)
+              position.left = position.left + (newLeft - position.left) * 0.3;
+              position.top = position.top + (newTop - position.top) * 0.3;
+              position.element.style.left = `${position.left}px`;
+              position.element.style.top = `${position.top}px`;
+            }
+
+            // 충돌 감지 및 재배치
+            checkAndResolveCollision(position, tagPositions, index);
+          }
+        }, 3000 + index * 200);
+
+        // 타이머 ID 저장
+        tagTimers.push(timerId);
+      });
+    }, 300);
+  }
+
+  // 충돌 감지 및 해결 함수
+  function checkAndResolveCollision(position, positions, currentIndex) {
+    for (let i = 0; i < positions.length; i++) {
+      if (i === currentIndex) continue;
+
+      const other = positions[i];
+
+      // 두 태그 사이의 충돌 감지
+      if (
+        position.left < other.left + other.width &&
+        position.left + position.width > other.left &&
+        position.top < other.top + other.height &&
+        position.top + position.height > other.top
+      ) {
+        // 충돌 발생 - 두 태그 사이의 벡터 계산
+        const vectorX =
+          position.left + position.width / 2 - (other.left + other.width / 2);
+        const vectorY =
+          position.top + position.height / 2 - (other.top + other.height / 2);
+
+        // 벡터 정규화
+        const distance = Math.max(
+          1,
+          Math.sqrt(vectorX * vectorX + vectorY * vectorY)
+        );
+        const normalizedX = vectorX / distance;
+        const normalizedY = vectorY / distance;
+
+        // 두 태그를 서로 밀어내기 (작은 힘으로)
+        const pushForce = 3;
+        position.left += normalizedX * pushForce;
+        position.top += normalizedY * pushForce;
+        other.left -= normalizedX * pushForce;
+        other.top -= normalizedY * pushForce;
+
+        // 위치 적용 (부드럽게)
+        position.element.style.transition =
+          'transform 0.3s ease, left 0.5s ease, top 0.5s ease';
+        other.element.style.transition =
+          'transform 0.3s ease, left 0.5s ease, top 0.5s ease';
+        position.element.style.left = `${position.left}px`;
+        position.element.style.top = `${position.top}px`;
+        other.element.style.left = `${other.left}px`;
+        other.element.style.top = `${other.top}px`;
+      }
+    }
+  }
+
+  // 초기 위치 조정 함수
+  function adjustPositions(positions, centerX, centerY) {
+    // 반복 횟수 제한 (무한 루프 방지)
+    const maxIterations = 30;
+
+    for (let iteration = 0; iteration < maxIterations; iteration++) {
+      let moved = false;
+
+      // 각 태그에 대해 충돌 감지 및 위치 조정
+      for (let i = 0; i < positions.length; i++) {
+        const current = positions[i];
+
+        for (let j = i + 1; j < positions.length; j++) {
+          const other = positions[j];
+
+          // 충돌 감지
+          if (
+            current.left < other.left + other.width &&
+            current.left + current.width > other.left &&
+            current.top < other.top + other.height &&
+            current.top + current.height > other.top
+          ) {
+            // 충돌 발생 - 두 태그를 밀어내기
+            const vectorX =
+              current.left + current.width / 2 - (other.left + other.width / 2);
+            const vectorY =
+              current.top + current.height / 2 - (other.top + other.height / 2);
+
+            const distance = Math.max(
+              1,
+              Math.sqrt(vectorX * vectorX + vectorY * vectorY)
+            );
+            const pushDistance =
+              (current.width + other.width) / 2 - distance + 5;
+
+            if (pushDistance > 0) {
+              const pushX = (vectorX / distance) * pushDistance * 0.5;
+              const pushY = (vectorY / distance) * pushDistance * 0.5;
+
+              current.left += pushX;
+              current.top += pushY;
+              other.left -= pushX;
+              other.top -= pushY;
+
+              moved = true;
+            }
+          }
+        }
+      }
+
+      // 모든 태그의 위치 업데이트
+      for (const position of positions) {
+        position.element.style.left = `${position.left}px`;
+        position.element.style.top = `${position.top}px`;
+      }
+
+      // 더 이상 이동이 없으면 반복 종료
+      if (!moved) break;
+    }
+  }
+</script>
+
+<style>
+  /* 태그 클라우드 스타일 */
+  .tag-cloud-container {
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    min-height: 400px;
+  }
+
+  #tag-cloud {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .tag-item {
+    padding: 6px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    z-index: 1;
+  }
+
+  .tag-row {
+    transition: background-color 0.3s ease;
+  }
+
+  .tag-row:hover {
+    background-color: rgba(13, 110, 253, 0.1);
+  }
+</style>

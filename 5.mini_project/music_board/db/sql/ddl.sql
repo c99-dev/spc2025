@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS notifications;
 DROP TABLE IF EXISTS music_tags;
 DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS likes;
@@ -47,6 +48,18 @@ CREATE TABLE music_tags (
     FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE,
     UNIQUE (music_id, tag_id)
 );
+CREATE TABLE notifications (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    music_id INTEGER NOT NULL,
+    comment_id INTEGER NOT NULL,
+    message TEXT NOT NULL,
+    is_read INTEGER DEFAULT 0 NOT NULL,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (music_id) REFERENCES music(id) ON DELETE CASCADE,
+    FOREIGN KEY (comment_id) REFERENCES comments(id) ON DELETE CASCADE
+);
 CREATE INDEX idx_music_title ON music(title);
 CREATE INDEX idx_music_artist ON music(artist);
 CREATE INDEX idx_tags_name ON tags(name);
@@ -54,3 +67,5 @@ CREATE INDEX idx_comments_music_id ON comments(music_id);
 CREATE INDEX idx_likes_music_id ON likes(music_id);
 CREATE INDEX idx_music_tags_music_id ON music_tags(music_id);
 CREATE INDEX idx_music_tags_tag_id ON music_tags(tag_id);
+CREATE INDEX idx_notifications_user_id ON notifications(user_id);
+CREATE INDEX idx_notifications_is_read ON notifications(is_read);

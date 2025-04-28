@@ -1,18 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { searchMusic } = require('../models/music');
+const homeController = require('../controllers/homeController');
 
-router.get('/', (req, res) => {
-  const user = null;
-  const musicList = searchMusic('');
-  res.render('home', { user, musicList });
-});
+// 홈 화면 - 모든 음악 목록
+router.get('/', homeController.getHomePage);
 
-router.get('/search', (req, res) => {
-  const user = null;
-  const searchText = req.query.q || '';
-  const musicList = searchMusic(searchText);
-  res.render('home', { user, musicList });
-});
+// 검색 기능
+router.get('/search', homeController.searchMusic);
 
 module.exports = router;

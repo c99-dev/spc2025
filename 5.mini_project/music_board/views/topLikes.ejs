@@ -1,1 +1,137 @@
-<div>topLikes</div>
+<div class="container py-4">
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="bg-primary text-white rounded-3 p-4 shadow-sm">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h2 class="mb-0 fw-bold">
+              <i class="bi bi-trophy-fill me-2"></i>인기 음악
+            </h2>
+            <p class="mt-2 mb-0">가장 많은 좋아요를 받은 음악 목록입니다</p>
+          </div>
+          <div class="display-4 text-warning">
+            <i class="bi bi-stars"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <% for (let i = 0; i < topLikes.length; i++) { %>
+    <div class="col-md-6 col-lg-4 mb-4">
+      <div class="card h-100 border-0 shadow-sm position-relative card-hover">
+        <% if (i < 3) { %>
+        <div class="position-absolute top-0 start-0 translate-middle">
+          <div
+            class="badge rounded-circle p-3 <%= i === 0 ? 'bg-warning' : i === 1 ? 'bg-secondary' : 'bg-danger' %> shadow"
+          >
+            <%= i + 1 %>
+          </div>
+        </div>
+        <% } %>
+        <div class="card-header bg-transparent border-bottom-0 pb-0">
+          <h5 class="card-title mb-0 text-truncate">
+            <a
+              href="/music/<%= topLikes[i].id %>"
+              class="text-decoration-none text-dark stretched-link"
+            >
+              <%= topLikes[i].title %>
+            </a>
+          </h5>
+        </div>
+        <div class="card-body pt-2">
+          <p class="text-muted mb-3">
+            <i class="bi bi-person-fill me-1"></i> <%= topLikes[i].artist %>
+          </p>
+
+          <div class="d-flex align-items-center mb-3">
+            <div class="me-3">
+              <span class="badge bg-danger p-2">
+                <i class="bi bi-heart-fill me-1"></i>
+                <%= topLikes[i].like_count %>
+              </span>
+            </div>
+            <div class="progress flex-grow-1" style="height: 8px">
+              <div
+                class="progress-bar bg-danger"
+                role="progressbar"
+                style="width: <%= topLikes.length > 0 ? (topLikes[i].like_count / topLikes[0].like_count * 100) : 0 %>%"
+                aria-valuenow="<%= topLikes[i].like_count %>"
+                aria-valuemin="0"
+                aria-valuemax="<%= topLikes.length > 0 ? topLikes[0].like_count : 0 %>"
+              ></div>
+            </div>
+          </div>
+
+          <div>
+            <p class="card-text small text-muted">
+              <i class="bi bi-people-fill me-1"></i> 좋아요한 사용자:
+            </p>
+            <div class="d-flex flex-wrap">
+              <% const likers = topLikes[i].likedBy; const maxDisplay = 3;
+              likers.slice(0, maxDisplay).forEach(user => { %>
+              <span class="badge bg-light text-dark me-1 mb-1"
+                ><%= user %></span
+              >
+              <% }); %> <% if (likers.length > maxDisplay) { %>
+              <span class="badge bg-light text-dark me-1 mb-1"
+                >+<%= likers.length - maxDisplay %>명</span
+              >
+              <% } %>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer bg-transparent border-top-0">
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="badge bg-light text-secondary">
+              <i class="bi bi-hash me-1"></i>인기음악
+            </span>
+            <a
+              href="/music/<%= topLikes[i].id %>"
+              class="btn btn-sm btn-outline-primary"
+            >
+              <i class="bi bi-music-note me-1"></i>상세보기
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% } %>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-12">
+      <div class="card bg-light border-0">
+        <div class="card-body text-center">
+          <p class="text-muted mb-0">
+            <i class="bi bi-info-circle me-1"></i>
+            좋아요는 노래의 인기도를 나타냅니다. 여러분의 소중한 좋아요가 음악에
+            힘이 됩니다!
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+  }
+
+  .badge.rounded-circle {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: bold;
+  }
+</style>

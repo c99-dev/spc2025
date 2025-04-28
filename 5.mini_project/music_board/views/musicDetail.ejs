@@ -1,0 +1,247 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light">
+          <div class="d-flex justify-content-between align-items-center">
+            <h2 class="mb-0"><%= music.title %></h2>
+            <a href="/" class="btn btn-outline-secondary btn-sm">
+              <i class="bi bi-arrow-left"></i> 목록으로
+            </a>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row mb-4">
+            <div class="col-md-3 text-center">
+              <i
+                class="bi bi-music-note-beamed text-primary"
+                style="font-size: 5rem"
+              ></i>
+            </div>
+            <div class="col-md-9">
+              <h3><%= music.title %></h3>
+              <p class="text-muted mb-2">
+                <i class="bi bi-person-fill"></i> <%= music.artist %>
+              </p>
+
+              <% if (Array.isArray(music.tags) && music.tags.length > 0) { %>
+              <div class="mb-3">
+                <% music.tags.forEach(tag => { %>
+                <a
+                  href="/hashtags/<%= tag %>"
+                  class="badge bg-info text-dark me-1 text-decoration-none"
+                >
+                  #<%= tag %>
+                </a>
+                <% }); %>
+              </div>
+              <% } %>
+
+              <div class="d-flex align-items-center">
+                <% if (user) { %>
+                <button
+                  class="btn <%= music.liked ? 'btn-danger' : 'btn-outline-danger' %> me-2 btn-like"
+                  data-music-id="<%= music.id %>"
+                >
+                  <i
+                    class="bi <%= music.liked ? 'bi-heart-fill' : 'bi-heart' %>"
+                  ></i>
+                  좋아요 <span class="like-count"><%= music.likeCount %></span>
+                </button>
+                <% } else { %>
+                <button
+                  class="btn btn-outline-danger me-2"
+                  onclick="document.dispatchEvent(new CustomEvent('showLoginRequired'))"
+                >
+                  <i class="bi bi-heart"></i>
+                  좋아요 <span class="like-count"><%= music.likeCount %></span>
+                </button>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 댓글 섹션 -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light">
+          <h4 class="mb-0">
+            <i class="bi bi-chat-dots"></i> 댓글
+            <span class="badge bg-secondary"><%= comments.length %></span>
+          </h4>
+        </div>
+        <div class="card-body">
+          <% if (user) { %>
+          <form class="mb-4 comment-form" data-music-id="<%= music.id %>">
+            <div class="mb-3">
+              <textarea
+                class="form-control comment-input"
+                rows="3"
+                placeholder="댓글을 작성해주세요..."
+              ></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">댓글 등록</button>
+          </form>
+          <% } else { %>
+          <div class="alert alert-info mb-4">
+            댓글을 작성하려면
+            <a href="/auth/login" class="alert-link">로그인</a>이 필요합니다.
+          </div>
+          <% } %>
+
+          <div id="comments-list-<%= music.id %>">
+            <% if (comments.length > 0) { %> <% comments.forEach(comment => { %>
+            <div class="comment-item border-bottom py-3">
+              <div class="d-flex justify-content-between">
+                <div class="fw-bold"><%= comment.username %></div>
+                <small class="text-muted">
+                  <%= new Date(comment.created_at).toLocaleDateString('ko-KR', {
+                  year: 'numeric', month: 'long', day: 'numeric', hour:
+                  '2-digit', minute: '2-digit' }) %>
+                </small>
+              </div>
+              <div class="mt-2"><%= comment.content %></div>
+
+              <% if (user && user.id === comment.user_id) { %>
+              <div class="mt-2 text-end">
+                <button
+                  class="btn btn-sm btn-outline-secondary edit-comment-btn"
+                  data-comment-id="<%= comment.id %>"
+                >
+                  수정
+                </button>
+                <button
+                  class="btn btn-sm btn-outline-danger delete-comment-btn"
+                  data-comment-id="<%= comment.id %>"
+                >
+                  삭제
+                </button>
+              </div>
+              <% } %>
+            </div>
+            <% }); %> <% } else { %>
+            <div class="text-center py-5 text-muted">
+              <i class="bi bi-chat-square-text" style="font-size: 2rem"></i>
+              <p class="mt-2">첫 번째 댓글을 남겨보세요!</p>
+            </div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 댓글 수정 모달 -->
+<div
+  class="modal fade"
+  id="editCommentModal"
+  tabindex="-1"
+  aria-labelledby="editCommentModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editCommentModalLabel">댓글 수정</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form id="editCommentForm">
+          <input type="hidden" id="editCommentId" />
+          <div class="mb-3">
+            <textarea
+              class="form-control"
+              id="editCommentContent"
+              rows="3"
+              required
+            ></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          취소
+        </button>
+        <button type="button" class="btn btn-primary" id="saveCommentEdit">
+          저장
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // 댓글 수정
+    document.querySelectorAll('.edit-comment-btn').forEach((button) => {
+      button.addEventListener('click', function () {
+        const commentId = this.getAttribute('data-comment-id');
+        const commentContent = this.closest('.comment-item')
+          .querySelector('div.mt-2')
+          .textContent.trim();
+
+        document.getElementById('editCommentId').value = commentId;
+        document.getElementById('editCommentContent').value = commentContent;
+
+        const editModal = new bootstrap.Modal(
+          document.getElementById('editCommentModal')
+        );
+        editModal.show();
+      });
+    });
+
+    // 댓글 수정 저장
+    document
+      .getElementById('saveCommentEdit')
+      .addEventListener('click', function () {
+        const commentId = document.getElementById('editCommentId').value;
+        const content = document
+          .getElementById('editCommentContent')
+          .value.trim();
+
+        if (!content) return;
+
+        fetch(`/api/comments/${commentId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ content }),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              return response.json().then((data) => {
+                throw new Error(data.error || '오류가 발생했습니다.');
+              });
+            }
+            return response.json();
+          })
+          .then((data) => {
+            // 댓글 내용 업데이트
+            const commentElement = document
+              .querySelector(
+                `.edit-comment-btn[data-comment-id="${commentId}"]`
+              )
+              .closest('.comment-item')
+              .querySelector('div.mt-2');
+
+            commentElement.textContent = data.comment.content;
+
+            // 모달 닫기
+            bootstrap.Modal.getInstance(
+              document.getElementById('editCommentModal')
+            ).hide();
+          })
+          .catch((error) => {
+            alert(error.message);
+          });
+      });
+  });
+</script>
