@@ -1,6 +1,6 @@
 // 관리자 컨트롤러
-const User = require('../models/users');
-const Comment = require('../models/comments');
+const User = require('../models/usersModel');
+const Comment = require('../models/commentsModel');
 
 // 사용자 목록 조회
 function listUsers(req, res) {

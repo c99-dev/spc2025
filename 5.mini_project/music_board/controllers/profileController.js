@@ -1,6 +1,6 @@
 // 프로필 관련 컨트롤러
-const CommentService = require('../models/comments');
-const LikeService = require('../models/likes');
+const CommentService = require('../models/commentsModel');
+const LikeService = require('../models/likesModel');
 
 // 프로필 정보 조회
 async function getProfile(req, res) {

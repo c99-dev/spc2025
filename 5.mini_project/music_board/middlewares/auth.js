@@ -1,5 +1,5 @@
 // 인증 관련 미들웨어
-const User = require('../models/users');
+const User = require('../models/usersModel');
 
 const authMiddleware = {
   // 웹 페이지 접근 시 로그인 확인

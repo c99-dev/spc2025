@@ -1,5 +1,5 @@
 // 인기 음악 관련 컨트롤러
-const LikeService = require('../models/likes');
+const LikeService = require('../models/likesModel');
 
 // 인기 음악 조회 (좋아요 많은 순)
 async function getTopLikedMusic(req, res) {

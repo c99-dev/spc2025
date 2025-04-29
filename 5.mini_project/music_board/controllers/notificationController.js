@@ -1,5 +1,5 @@
 // 알림 관련 컨트롤러
-const NotificationService = require('../models/notifications');
+const NotificationService = require('../models/notificationsModel');
 
 // 알림 목록 조회
 async function getNotifications(req, res) {

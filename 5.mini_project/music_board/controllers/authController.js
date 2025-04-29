@@ -1,5 +1,5 @@
 // 인증 관련 컨트롤러
-const UserService = require('../models/users');
+const UserService = require('../models/usersModel');
 
 // 로그인 페이지 표시
 function showLoginPage(req, res) {

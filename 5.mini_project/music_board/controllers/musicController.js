@@ -1,8 +1,8 @@
 // 음악 관련 컨트롤러
-const MusicService = require('../models/music');
-const CommentService = require('../models/comments');
-const LikeService = require('../models/likes');
-const MusicTagService = require('../models/music_tags');
+const MusicService = require('../models/musicModel');
+const CommentService = require('../models/commentsModel');
+const LikeService = require('../models/likesModel');
+const MusicTagService = require('../models/musicTagsModel');
 
 // 음악 상세 정보 조회
 async function getMusicDetail(req, res) {

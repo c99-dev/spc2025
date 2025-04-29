@@ -1,7 +1,7 @@
 // API 관련 컨트롤러
-const LikeService = require('../models/likes');
-const CommentService = require('../models/comments');
-const NotificationService = require('../models/notifications');
+const LikeService = require('../models/likesModel');
+const CommentService = require('../models/commentsModel');
+const NotificationService = require('../models/notificationsModel');
 
 // 좋아요 토글 API
 async function toggleLike(req, res) {
