@@ -127,6 +127,7 @@ function setupRoutes() {
   const music = require('./routes/music');
   const profile = require('./routes/profile');
   const notifications = require('./routes/notifications');
+  const admin = require('./routes/admin');
 
   // 라우트 등록
   app.use('/', home);
@@ -137,6 +138,7 @@ function setupRoutes() {
   app.use('/music', music);
   app.use('/profile', profile);
   app.use('/notifications', notifications);
+  app.use('/admin', admin);
 }
 
 // 서버 시작 함수

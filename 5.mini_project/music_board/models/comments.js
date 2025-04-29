@@ -107,6 +107,30 @@ class Comment {
       return [];
     }
   }
+
+  // 모든 댓글 목록 조회 (관리자용)
+  static getAllCommentsWithDetails() {
+    try {
+      const stmt = db.prepare(`
+        SELECT 
+          c.id, 
+          c.content, 
+          c.created_at, 
+          u.username, 
+          u.name,
+          m.title as music_title,
+          m.id as music_id
+        FROM comments c
+        JOIN users u ON c.user_id = u.id
+        JOIN music m ON c.music_id = m.id
+        ORDER BY c.created_at DESC
+      `);
+      return stmt.all();
+    } catch (err) {
+      console.error('댓글 목록 조회 오류:', err.message);
+      return [];
+    }
+  }
 }
 
 module.exports = Comment;

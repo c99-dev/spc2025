@@ -4,6 +4,8 @@ node_modules
 /4.Python/3.scrap/moviechart/images
 
 *.db
+*.db-shm
+*.db-wal
 *.sqlite
 *.sqlite3
 /DB

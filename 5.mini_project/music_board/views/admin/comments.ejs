@@ -1,0 +1,56 @@
+<!-- 댓글 관리 페이지 -->
+<div class="container py-4">
+  <h1 class="mb-4"><i class="bi bi-chat-dots me-2"></i>댓글 관리</h1>
+
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">전체 댓글 목록</h5>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>ID</th>
+              <th>댓글 내용</th>
+              <th>작성자</th>
+              <th>음악</th>
+              <th>작성일</th>
+              <th>관리</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% comments.forEach(comment => { %>
+            <tr>
+              <td><%= comment.id %></td>
+              <td>
+                <div class="text-wrap" style="max-width: 300px">
+                  <%= comment.content %>
+                </div>
+              </td>
+              <td><%= comment.name %> (<%= comment.username %>)</td>
+              <td>
+                <a href="/music/<%= comment.music_id %>" target="_blank">
+                  <%= comment.music_title %>
+                </a>
+              </td>
+              <td><%= new Date(comment.created_at).toLocaleString() %></td>
+              <td>
+                <form
+                  action="/admin/comments/<%= comment.id %>/delete"
+                  method="POST"
+                  onsubmit="return confirm('정말 이 댓글을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')"
+                >
+                  <button type="submit" class="btn btn-danger btn-sm">
+                    <i class="bi bi-trash"></i> 삭제
+                  </button>
+                </form>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

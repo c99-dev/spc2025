@@ -62,6 +62,33 @@ class User {
       return null;
     }
   }
+
+  // 모든 사용자 목록 조회 (관리자용)
+  static getAllUsers() {
+    try {
+      const stmt = db.prepare(`
+        SELECT id, username, name, is_admin 
+        FROM users
+        ORDER BY id DESC
+      `);
+      return stmt.all();
+    } catch (err) {
+      console.error('사용자 목록 조회 오류:', err.message);
+      return [];
+    }
+  }
+
+  // 사용자 삭제 (관리자용)
+  static deleteUser(id) {
+    try {
+      const stmt = db.prepare('DELETE FROM users WHERE id = ?');
+      const result = stmt.run(id);
+      return result.changes > 0; // 삭제 성공 여부 반환
+    } catch (err) {
+      console.error('사용자 삭제 오류:', err.message);
+      throw err;
+    }
+  }
 }
 
 module.exports = User;
