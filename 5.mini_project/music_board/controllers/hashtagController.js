@@ -1,7 +1,7 @@
 // 해시태그 관련 컨트롤러
-const TagService = require('../models/tags');
-const MusicTagService = require('../models/music_tags');
-const LikeService = require('../models/likes');
+const TagService = require('../models/tagsModel');
+const MusicTagService = require('../models/musicTagsModel');
+const LikeService = require('../models/likesModel');
 
 // 모든 해시태그 조회
 async function getAllTags(req, res) {

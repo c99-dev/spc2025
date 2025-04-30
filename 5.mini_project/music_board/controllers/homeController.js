@@ -1,6 +1,6 @@
 // 홈 화면 컨트롤러
-const MusicService = require('../models/music');
-const LikeService = require('../models/likes');
+const MusicService = require('../models/musicModel');
+const LikeService = require('../models/likesModel');
 
 // 홈 화면 조회
 async function getHomePage(req, res) {

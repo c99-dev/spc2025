@@ -7,8 +7,8 @@ const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
 
 const { createTables } = require('./db/init');
-const User = require('./models/users');
-const Notification = require('./models/notifications');
+const User = require('./models/usersModel');
+const Notification = require('./models/notificationsModel');
 
 // 애플리케이션 초기화
 const app = express();
@@ -119,14 +119,15 @@ function setupAuthMiddleware() {
 // 라우트 설정 함수
 function setupRoutes() {
   // 라우트 모듈 불러오기
-  const home = require('./routes/home');
-  const topLikes = require('./routes/topLikes');
-  const hashtags = require('./routes/hashtags');
-  const auth = require('./routes/auth');
-  const api = require('./routes/api');
-  const music = require('./routes/music');
-  const profile = require('./routes/profile');
-  const notifications = require('./routes/notifications');
+  const home = require('./routes/homeRoute');
+  const topLikes = require('./routes/topLikesRoute');
+  const hashtags = require('./routes/hashtagsRoute');
+  const auth = require('./routes/authRoute');
+  const api = require('./routes/apiRoute');
+  const music = require('./routes/musicRoute');
+  const profile = require('./routes/profileRoute');
+  const notifications = require('./routes/notificationsRoute');
+  const admin = require('./routes/adminRoute');
 
   // 라우트 등록
   app.use('/', home);
@@ -137,6 +138,7 @@ function setupRoutes() {
   app.use('/music', music);
   app.use('/profile', profile);
   app.use('/notifications', notifications);
+  app.use('/admin', admin);
 }
 
 // 서버 시작 함수
