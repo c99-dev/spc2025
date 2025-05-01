@@ -36,7 +36,7 @@
     - [2.Event](#2event)
     - [3.MiniApp](#3miniapp)
     - [4.Canvas](#4canvas)
-    - [6.Library\_Bootstrap](#6library_bootstrap)
+    - [6.Library_Bootstrap](#6library_bootstrap)
     - [7.Fetch](#7fetch)
     - [8.Node](#8node)
       - [2.function](#2function)
@@ -45,13 +45,20 @@
       - [10.scroll](#10scroll)
       - [11.chatbot](#11chatbot)
     - [9.Project](#9project)
-      - [4.session\_cart](#4session_cart)
+      - [4.session_cart](#4session_cart)
   - [4.Python](#4python)
     - [1.basic](#1basic)
     - [3.scrap](#3scrap)
     - [5.flask](#5flask)
-      - [5.chatbot\_echo](#5chatbot_echo)
-      - [6.chatbot\_recommend](#6chatbot_recommend)
+      - [5.chatbot_echo](#5chatbot_echo)
+      - [6.chatbot_recommend](#6chatbot_recommend)
+  - [5.mini_project](#5mini_project)
+    - [1. notepad_v1.0](#1-notepad_v10)
+    - [2. notepad_v2.0](#2-notepad_v20)
+    - [3. music_board](#3-music_board)
+    - [4. crm](#4-crm)
+    - [5. movie_chatgpt](#5-movie_chatgpt)
+    - [6. tweet](#6-tweet)
 
 ## 2.CSS
 
@@ -185,3 +192,48 @@
 - [x] [챗봇 추천 서버](https://github.com/c99-dev/spc2025/tree/main/4.Python/5.flask/6.chatbot_recommend)
   - 추천 입력 시 모든 영화 중 랜덤한 영화를 한 개 추천 구현
   - 추천 영화 하이라이팅 및 스크롤 이동 구현
+
+## 5.mini_project
+
+### 1. notepad_v1.0
+
+- [x] [메모장 1.0](https://github.com/c99-dev/spc2025/tree/main/5.mini_project/notepad_v1.0)
+  - [x] 기본 틀 밑 읽기/쓰기/삭제 완료 (1~2시간)
+  - [x] 작성글 수정까지 완료 (~1시간)
+  - [x] 디자인 배치 살펴보기 (row정렬, column정렬)
+
+### 2. notepad_v2.0
+
+- [x] [메모장 2.0](https://github.com/c99-dev/spc2025/tree/main/5.mini_project/notepad_v2.0)
+  - [x] 위 메모장을 기반으로 사진 첨부 추가 (1~2시간)
+  - [x] 사진 삭제 시 서버의 파일도 삭제되도록 (중복파일 삭제 등도 해볼것 - 제 사
+        이 트도 이미 중복파일이슈가 남아있는 상태임)
+
+### 3. music_board
+
+- [x] [음악 게시판](https://github.com/c99-dev/spc2025/tree/main/5.mini_project/music_board)
+  - [x] 음악(샘플데이터 20여개 추가) 검색 (title/artist/hashtag) (2~3시간)
+  - [x] 회원가입 및 로그인 (1시간)
+  - [x] 좋아요 및 취소 기능, 내 댓글 및 좋아요 한 글 확인 (2시간)
+  - [x] 관리자페이지 (회원관리/댓글관리) (2~3시간)
+  - [x] 알림기능 (내가 좋아요 한 글의 댓글 알림) - Notification (2시간)
+
+### 4. crm
+
+- [ ] [고객 관리 포털]()
+
+### 5. movie_chatgpt
+
+- [x] 이전 미션에서 구현 완료
+- [x] [6.chatbot_recommend](#6chatbot_recommend)
+  - [x] 영화 랭킹 크롤링 및 DB에 추가 (~1시간)
+  - [x] 영화 랭킹 DB로부터 화면에 표시 (~1시간)
+  - [x] 챗봇 화면에 추가 (~1시간)
+  - [x] 챗봇을 통한 검색 ("추천") (~1시간)
+
+### 6. tweet
+
+- [x] [트위터 사이트](https://github.com/c99-dev/spc2025/tree/main/5.mini_project/tweet)
+  - [x] 회원가입 (~1시간)
+  - [x] 트윗 글작성 (~30분)
+  - [x] 좋아요/취소 (~1시간)
