@@ -78,7 +78,7 @@ async function fetchStreamingData(message) {
           // marked가 없으면 누적된 텍스트 그대로 표시 (기존 방식 유지)
           dataElement.innerHTML = '<strong>GPT: </strong> ' + receivedMarkdown;
         }
-        chatHistory.scrollTop = chatHistory.scrollHeight; // 최종 스크롤 조정
+        moveScrollToBottom(); // 최종 스크롤 조정
         break;
       }
 
