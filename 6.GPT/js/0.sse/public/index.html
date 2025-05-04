@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SSE (Server-Sent Events) 데모</title>
+    <style>
+      #messages {
+        border: 1px solid #ccc;
+        padding: 10px;
+        height: 300px;
+        overflow-y: scroll;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>SSE (Server-Sent Events) 데모</h1>
+    <div id="messages">서버로부터 메시지를 기다리는 중...</div>
+    <button id="closeButton">연결 종료</button>
+
+    <script src="EventSourceAPI.js"></script>
+  </body>
+</html>
