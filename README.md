@@ -59,6 +59,9 @@
     - [4. crm](#4-crm)
     - [5. movie_chatgpt](#5-movie_chatgpt)
     - [6. tweet](#6-tweet)
+  - [6. GPT](#6-gpt)
+    - [0. sse](#0-sse)
+    - [5. include_prev_data](#5-include_prev_data)
 
 ## 2.CSS
 
@@ -237,3 +240,16 @@
   - [x] 회원가입 (~1시간)
   - [x] 트윗 글작성 (~30분)
   - [x] 좋아요/취소 (~1시간)
+
+## 6. GPT
+
+### 0. sse
+
+- [x] [SSE 복습 기본 예제](https://github.com/c99-dev/spc2025/tree/main/6.GPT/js/0.sse)
+
+### 5. include_prev_data
+
+- [x] [이전 데이터 포함 챗봇](https://github.com/c99-dev/spc2025/tree/main/6.GPT/js/5.include_prev_data)
+  - python, flask 복습 프로젝트
+  - swagger 문서화
+  - react + vite + tailwindcss 테스트
