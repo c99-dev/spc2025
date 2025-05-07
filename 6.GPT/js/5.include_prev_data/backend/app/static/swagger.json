@@ -1,0 +1,123 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API 문서",
+    "description": "API 엔드포인트 문서",
+    "version": "1.0.0"
+  },
+  "basePath": "/",
+  "schemes": ["http", "https"],
+  "paths": {
+    "/api/example": {
+      "get": {
+        "summary": "예시 데이터 조회",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "성공적인 응답",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "데이터 처리",
+        "produces": ["application/json"],
+        "responses": {
+          "201": {
+            "description": "생성 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chat/stream": {
+      "post": {
+        "tags": ["채팅"],
+        "summary": "채팅 스트리밍 API",
+        "description": "사용자 메시지를 받아 AI 응답을 스트리밍 형태로 전송합니다",
+        "consumes": ["application/json"],
+        "produces": ["text/event-stream"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "채팅 메시지 목록",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": ["messages"],
+              "properties": {
+                "messages": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": ["role", "content"],
+                    "properties": {
+                      "role": {
+                        "type": "string",
+                        "enum": ["user", "assistant", "system"],
+                        "description": "메시지 발신자 역할"
+                      },
+                      "content": {
+                        "type": "string",
+                        "description": "메시지 내용"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "성공적인 스트리밍 응답",
+            "schema": {
+              "type": "string",
+              "format": "text/event-stream",
+              "description": "각 라인은 'data: {\"message\": \"부분 응답\"}' 형태의 SSE(Server-Sent Events) 메시지"
+            }
+          },
+          "400": {
+            "description": "잘못된 요청",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "description": "오류 메시지"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 오류",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "description": "오류 메시지"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -6,6 +6,6 @@
     "express": "^5.1.0",
     "express-session": "^1.18.1",
     "morgan": "^1.10.0",
-    "openai": "^4.96.2"
+    "openai": "^4.97.0"
   }
 }
