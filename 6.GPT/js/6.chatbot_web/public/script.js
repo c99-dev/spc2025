@@ -1,6 +1,11 @@
 const chatContainer = document.getElementById('chat-container');
 const userInputForm = document.getElementById('user-input-form');
 const userInput = document.getElementById('user-input');
+const newChatButton = document.getElementById('new-chat-button');
+const currentSessionId = document.getElementById('current-session-id');
+const currentSessionCreatedAt = document.getElementById('current-session-date');
+const sessionList = document.getElementById('session-list-container');
+let currentSession = null;
 
 userInputForm.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -21,7 +26,10 @@ userInputForm.addEventListener('submit', async (e) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ userInput: message }),
+      body: JSON.stringify({
+        userInput: message,
+        sessionId: currentSession.id,
+      }),
     });
 
     if (!response.ok) {
@@ -83,7 +91,52 @@ function removeLoadingMessage(id) {
   }
 }
 
-async function initializeChatSession() {
+async function getSessions() {
+  const response = await fetch('/api/sessions', {
+    method: 'get',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('서버 응답 오류');
+  }
+
+  const { sessions } = await response.json();
+  console.log('세션 목록:', sessions);
+
+  sessionList.innerHTML = '';
+  sessions.forEach((session) => {
+    const sessionDiv = document.createElement('div');
+    sessionDiv.classList.add('session-item');
+    sessionDiv.textContent = `세션 ID: ${session.id} - 생성일: ${new Date(
+      session.created_at
+    ).toLocaleString('ko-KR', {
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+    })}`;
+    sessionDiv.addEventListener('click', async () => {
+      currentSession = session;
+      currentSessionId.textContent = session.id;
+      currentSessionCreatedAt.textContent = new Date(
+        session.created_at
+      ).toLocaleString('ko-KR', {
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+      await loadChatHistory();
+    });
+
+    sessionList.appendChild(sessionDiv);
+  });
+}
+
+async function createSession() {
   const response = await fetch('/api/session', {
     method: 'post',
     headers: {
@@ -95,15 +148,55 @@ async function initializeChatSession() {
     throw new Error('서버 응답 오류');
   }
 
-  const { sessionId } = await response.json();
-  console.log('세션 ID:', sessionId);
+  const { session } = await response.json();
+  currentSession = session;
+  console.log('세션 생성:', currentSession);
 
-  appendMessage('chatbot', '안녕하세요! 어떤 도움이 필요하신가요?');
-  userInput.focus();
+  currentSession = session;
+  currentSessionId.textContent = session.id;
+  currentSessionCreatedAt.textContent = new Date(
+    session.created_at
+  ).toLocaleString('ko-KR', {
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+  loadChatHistory();
+}
+
+async function loadChatHistory() {
+  const response = await fetch(`/api/session/${currentSession.id}`, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!response.ok) {
+    throw new Error('서버 응답 오류');
+  }
+  const { chatHistory } = await response.json();
+  console.log('채팅 기록:', chatHistory);
+
+  chatContainer.innerHTML = '';
+  userInput.value = '';
+
+  if (!chatHistory) {
+    appendMessage('chatbot', '안녕하세요! 무엇을 도와드릴까요?');
+    return;
+  }
+  chatHistory.forEach((message) => {
+    appendMessage(
+      message.role === 'user' ? 'user' : 'chatbot',
+      message.content
+    );
+  });
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+  console.log('채팅 기록 로드 완료');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  initializeChatSession();
+  createSession();
+  getSessions();
 });
 
 userInput.addEventListener('keypress', (e) => {
@@ -111,4 +204,9 @@ userInput.addEventListener('keypress', (e) => {
     e.preventDefault();
     userInputForm.dispatchEvent(new Event('submit'));
   }
+});
+
+newChatButton.addEventListener('click', () => {
+  createSession();
+  getSessions();
 });
