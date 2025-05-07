@@ -58,18 +58,6 @@ function appendMessage(sender, message) {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  appendMessage('chatbot', '안녕하세요! 어떤 도움이 필요하신가요?');
-  userInput.focus();
-});
-
-userInput.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    userInputForm.dispatchEvent(new Event('submit'));
-  }
-});
-
 // 로딩 메시지를 표시하는 함수
 function showLoadingMessage() {
   const loadingDiv = document.createElement('div');
@@ -94,3 +82,33 @@ function removeLoadingMessage(id) {
     chatContainer.removeChild(loadingElement);
   }
 }
+
+async function initializeChatSession() {
+  const response = await fetch('/api/session', {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('서버 응답 오류');
+  }
+
+  const { sessionId } = await response.json();
+  console.log('세션 ID:', sessionId);
+
+  appendMessage('chatbot', '안녕하세요! 어떤 도움이 필요하신가요?');
+  userInput.focus();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initializeChatSession();
+});
+
+userInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    userInputForm.dispatchEvent(new Event('submit'));
+  }
+});
