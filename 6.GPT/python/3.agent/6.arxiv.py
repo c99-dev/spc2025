@@ -14,7 +14,7 @@ agent = initialize_agent(
 )
 result = agent.invoke(
     {
-        "input": "최근 프롬프트 엔지니어링 관련 논문을 찾아서 한국어로 요약해줘",
+        "input": "최근 프롬프트 엔지니어링 관련 논문을 찾아서 요약해줘",
     }
 )
 print("결과: ", result["output"])
