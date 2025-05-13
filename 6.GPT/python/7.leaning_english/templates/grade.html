@@ -1,0 +1,15 @@
+{% extends "base.html" %} {% block content %}
+<h2>{{ grade }}학년 커리큘럼</h2>
+<ul>
+  {% for curriculum_item in curriculums %}
+  <li>
+    <a
+      href="{{ url_for('curriculum', grade=grade, curriculum_id=loop.index0) }}"
+    >
+      {{ curriculum_item }}
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+<a href="{{ url_for('hello_world') }}">홈으로 돌아가기</a>
+{% endblock %}

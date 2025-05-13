@@ -1,0 +1,72 @@
+{% extends "base.html" %} {% block content %}
+<h2>{{ grade }}학년 - {{ curriculum_title }}</h2>
+<div class="curriculum-content">
+  <p>선택하신 '{{ curriculum_title }}'에 대한 학습 내용입니다.</p>
+  <p>ChatGPT와 함께 즐겁게 학습해 보세요!</p>
+</div>
+<div id="chatbox">
+  <div id="chatlog"></div>
+  <form id="chatForm">
+    <input
+      type="text"
+      id="user_input"
+      placeholder="영어로 대화를 시작하시오..."
+      required
+    />
+    <button type="submit">전송</button>
+  </form>
+</div>
+<a href="{{ url_for('grade', grade=grade) }}">이전으로 돌아가기</a>
+<script>
+  document
+    .querySelector('#chatForm')
+    .addEventListener('submit', function (event) {
+      event.preventDefault();
+      const userInput = document.querySelector('#user_input').value;
+      const chatlog = document.querySelector('#chatlog');
+      // 사용자 메시지 추가
+      const userMessageDiv = document.createElement('div');
+      userMessageDiv.classList.add('message', 'user-message');
+      userMessageDiv.textContent = userInput;
+      chatlog.appendChild(userMessageDiv);
+
+      document.querySelector('#user_input').value = ''; // 입력 필드 초기화
+
+      fetch(window.location.href, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user_input: userInput }),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(
+              'Network response was not ok ' + response.statusText
+            );
+          }
+          return response.json();
+        })
+        .then((data) => {
+          // GPT 메시지 추가
+          const gptMessageDiv = document.createElement('div');
+          gptMessageDiv.classList.add('message', 'gpt-message');
+          gptMessageDiv.textContent = data.response;
+          chatlog.appendChild(gptMessageDiv);
+          chatlog.scrollTop = chatlog.scrollHeight;
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          const gptMessageDiv = document.createElement('div');
+          gptMessageDiv.classList.add(
+            'message',
+            'gpt-message',
+            'error-message'
+          );
+          gptMessageDiv.textContent = '오류가 발생했습니다: ' + error.message;
+          chatlog.appendChild(gptMessageDiv);
+          chatlog.scrollTop = chatlog.scrollHeight;
+        });
+    });
+</script>
+{% endblock %}
