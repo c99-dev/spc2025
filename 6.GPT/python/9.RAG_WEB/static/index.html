@@ -9,6 +9,8 @@
     <h1>문서 기반 챗봇</h1>
     <input type="file" id="fileInput" />
     <button onclick="uploadFile()">업로드</button>
+    <h2>업로드된 문서</h2>
+    <ul id="fileList"></ul>
     <h2>질문하시오</h2>
     <input type="text" id="questionInput" />
     <button onclick="askQuestion()">질문하기</button>
@@ -27,6 +29,8 @@
       });
       const data = await response.json();
       console.log(data);
+      alert('파일 업로드 및 인덱싱 완료');
+      fetchFileList();
     }
 
     async function askQuestion() {
@@ -44,5 +48,43 @@
       answerDiv.innerHTML = data.answer;
       console.log(data.answer);
     }
+
+    const fileListDiv = document.getElementById('fileList');
+    async function fetchFileList() {
+      const response = await fetch('/files');
+      const data = await response.json();
+      console.log(data);
+      fileListDiv.innerHTML = '';
+      data.files.forEach((file) => {
+        const fileDiv = document.createElement('li');
+        fileDiv.textContent = file;
+        fileListDiv.appendChild(fileDiv);
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = '삭제';
+        deleteButton.onclick = () => {
+          deleteFile(file);
+        };
+        fileDiv.appendChild(deleteButton);
+      });
+    }
+
+    function deleteFile(fileName) {
+      fetch('/delete', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ filename: fileName }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          fetchFileList();
+        });
+    }
+
+    addEventListener('DOMContentLoaded', () => {
+      fetchFileList();
+    });
   </script>
 </html>
