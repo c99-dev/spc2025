@@ -1,0 +1,44 @@
+/* 별점 시스템을 위한 커스텀 CSS */
+.rating-group {
+  display: flex;
+  flex-direction: row-reverse; /* 별 순서를 시각적으로 1->5로 표시하기 위함 */
+  justify-content: center; /* 중앙 정렬 (필요에 따라 flex-end 등으로 변경 가능) */
+  gap: 0.25rem; /* space-x-1 */
+}
+.rating-group > input[type='radio'] {
+  display: none; /* 실제 라디오 버튼 숨기기 */
+}
+.rating-group > label {
+  cursor: pointer;
+  color: #d1d5db; /* text-gray-300 (비활성 별 색상) */
+  transition: color 0.2s ease-in-out;
+}
+.rating-group > label > svg {
+  /* Heroicons SVG 스타일 */
+  width: 2rem; /* w-8 */
+  height: 2rem; /* h-8 */
+  /* fill: currentColor; Tailwind CSS의 fill-current 와 유사하게 작동하도록 */
+}
+/* 사용자가 별 위에 마우스를 올렸을 때, 해당 별과 그 이전 별들 색상 변경 */
+.rating-group > label:hover,
+.rating-group > label:hover ~ label {
+  color: #facc15; /* text-yellow-400 (호버 시 별 색상) */
+}
+/* 사용자가 별을 선택(체크)했을 때, 해당 별과 그 이전 별들 색상 변경 */
+.rating-group > input[type='radio']:checked ~ label {
+  color: #eab308; /* text-yellow-500 (선택된 별 색상) */
+}
+
+/* AI 요약 텍스트 개행 처리 */
+.ai-summary-text {
+  white-space: pre-line; /* 연속된 공백은 하나로 처리, 줄바꿈은 유지 */
+}
+
+/* 리뷰 삭제 버튼 스타일 */
+.delete-review-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-weight: 500; /* 약간 굵게 */
+}
