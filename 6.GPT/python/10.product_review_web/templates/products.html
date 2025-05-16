@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-translate-key="product_list_page_title">상품 목록</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <style>
+      /* 모달 스타일 */
+      .modal {
+        display: none; /* 기본적으로 숨김 */
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden; /* 모달 자체의 스크롤은 숨김 */
+        background-color: rgba(0, 0, 0, 0.75); /* 배경 투명도 약간 더 어둡게 */
+      }
+      .modal-content-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        padding: 20px; /* 화면 가장자리에 여백 */
+        box-sizing: border-box;
+      }
+      .modal-content {
+        background-color: #fefefe;
+        padding: 25px; /* 패딩 약간 증가 */
+        border: 1px solid #888;
+        width: 90%; /* 너비 증가 */
+        max-width: 900px; /* 최대 너비 증가 (기존 768px) */
+        border-radius: 0.75rem; /* rounded-xl */
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* 그림자 강화 */
+        position: relative;
+        max-height: 90vh; /* 모달 내용의 최대 높이 */
+        overflow-y: auto; /* 내용이 넘칠 경우 내부 스크롤 */
+      }
+      .close-button {
+        color: #555; /* 색상 약간 진하게 */
+        position: absolute;
+        top: 15px; /* 위치 조정 */
+        right: 20px; /* 위치 조정 */
+        font-size: 2.2rem; /* 크기 약간 증가 */
+        font-weight: bold;
+        cursor: pointer;
+        line-height: 1; /* 라인 높이 조정으로 수직 정렬 개선 */
+        padding: 0 5px; /* 클릭 영역 확보 */
+      }
+      .close-button:hover,
+      .close-button:focus {
+        color: #000; /* 호버 시 검은색 */
+        text-decoration: none;
+      }
+      /* 상품 목록 스타일 */
+      .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem; /* Tailwind gap-6 */
+        padding: 1.5rem; /* Tailwind p-6 */
+      }
+      .product-card {
+        border: 1px solid #e5e7eb; /* Tailwind border-gray-200 */
+        border-radius: 0.5rem; /* Tailwind rounded-lg */
+        overflow: hidden; /* 이미지가 카드를 벗어나지 않도록 */
+        transition: box-shadow 0.3s ease-in-out;
+        cursor: pointer;
+      }
+      .product-card:hover {
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Tailwind shadow-xl */
+      }
+      .product-card img {
+        width: 100%;
+        height: 200px; /* 고정 높이 */
+        object-fit: cover; /* 이미지 비율 유지하며 채우기 */
+      }
+      .product-card-content {
+        padding: 1rem; /* Tailwind p-4 */
+      }
+      .product-card-name {
+        font-size: 1.125rem; /* Tailwind text-lg */
+        font-weight: 600; /* Tailwind font-semibold */
+        margin-bottom: 0.5rem; /* Tailwind mb-2 */
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 text-gray-800 font-sans antialiased">
+    <div class="container mx-auto px-4 py-8">
+      <header class="mb-8 flex justify-between items-center">
+        <h1
+          class="text-4xl font-bold text-indigo-700"
+          data-translate-key="product_list_header"
+        >
+          상품 목록
+        </h1>
+        <div class="language-selector relative">
+          <select
+            id="language-select-list"
+            class="bg-white border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          >
+            <option value="ko">한국어</option>
+            <option value="en">English</option>
+            <option value="ja">日本語</option>
+            <option value="zh">中文</option>
+          </select>
+        </div>
+      </header>
+
+      <div class="product-grid">
+        {% for product_item in products_list %}
+        <div
+          class="product-card bg-white"
+          data-product-name="{{ product_item.name }}"
+        >
+          <img
+            src="{{ product_item.image_url }}"
+            alt="{{ product_item.name }}"
+          />
+          <div class="product-card-content">
+            <h3
+              class="product-card-name"
+              data-translate-key="product_name_{{ product_item.name }}"
+            >
+              {{ product_item.name }}
+            </h3>
+            <!-- 필요시 추가 정보 (가격 등) -->
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- 상품 상세 모달 -->
+    <div id="productDetailModal" class="modal">
+      <div class="modal-content-wrapper">
+        <div class="modal-content">
+          <span class="close-button">&times;</span>
+          <div id="modalBodyContent">
+            <!-- index.html 내용이 여기에 로드됩니다 -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='ui_handler.js') }}"></script>
+    <script src="{{ url_for('static', filename='review_handler.js') }}"></script>
+    <script src="{{ url_for('static', filename='event_listeners.js') }}"></script>
+    <script src="{{ url_for('static', filename='product_list.js') }}"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <!-- 모달 내부 로직용 -->
+  </body>
+</html>

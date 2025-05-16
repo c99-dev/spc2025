@@ -42,3 +42,12 @@
   cursor: pointer;
   font-weight: 500; /* 약간 굵게 */
 }
+
+/* 국가 선택 드롭다운 스타일 */
+.language-selector {
+  /* 필요한 경우 추가 스타일링 */
+}
+
+#language-select {
+  /* Tailwind 클래스로 대부분 스타일링 되었지만, 필요시 추가 */
+}

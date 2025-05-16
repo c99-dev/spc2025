@@ -1,304 +1,293 @@
-<!DOCTYPE html>
-<html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>상품 후기 작성</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 분리된 CSS 파일 연결 -->
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}"
-    />
-  </head>
-  <body class="bg-gray-100 text-gray-800 font-sans antialiased">
-    <div
-      class="container bg-white p-8 md:p-12 rounded-xl shadow-2xl max-w-2xl mx-auto my-8"
-    >
-      <header class="mb-12">
-        <h1 class="text-5xl font-bold text-center text-indigo-700">
-          상품 후기
-        </h1>
-      </header>
+<!-- 이 파일은 이제 모달의 내용으로 사용됩니다. -->
+<div
+  class="container bg-white p-8 md:p-12 rounded-xl shadow-2xl max-w-2xl mx-auto"
+>
+  <!-- 국가 선택 드롭다운은 product_list.html로 이동했으므로 여기서는 제거 -->
+  <!-- <header class="mb-12 flex justify-between items-center"> ... </header> -->
 
-      <main class="space-y-10">
-        <!-- 상품 정보 및 AI 요약 -->
-        <section class="space-y-8">
-          <div
-            class="product-info p-6 bg-slate-50 rounded-lg shadow-lg text-center"
+  <main class="space-y-10">
+    <!-- 상품 정보 및 AI 요약 -->
+    <section class="space-y-8">
+      <div
+        class="product-info p-6 bg-slate-50 rounded-lg shadow-lg text-center"
+      >
+        <img
+          id="modalProductImage"
+          src="{{ product.image_url }}"
+          alt="{{ product.name }}"
+          class="max-w-sm h-auto rounded-lg mb-5 mx-auto shadow-md transition-transform duration-300 hover:scale-105"
+          style="max-height: 320px"
+        />
+        <h2
+          id="modalProductName"
+          class="text-4xl font-semibold text-slate-800 mb-3"
+          data-translate-key="product_name_{{ product.name }}"
+        >
+          {{ product.translated_name }}
+        </h2>
+      </div>
+
+      <div class="ai-summary p-6 bg-indigo-50 rounded-lg shadow-lg">
+        <h3
+          class="text-2xl font-semibold text-indigo-800 mb-4 flex items-center"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="mr-2 text-indigo-600"
           >
-            <img
-              src="{{ product.image_url }}"
-              alt="{{ product.name }}"
-              class="max-w-sm h-auto rounded-lg mb-5 mx-auto shadow-md transition-transform duration-300 hover:scale-105"
-              style="max-height: 320px"
+            <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z" />
+            <path d="M12 18h.01" />
+            <path
+              d="M12 14c-1.5 0-2.5-1-2.5-2.5S10.5 9 12 9s2.5 1 2.5 2.5S13.5 14 12 14z"
             />
-            <h2 class="text-4xl font-semibold text-slate-800 mb-3">
-              {{ product.name }}
-            </h2>
-          </div>
+            <path d="M12 8V6" />
+          </svg>
+          <span data-translate-key="ai_summary_title">AI 요약</span>
+        </h3>
+        {% if ai_summary %}
+        <p
+          class="text-slate-700 text-base leading-relaxed prose prose-indigo ai-summary-text"
+          data-translate-key="ai_summary_content"
+          data-original-text="{{ ai_summary }}"
+        >
+          {{ ai_summary }}
+        </p>
+        {% else %}
+        <p
+          class="text-slate-500 text-base text-center py-4"
+          data-translate-key="no_summary_text"
+        >
+          요약된 내용이 없습니다.
+        </p>
+        {% endif %}
+      </div>
+    </section>
 
-          <div class="ai-summary p-6 bg-indigo-50 rounded-lg shadow-lg">
-            <h3
-              class="text-2xl font-semibold text-indigo-800 mb-4 flex items-center"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="mr-2 text-indigo-600"
-              >
-                <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z" />
-                <path d="M12 18h.01" />
-                <path
-                  d="M12 14c-1.5 0-2.5-1-2.5-2.5S10.5 9 12 9s2.5 1 2.5 2.5S13.5 14 12 14z"
-                />
-                <path d="M12 8V6" />
-              </svg>
-              AI 요약
-            </h3>
-            {% if ai_summary %}
-            <p
-              class="text-slate-700 text-base leading-relaxed prose prose-indigo ai-summary-text"
-            >
-              {{ ai_summary }}
-            </p>
-            {% else %}
-            <p class="text-slate-500 text-base text-center py-4">
-              요약된 내용이 없습니다.
-            </p>
-            {% endif %}
-          </div>
-        </section>
+    <!-- 후기 작성 -->
+    <section>
+      <div>
+        <h2
+          class="text-3xl font-semibold text-slate-700 mb-6"
+          data-translate-key="write_review_title"
+        >
+          후기 작성하기
+        </h2>
+        <form
+          class="review-form space-y-6 p-6 bg-slate-50 rounded-lg shadow-lg"
+          method="POST"
+          action="{{ url_for('submit_review') }}"
+        >
+          <input
+            type="hidden"
+            name="product_name"
+            id="modalFormProductName"
+            value="{{ product.name }}"
+          />
 
-        <!-- 후기 작성 -->
-        <section>
           <div>
-            <h2 class="text-3xl font-semibold text-slate-700 mb-6">
-              후기 작성하기
-            </h2>
-            <form
-              class="review-form space-y-6 p-6 bg-slate-50 rounded-lg shadow-lg"
-              method="POST"
-              action="{{ url_for('submit_review') }}"
+            <label
+              for="rating"
+              class="block text-sm font-medium text-slate-700 mb-2 text-center"
+              data-translate-key="rating_label"
+              >상품은 어떠셨나요? (평점)</label
             >
+            <div class="rating-group">
               <input
-                type="hidden"
-                name="product_name"
-                value="{{ product.name }}"
+                type="radio"
+                id="rating-5"
+                name="rating"
+                value="5"
+                required
+              /><label for="rating-5"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="w-8 h-8"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354l-4.597 2.927c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
+                    clip-rule="evenodd"
+                  /></svg
+              ></label>
+              <input type="radio" id="rating-4" name="rating" value="4" /><label
+                for="rating-4"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="w-8 h-8"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354l-4.597 2.927c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
+                    clip-rule="evenodd"
+                  /></svg
+              ></label>
+              <input type="radio" id="rating-3" name="rating" value="3" /><label
+                for="rating-3"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="w-8 h-8"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354l-4.597 2.927c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
+                    clip-rule="evenodd"
+                  /></svg
+              ></label>
+              <input type="radio" id="rating-2" name="rating" value="2" /><label
+                for="rating-2"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="w-8 h-8"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354l-4.597 2.927c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
+                    clip-rule="evenodd"
+                  /></svg
+              ></label>
+              <input type="radio" id="rating-1" name="rating" value="1" /><label
+                for="rating-1"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="w-8 h-8"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354l-4.597 2.927c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
+                    clip-rule="evenodd"
+                  /></svg
+              ></label>
+            </div>
+          </div>
+
+          <div>
+            <label
+              for="review_text"
+              class="block text-sm font-medium text-slate-700 mb-1"
+              data-translate-key="review_text_label"
+              >자세한 후기를 들려주세요:</label
+            >
+            <textarea
+              id="review_text"
+              name="review_text"
+              rows="6"
+              placeholder="솔직한 후기를 남겨주세요. (예: 디자인이 예뻐요, 배송이 빨라요)"
+              data-translate-key="review_text_placeholder"
+              required
+              class="mt-1 block w-full px-4 py-3 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm placeholder-slate-400"
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full flex items-center justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="mr-2 h-5 w-5"
+            >
+              <path
+                d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z"
               />
+            </svg>
+            <span data-translate-key="submit_review_button">후기 등록</span>
+          </button>
+        </form>
+      </div>
+    </section>
 
-              <div>
-                <label
-                  for="rating"
-                  class="block text-sm font-medium text-slate-700 mb-2 text-center"
-                  >상품은 어떠셨나요? (평점)</label
-                >
-                <div class="rating-group">
-                  <!-- 별점 입력: Heroicons (solid star) SVG 사용 -->
-                  <input
-                    type="radio"
-                    id="rating-5"
-                    name="rating"
-                    value="5"
-                    required
-                  /><label for="rating-5"
-                    ><svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      class="w-8 h-8"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354l-4.597 2.927c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                        clip-rule="evenodd"
-                      /></svg
-                  ></label>
-                  <input
-                    type="radio"
-                    id="rating-4"
-                    name="rating"
-                    value="4"
-                  /><label for="rating-4"
-                    ><svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      class="w-8 h-8"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354l-4.597 2.927c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                        clip-rule="evenodd"
-                      /></svg
-                  ></label>
-                  <input
-                    type="radio"
-                    id="rating-3"
-                    name="rating"
-                    value="3"
-                  /><label for="rating-3"
-                    ><svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      class="w-8 h-8"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354l-4.597 2.927c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                        clip-rule="evenodd"
-                      /></svg
-                  ></label>
-                  <input
-                    type="radio"
-                    id="rating-2"
-                    name="rating"
-                    value="2"
-                  /><label for="rating-2"
-                    ><svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      class="w-8 h-8"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354l-4.597 2.927c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                        clip-rule="evenodd"
-                      /></svg
-                  ></label>
-                  <input
-                    type="radio"
-                    id="rating-1"
-                    name="rating"
-                    value="1"
-                  /><label for="rating-1"
-                    ><svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      class="w-8 h-8"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354l-4.597 2.927c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                        clip-rule="evenodd"
-                      /></svg
-                  ></label>
-                </div>
-              </div>
-
-              <div>
-                <label
-                  for="review_text"
-                  class="block text-sm font-medium text-slate-700 mb-1"
-                  >자세한 후기를 들려주세요:</label
-                >
-                <textarea
-                  id="review_text"
-                  name="review_text"
-                  rows="6"
-                  placeholder="솔직한 후기를 남겨주세요. (예: 디자인이 예뻐요, 배송이 빨라요)"
-                  required
-                  class="mt-1 block w-full px-4 py-3 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm placeholder-slate-400"
-                ></textarea>
-              </div>
-
-              <button
-                type="submit"
-                class="w-full flex items-center justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
-              >
+    <!-- 후기 목록 -->
+    <section>
+      <div>
+        <h2
+          class="text-3xl font-semibold text-slate-700 mb-6"
+          data-translate-key="other_reviews_title"
+        >
+          다른 분들의 후기
+        </h2>
+        <div
+          class="reviews-list space-y-5 max-h-[70vh] overflow-y-auto pr-3 pb-4 rounded-lg bg-slate-50 p-1 shadow-inner"
+        >
+          {% if reviews %} {% for review in reviews %}
+          <article
+            class="review-item bg-white p-5 rounded-lg shadow-md border border-slate-200 hover:shadow-lg transition-shadow duration-200"
+          >
+            <header class="flex items-center justify-between mb-2">
+              <div class="flex items-center">
+                {% for i in range(1, 6) %}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill="currentColor"
-                  class="mr-2 h-5 w-5"
+                  class="w-5 h-5 {% if i <= review.rating %}text-yellow-400{% else %}text-slate-300{% endif %}"
                 >
                   <path
-                    d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z"
+                    fill-rule="evenodd"
+                    d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354l-4.597 2.927c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
+                    clip-rule="evenodd"
                   />
                 </svg>
-                후기 등록
-              </button>
-            </form>
-          </div>
-        </section>
-
-        <!-- 후기 목록 -->
-        <section>
-          <div>
-            <h2 class="text-3xl font-semibold text-slate-700 mb-6">
-              다른 분들의 후기
-            </h2>
-            <div
-              class="reviews-list space-y-5 max-h-[70vh] overflow-y-auto pr-3 pb-4 rounded-lg bg-slate-50 p-1 shadow-inner"
-            >
-              {% if reviews %} {% for review in reviews %}
-              <article
-                class="review-item bg-white p-5 rounded-lg shadow-md border border-slate-200 hover:shadow-lg transition-shadow duration-200"
-              >
-                <header class="flex items-center justify-between mb-2">
-                  <div class="flex items-center">
-                    {% for i in range(1, 6) %}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      class="w-5 h-5 {% if i <= review.rating %}text-yellow-400{% else %}text-slate-300{% endif %}"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354l-4.597 2.927c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                    {% endfor %}
-                    <span class="ml-2 text-sm font-medium text-indigo-600"
-                      >({{ review.rating }}점)</span
-                    >
-                  </div>
-                  <div class="flex items-center">
-                    <!-- 날짜와 삭제 버튼을 감싸는 div -->
-                    <small class="text-xs text-slate-500 mr-3">
-                      <!-- mr-3으로 간격 추가 -->
-                      {{ review.created_at.strftime('%Y년 %m월 %d일 %H시 %M분')
-                      }}
-                    </small>
-                    <button
-                      class="delete-review-btn text-xs text-red-500 hover:text-red-700"
-                      data-review-id="{{ review.id }}"
-                    >
-                      삭제
-                    </button>
-                  </div>
-                </header>
-                <p
-                  class="text-slate-700 leading-relaxed prose prose-sm max-w-none"
+                {% endfor %}
+                <span class="ml-2 text-sm font-medium text-indigo-600"
+                  >({{ review.rating }}점)</span
                 >
-                  {{ review.review_text }}
-                </p>
-              </article>
-              {% endfor %} {% else %}
-              <p class="text-slate-500 text-center py-10">
-                아직 등록된 후기가 없습니다. 첫 후기를 작성해주세요!
-              </p>
-              {% endif %}
-            </div>
-          </div>
-        </section>
-      </main>
-    </div>
-
-    <!-- 분리된 JavaScript 파일 연결 -->
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-  </body>
-</html>
+              </div>
+              <div class="flex items-center">
+                <small
+                  class="review-date text-xs text-slate-500 mr-3"
+                  data-timestamp="{{ review.created_at_iso }}"
+                >
+                  <!-- strftime은 datetime 객체에 사용해야 함 -->
+                  {{ review.created_at_dt.strftime('%Y년 %m월 %d일 %H시 %M분')
+                  if review.created_at_dt else review.created_at_iso }}
+                </small>
+                <button
+                  class="delete-review-btn text-xs text-red-500 hover:text-red-700"
+                  data-review-id="{{ review.id }}"
+                  data-translate-key="delete_button"
+                >
+                  삭제
+                </button>
+              </div>
+            </header>
+            <p
+              class="review-text-display text-slate-700 leading-relaxed prose prose-sm max-w-none"
+              data-original-text="{{ review.review_text }}"
+            >
+              {{ review.review_text }}
+            </p>
+          </article>
+          {% endfor %} {% else %}
+          <p
+            class="no-reviews-message text-slate-500 text-center py-10"
+            data-translate-key="no_reviews_yet"
+          >
+            아직 등록된 후기가 없습니다. 첫 후기를 작성해주세요!
+          </p>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+<!-- script.js 등은 products.html에서 로드하므로 여기서는 제거 -->
