@@ -109,7 +109,8 @@ function displayMessage(sender, text) {
   );
 
   const messageContent = document.createElement('span');
-  messageContent.textContent = text;
+  // textContent 대신 innerHTML을 사용하고, \n을 <br>로 변환
+  messageContent.innerHTML = text.replace(/\n/g, '<br>');
 
   messageElement.appendChild(messageContent);
   chatbotMessages.appendChild(messageElement);

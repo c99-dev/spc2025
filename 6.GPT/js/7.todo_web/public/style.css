@@ -26,8 +26,8 @@ body {
   position: fixed; /* 화면의 고정된 위치에 챗봇 창 배치 */
   bottom: 20px; /* 화면 아래에서 20px 위로 위치 */
   right: 20px; /* 화면 오른쪽에서 20px 왼쪽으로 위치 */
-  width: 300px; /* 챗봇 창의 너비를 300px로 설정 */
-  height: 400px; /* 챗봇 창의 높이를 400px로 설정 */
+  width: 400px; /* 챗봇 창의 너비를 400px로 설정 (기존 300px) */
+  height: 500px; /* 챗봇 창의 높이를 500px로 설정 (기존 400px) */
   background-color: white; /* 챗봇 창의 배경색을 흰색으로 설정 */
   border: 1px solid #ddd; /* 챗봇 창의 경계선을 밝은 회색으로 설정 */
   border-radius: 8px; /* 챗봇 창의 모서리를 둥글게 설정 */
@@ -62,7 +62,7 @@ body {
   border: 1px solid #ddd; /* 메시지 창의 경계선을 밝은 회색으로 설정 */
   border-radius: 4px; /* 메시지 창의 모서리를 둥글게 설정 */
   padding: 5px; /* 메시지 창의 내부 여백을 5px로 설정 */
-  max-height: 280px; /* 메시지 창의 최대 높이를 280px로 설정하여 스크롤바가 나타나도록 함 */
+  max-height: 380px; /* 메시지 창의 최대 높이를 380px로 설정하여 스크롤바가 나타나도록 함 (기존 280px) */
 }
 
 .chatbot-input-container {
